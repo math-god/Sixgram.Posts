@@ -7,7 +7,7 @@ namespace Post.Database
     {
         public AppDbContext(DbContextOptions options) : base(options)
         {
-            Database.EnsureCreated();
+            /*Database.EnsureCreated();*/
         }
         
         public DbSet<SubscriptionModel> Subscriptions { get; set; }

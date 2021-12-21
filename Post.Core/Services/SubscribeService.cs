@@ -1,38 +1,36 @@
-﻿using AutoMapper;
-using Post.Database.Repository.Subscription;
+﻿using System;
+using System.Threading.Tasks;
+using AutoMapper;
+using Post.Common.Result;
+using Post.Core.Dto.Subscription;
+using Post.Core.Subscription;
 
 namespace Post.Core.Services
 {
-    public class SubscribeService
+    public class SubscribeService : ISubscriptionService
     {
         /*private readonly ITokenService _tokenService;*/
         private readonly IMapper _mapper;
-        private readonly ISubscriptionRepository _subscriptionRepository;
+
 
         public SubscribeService
         (
             /*ITokenService tokenService,*/
-            IMapper mapper,
-            ISubscriptionRepository userRepository
+            IMapper mapper
         )
         {
             /*_tokenService = tokenService;*/
             _mapper = mapper;
-            _subscriptionRepository = userRepository;
         }
 
-        /*public async Task<ResultContainer<SubscriptionResponseDto>> Subscribe(Guid userId)
+        public Task<ResultContainer<SubscriptionResponseDto>> Subscribe(Guid userId)
         {
-            var result = new ResultContainer<SubscriptionResponseDto>();
-        
-            var user = _subscriptionRepository.GetById(userId);
-            
-            
+            throw new NotImplementedException();
         }
-        
-         public async Task<ResultContainer<SubscriptionResponseDto>> Unsubscribe(Guid userId)
+
+        public Task<ResultContainer<SubscriptionResponseDto>> Unsubscribe(Guid userId)
         {
-             throw new NotImplementedException();
-        }*/
+            throw new NotImplementedException();
+        }
     }
 }
