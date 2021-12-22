@@ -1,4 +1,6 @@
-﻿using System;
+﻿using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Post.Core.Http;
@@ -23,12 +25,19 @@ namespace Post.Controllers
             _httpService = httpService;
         }
 
-        [HttpPost("CreateSubscriptionEntity")]
+        [HttpPost("CreateSubscriptionEntity/{str}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public void CreateSubscriptionEntity()
+        public async Task<JsonResult> CreateSubscriptionEntity(string str)
         {
-            Console.WriteLine(HttpContext.Response.ContentType);
+            var buffer = new byte[Request.ContentLength.Value];
+
+            await HttpContext.Request.Body.ReadAsync(buffer, 0, buffer.Length);
+
+            var resultString =  Regex.Replace(Encoding.ASCII.GetString(buffer), @"\p{C}+", string.Empty);
+            var replace = resultString.Replace("\\", string.Empty);
+
+            return Json(replace);
         }
 
         /*[HttpGet]
