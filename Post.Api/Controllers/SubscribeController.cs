@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Post.Core.Http;
@@ -8,6 +9,7 @@ using Post.Database;
 
 namespace Post.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class SubscribeController : Controller
@@ -24,7 +26,7 @@ namespace Post.Controllers
             _appDbContext = appDbContext;
             _httpService = httpService;
         }
-
+        
         [HttpPost("CreateSubscriptionEntity/{str}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -34,7 +36,7 @@ namespace Post.Controllers
 
             await HttpContext.Request.Body.ReadAsync(buffer, 0, buffer.Length);
 
-            var resultString =  Regex.Replace(Encoding.ASCII.GetString(buffer), @"\p{C}+", string.Empty);
+            var resultString = Regex.Replace(Encoding.ASCII.GetString(buffer), @"\p{C}+", string.Empty);
             var replace = resultString.Replace("\\", string.Empty);
 
             return Json(replace);
