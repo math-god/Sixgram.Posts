@@ -2,6 +2,6 @@
 {
     public interface ITokenService
     {
-        
+        public Guid GetCurrentUserId();
     }
 }

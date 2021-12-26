@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Post.Common.Result;
 using Post.Core.Dto.Subscription;
 using Post.Core.Subscription;

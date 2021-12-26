@@ -12,6 +12,7 @@ using Microsoft.OpenApi.Models;
 using Post.Core.Http;
 using Post.Core.Services;
 using Post.Database;
+using Post.Database.Repository.Subscription;
 
 namespace Post
 {
@@ -29,9 +30,11 @@ namespace Post
             services.AddControllers();
 
             services.AddScoped<IHttpService, HttpService>();
+            services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
 
-            services.AddDbContext<AppDbContext>(_ =>
-                _.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            var connection = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connection,
+                x => x.MigrationsAssembly("Post.Database")));
 
             ConfigureAuthentication(services);
 
@@ -78,7 +81,7 @@ namespace Post
                     x.SaveToken = true;
                 });
         }
-        
+
         private static void ConfigureSwagger(IServiceCollection services)
         {
             /*services.AddApiVersioning(options =>

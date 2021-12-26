@@ -12,12 +12,12 @@ namespace Post.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class SubscribeController : Controller
+    public class SubscriptionController : Controller
     {
         private readonly AppDbContext _appDbContext;
         private readonly IHttpService _httpService;
 
-        public SubscribeController
+        public SubscriptionController
         (
             AppDbContext appDbContext,
             IHttpService httpService
@@ -40,6 +40,14 @@ namespace Post.Controllers
             var replace = resultString.Replace("\\", string.Empty);
 
             return Json(replace);
+        }
+        
+        [HttpPost("[action]/{userId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<JsonResult> Subscribe(string userId)
+        {
+            throw new NotImplementedException();
         }
 
         /*[HttpGet]

@@ -16,8 +16,5 @@ namespace Post.Database.EntityModels
         
         [Column("subscriptions")]
         public List<Guid> Subscriptions { get; set; } = new();
-        
-        [ForeignKey("Id")]
-        public TestUserModel TestUserModel{ get; set; }
     }
 }
