@@ -32,4 +32,16 @@
       <Folder Include="Migrations" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="EntityModels\Types\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="EntityModels\Types\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="EntityModels\Types\**" />
+    </ItemGroup>
+
 </Project>

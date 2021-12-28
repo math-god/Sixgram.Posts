@@ -8,7 +8,7 @@ namespace Post.Core.Subscription
 {
     public interface ISubscriptionService
     {
-        Task<ResultContainer<SubscriptionResponseDto>> Subscribe(Guid userId);
+        Task<ResultContainer<SubscriptionResponseDto>> Subscribe(Guid respondentId, Guid subscriberId);
         Task<ResultContainer<SubscriptionResponseDto>> Unsubscribe(Guid userId);
     }
 }

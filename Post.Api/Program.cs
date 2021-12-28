@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using NLog.Web;
+using Post.Database;
 
 namespace Post
 {
@@ -9,10 +11,12 @@ namespace Post
         public static void Main(string[] args)
         {
             var logger = NLogBuilder.ConfigureNLog(LogFileName).GetCurrentClassLogger();
+            
 
             try
             {
                 logger.Debug("Main init");
+                
                 CreateHostBuilder(args).Build().Run();
             }
             catch (Exception e)

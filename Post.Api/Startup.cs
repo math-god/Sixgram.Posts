@@ -40,6 +40,8 @@ namespace Post
 
             ConfigureSwagger(services);
 
+            services.AddHttpContextAccessor();
+
             //Configure HttpClient
             services.AddHttpClient("auth", p => { p.BaseAddress = new Uri("http://localhost:5000/"); });
         }

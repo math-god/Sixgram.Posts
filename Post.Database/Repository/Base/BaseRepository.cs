@@ -24,7 +24,7 @@ namespace Post.Database.Repository.Base
 
         public async Task<TModel> Create(TModel item)
         {
-            item.DateCreated = DateTime.Now;
+            /*item.DateCreated = DateTime.Now;*/
             await _appDbContext.Set<TModel>().AddAsync(item);
             await _appDbContext.SaveChangesAsync();
             return item;
@@ -32,7 +32,7 @@ namespace Post.Database.Repository.Base
 
         public async Task<TModel> Update(TModel item)
         {
-            item.DateUpdated = DateTime.Now;
+            /*item.DateUpdated = DateTime.Now;*/
             _appDbContext.Set<TModel>().Update(item);
             await _appDbContext.SaveChangesAsync();
             return item;
