@@ -16,11 +16,11 @@ namespace Post.Database.EntityModels
         
         [Column("subscriptions")]
         public virtual ICollection<Subscription> Subscriptions { get; set; }*/
-      
-        [Column("subscribers")]
-        public Guid[] Subscribers { get; set; } = Array.Empty<Guid>();
+
+        [Column("subscribers", TypeName = "uuid[]")]
+        public List<Guid> Subscribers { get; set; } = new();
         
-        [Column("subscriptions")]
-        public Guid[] Subscriptions { get; set; } = Array.Empty<Guid>();
+        [Column("subscriptions", TypeName = "uuid[]")]
+        public List<Guid> Subscriptions { get; set; } = new();
     }
 }
