@@ -1,6 +1,4 @@
-using Microsoft.EntityFrameworkCore;
 using NLog.Web;
-using Post.Database;
 
 namespace Post
 {
