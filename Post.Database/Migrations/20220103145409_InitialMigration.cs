@@ -14,8 +14,8 @@ namespace Post.Database.Migrations
                 columns: table => new
                 {
                     user_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    subscribers = table.Column<Guid[]>(type: "uuid[]", nullable: false),
-                    subscriptions = table.Column<Guid[]>(type: "uuid[]", nullable: false)
+                    subscribers = table.Column<string[]>(type: "text[]", nullable: false),
+                    subscriptions = table.Column<string[]>(type: "text[]", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -27,8 +27,8 @@ namespace Post.Database.Migrations
                 columns: new[] { "user_id", "subscribers", "subscriptions" },
                 values: new object[,]
                 {
-                    { new Guid("48c72a5c-cd56-42f6-a09b-6638efd03475"), new Guid[0], new Guid[0] },
-                    { new Guid("fc829ad5-a0c4-4fef-8ac1-1c47100bc03a"), new Guid[0], new Guid[0] }
+                    { new Guid("ab595a68-9f55-4c5b-9098-fb4fcbf0b193"), new string[0], new string[0] },
+                    { new Guid("b040e56b-93a6-4366-9118-56322c308751"), new string[0], new string[0] }
                 });
         }
 

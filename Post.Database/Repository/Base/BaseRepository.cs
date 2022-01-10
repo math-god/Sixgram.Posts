@@ -38,6 +38,13 @@ namespace Post.Database.Repository.Base
             return item;
         }
 
+        public async Task<List<TModel>> UpdateRange(List<TModel> item)
+        {
+            _appDbContext.Set<TModel>().UpdateRange(item);
+            await _appDbContext.SaveChangesAsync();
+            return item;
+        }
+
         public async Task<TModel> Delete(Guid id)
         {
             var item = await _appDbContext.Set<TModel>().FindAsync(id);

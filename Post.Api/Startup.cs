@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,7 +11,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Post.Core.Http;
+using Post.Core.Profiles;
 using Post.Core.Services;
+using Post.Core.Subscription;
 using Post.Database;
 using Post.Database.Repository.Subscription;
 
@@ -31,11 +34,17 @@ namespace Post
 
             services.AddScoped<IHttpService, HttpService>();
             services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
-
+            services.AddScoped<ISubscriptionService, SubscribeService>();
+ 
             var connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connection,
                 x => x.MigrationsAssembly("Post.Database")));
 
+            //Configure AutoMapper Profile
+            var mapperConfig = new MapperConfiguration(mc => { mc.AddProfile(new AppProfile()); });
+            var mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
+            
             ConfigureAuthentication(services);
 
             ConfigureSwagger(services);

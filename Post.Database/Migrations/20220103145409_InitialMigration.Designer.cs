@@ -12,7 +12,7 @@ using Post.Database;
 namespace Post.Database.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20211228132235_InitialMigration")]
+    [Migration("20220103145409_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,14 +31,14 @@ namespace Post.Database.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("user_id");
 
-                    b.Property<Guid[]>("Subscribers")
+                    b.Property<string[]>("Subscribers")
                         .IsRequired()
-                        .HasColumnType("uuid[]")
+                        .HasColumnType("text[]")
                         .HasColumnName("subscribers");
 
-                    b.Property<Guid[]>("Subscriptions")
+                    b.Property<string[]>("Subscriptions")
                         .IsRequired()
-                        .HasColumnType("uuid[]")
+                        .HasColumnType("text[]")
                         .HasColumnName("subscriptions");
 
                     b.HasKey("Id");
@@ -48,15 +48,15 @@ namespace Post.Database.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("48c72a5c-cd56-42f6-a09b-6638efd03475"),
-                            Subscribers = new Guid[0],
-                            Subscriptions = new Guid[0]
+                            Id = new Guid("ab595a68-9f55-4c5b-9098-fb4fcbf0b193"),
+                            Subscribers = new string[0],
+                            Subscriptions = new string[0]
                         },
                         new
                         {
-                            Id = new Guid("fc829ad5-a0c4-4fef-8ac1-1c47100bc03a"),
-                            Subscribers = new Guid[0],
-                            Subscriptions = new Guid[0]
+                            Id = new Guid("b040e56b-93a6-4366-9118-56322c308751"),
+                            Subscribers = new string[0],
+                            Subscriptions = new string[0]
                         });
                 });
 #pragma warning restore 612, 618

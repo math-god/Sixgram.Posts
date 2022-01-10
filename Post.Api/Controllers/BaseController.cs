@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Post.Common.Error;
 using Post.Common.Result;
+using Post.Core.Dto.Subscription;
 
 namespace Post.Controllers;
 
 public class BaseController : Controller
 {
-    protected async Task<ActionResult> ReturnResult<T, TM>(Task<T> task) where T : ResultContainer<TM>
+    protected async Task<ActionResult> ReturnResult<T, TM>(Task<ResultContainer<SubscriptionResponseDto>> task) where T : ResultContainer<TM>
     {
         var result = await task;
 

@@ -11,6 +11,7 @@ namespace Post.Database.Repository.Base
         Task<TModel> GetById(Guid id);
         Task<TModel> Create(TModel item);
         Task<TModel> Update(TModel item);
+        Task<List<TModel>> UpdateRange(List<TModel> items);
         Task<TModel> Delete(Guid id);
     }
 }

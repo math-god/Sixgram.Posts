@@ -15,15 +15,6 @@ namespace Post.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new SubscriptionModelConfiguration());
-
-            /*modelBuilder.Entity<SubscriptionModel>().Property(p => p.Subscribers).HasConversion<SubscriptionModel[]>();
-            modelBuilder.Entity<SubscriptionModel>().Property(p => p.Subscriptions).HasConversion<SubscriptionModel[]>();*/
-
-            modelBuilder.Entity<SubscriptionModel>().HasData
-            (
-                new SubscriptionModel() { },
-                new SubscriptionModel() { }
-            );
         }
     }
 }
