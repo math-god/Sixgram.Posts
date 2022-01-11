@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Post.Common.Error;
+using Post.Common.Response;
 using Post.Common.Result;
 using Post.Core.Dto.Subscription;
 
@@ -11,13 +11,13 @@ public class BaseController : Controller
     {
         var result = await task;
 
-        if (result.ErrorType.HasValue)
+        if (result.ResponseCode.HasValue)
         {
-            return result.ErrorType switch
+            return result.ResponseCode switch
             {
-                ErrorType.NotFound => NotFound(),
-                ErrorType.BadRequest => BadRequest(),
-                ErrorType.Unauthorized => Unauthorized(),
+                ResponseCode.NotFound => NotFound(),
+                ResponseCode.BadRequest => BadRequest(),
+                ResponseCode.Unauthorized => Unauthorized(),
                 _ => throw new ArgumentOutOfRangeException()
             };
         }

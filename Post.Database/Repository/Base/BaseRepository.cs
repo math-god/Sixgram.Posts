@@ -9,7 +9,7 @@ namespace Post.Database.Repository.Base
 {
     public abstract class BaseRepository<TModel> where TModel : BaseModel
     {
-        private readonly AppDbContext _appDbContext;
+        protected readonly AppDbContext _appDbContext;
 
         protected BaseRepository(AppDbContext appDbContext)
         {
@@ -22,7 +22,7 @@ namespace Post.Database.Repository.Base
         public async Task<TModel> GetById(Guid id)
             => await _appDbContext.Set<TModel>().FindAsync(id);
 
-        public async Task<TModel> Create(TModel item)
+        public virtual async Task<TModel> Create(TModel item)
         {
             /*item.DateCreated = DateTime.Now;*/
             await _appDbContext.Set<TModel>().AddAsync(item);

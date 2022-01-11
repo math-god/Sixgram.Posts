@@ -1,10 +1,10 @@
-﻿using Post.Common.Error;
+﻿using Post.Common.Response;
 
 namespace Post.Common.Result
 {
     public class ResultContainer<T>
     {
         public T Data { get; set; }
-        public ErrorType? ErrorType { get; set; }
+        public ResponseCode? ResponseCode { get; set; }
     }
 }

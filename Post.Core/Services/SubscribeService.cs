@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using Post.Common.Error;
+using Microsoft.AspNetCore.Mvc;
+using Post.Common.Response;
 using Post.Common.Result;
 using Post.Core.Dto.Subscription;
 using Post.Core.Subscription;
@@ -36,13 +37,13 @@ namespace Post.Core.Services
 
             if (respondent == null || subscriber == null)
             {
-                result.ErrorType = ErrorType.BadRequest;
+                result.ResponseCode = ResponseCode.BadRequest;
                 return result;
             }
 
             if (respondent.Subscribers.Contains(subscription.SubscriberId))
             {
-                result.ErrorType = ErrorType.BadRequest;
+                result.ResponseCode = ResponseCode.BadRequest;
                 return result;
             }
             
@@ -52,6 +53,8 @@ namespace Post.Core.Services
             result = _mapper.Map<ResultContainer<SubscriptionResponseDto>>(
                 await _subscriptionRepository.UpdateRange(new List<SubscriptionModel>() { respondent, subscriber }));
 
+            result.ResponseCode = ResponseCode.Success;
+            
             return result;
         }
 

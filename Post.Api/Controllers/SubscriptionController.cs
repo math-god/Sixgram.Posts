@@ -47,7 +47,6 @@ namespace Post.Controllers
 
             return Json(replace);
         }
-
         
         /// <summary>
         ///  Subscribe one user to another one
