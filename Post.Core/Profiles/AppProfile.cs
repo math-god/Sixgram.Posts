@@ -12,9 +12,10 @@ public class AppProfile : Profile
     public AppProfile()
     {
         CreateMap<SubscriptionModel, SubscriptionDto>();
-        CreateMap<SubscriptionModel, ResultContainer<SubscriptionResponseDto>>()
+        CreateMap<List<SubscriptionModel>, ResultContainer<SubscriptionResponseDto>>()
             .ForMember("Data", opt
                 => opt.MapFrom(u => u));
+        
         CreateMap<TokenModel, TokenDto>();
     }
 }

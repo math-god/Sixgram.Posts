@@ -42,6 +42,7 @@ namespace Post.Core.Services
 
             if (respondent.Subscribers.Contains(subscription.SubscriberId))
             {
+                result.ErrorType = ErrorType.BadRequest;
                 return result;
             }
             

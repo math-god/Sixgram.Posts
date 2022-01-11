@@ -18,9 +18,9 @@ namespace Post.Database.EntityModels
         public virtual ICollection<Subscription> Subscriptions { get; set; }*/
       
         [Column("subscribers")]
-        public Guid[] Subscribers { get; set; } = Array.Empty<Guid>();
+        public List<Guid> Subscribers { get; set; } = new();
         
         [Column("subscriptions")]
-        public Guid[] Subscriptions { get; set; } = Array.Empty<Guid>();
+        public List<Guid> Subscriptions { get; set; } = new();
     }
 }
