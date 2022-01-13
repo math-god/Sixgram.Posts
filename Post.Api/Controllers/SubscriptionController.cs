@@ -59,8 +59,8 @@ namespace Post.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<SubscriptionDto>> Subscribe(SubscriptionRequestDto subscription)
-            => await ReturnResult<ResultContainer<SubscriptionDto>, SubscriptionDto>
+        public async Task<ActionResult<SubscriptionResponseDto>> Subscribe([FromForm]SubscriptionRequestDto subscription)
+            => await ReturnResult<ResultContainer<SubscriptionResponseDto>, SubscriptionResponseDto>
                 (_subscriptionService.Subscribe(subscription));
     }
 }

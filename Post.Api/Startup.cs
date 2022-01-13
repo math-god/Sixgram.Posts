@@ -36,16 +36,21 @@ namespace Post
             services.AddScoped<IHttpService, HttpService>();
             services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
             services.AddScoped<ISubscriptionService, SubscribeService>();
- 
+
             var connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connection,
                 x => x.MigrationsAssembly("Post.Database")));
 
             //Configure AutoMapper Profile
-            var mapperConfig = new MapperConfiguration(mc => { mc.AddProfile(new AppProfile()); });
+            var mapperConfig = new MapperConfiguration
+                (mc =>
+                {
+                    mc.AddProfile(new AppProfile()); 
+                    
+                });
             var mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
-            
+
             ConfigureAuthentication(services);
 
             ConfigureSwagger(services);

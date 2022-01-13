@@ -26,14 +26,13 @@ namespace Post.Core.Services
             _mapper = mapper;
             _subscriptionRepository = subscriptionRepository;
         }
-
-
+        
         public async Task<ResultContainer<SubscriptionResponseDto>> Subscribe(SubscriptionRequestDto subscription)
         {
             var result = new ResultContainer<SubscriptionResponseDto>();
 
-            var respondent = _subscriptionRepository.GetById(subscription.RespondentId).Result;
-            var subscriber = _subscriptionRepository.GetById(subscription.SubscriberId).Result;
+            var respondent = await _subscriptionRepository.GetById(subscription.RespondentId);
+            var subscriber = await _subscriptionRepository.GetById(subscription.SubscriberId);
 
             if (respondent == null || subscriber == null)
             {
@@ -46,15 +45,17 @@ namespace Post.Core.Services
                 result.ResponseCode = ResponseCode.BadRequest;
                 return result;
             }
-            
+
             respondent.Subscribers.Add(subscription.SubscriberId);
             subscriber.Subscriptions.Add(subscription.RespondentId);
 
-            result = _mapper.Map<ResultContainer<SubscriptionResponseDto>>(
-                await _subscriptionRepository.UpdateRange(new List<SubscriptionModel>() { respondent, subscriber }));
+            /*await _subscriptionRepository.Update(respondent);
+            await _subscriptionRepository.Update(subscriber);*/
+            
+            result = _mapper.Map<ResultContainer<SubscriptionResponseDto>>(subscription);
 
             result.ResponseCode = ResponseCode.Success;
-            
+
             return result;
         }
 
