@@ -12,8 +12,8 @@ namespace Post.Database.Repository.Subscription
         public override async Task<SubscriptionModel> Create(SubscriptionModel item)
         {
             /*item.DateCreated = DateTime.Now;*/
-            await _appDbContext.Set<SubscriptionModel>().AddAsync(item);
-            await _appDbContext.SaveChangesAsync();
+            await AppDbContext.Set<SubscriptionModel>().AddAsync(item);
+            await AppDbContext.SaveChangesAsync();
             return item;
         }
 

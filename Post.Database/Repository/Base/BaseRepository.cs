@@ -9,50 +9,50 @@ namespace Post.Database.Repository.Base
 {
     public abstract class BaseRepository<TModel> where TModel : BaseModel
     {
-        protected readonly AppDbContext _appDbContext;
+        protected readonly AppDbContext AppDbContext;
 
         protected BaseRepository(AppDbContext appDbContext)
         {
-            _appDbContext = appDbContext;
+            AppDbContext = appDbContext;
         }
 
         public IEnumerable<TModel> GetAllObjects()
-            => _appDbContext.Set<TModel>().AsNoTracking().ToList();
+            => AppDbContext.Set<TModel>().AsNoTracking().ToList();
 
         public async Task<TModel> GetById(Guid id)
-            => await _appDbContext.Set<TModel>().FindAsync(id);
+            => await AppDbContext.Set<TModel>().FindAsync(id);
 
         public virtual async Task<TModel> Create(TModel item)
         {
             /*item.DateCreated = DateTime.Now;*/
-            await _appDbContext.Set<TModel>().AddAsync(item);
-            await _appDbContext.SaveChangesAsync();
+            await AppDbContext.Set<TModel>().AddAsync(item);
+            await AppDbContext.SaveChangesAsync();
             return item;
         }
 
         public async Task<TModel> Update(TModel item)
         {
             /*item.DateUpdated = DateTime.Now;*/
-            _appDbContext.Set<TModel>().Update(item);
-            await _appDbContext.SaveChangesAsync();
+            AppDbContext.Set<TModel>().Update(item);
+            await AppDbContext.SaveChangesAsync();
             return item;
         }
 
         public async Task<List<TModel>> UpdateRange(List<TModel> item)
         {
-            _appDbContext.Set<TModel>().UpdateRange(item);
-            await _appDbContext.SaveChangesAsync();
+            AppDbContext.Set<TModel>().UpdateRange(item);
+            await AppDbContext.SaveChangesAsync();
             return item;
         }
 
         public async Task<TModel> Delete(Guid id)
         {
-            var item = await _appDbContext.Set<TModel>().FindAsync(id);
+            var item = await AppDbContext.Set<TModel>().FindAsync(id);
             if (item == null)
                 return null;
 
-            _appDbContext.Set<TModel>().Remove(item);
-            await _appDbContext.SaveChangesAsync();
+            AppDbContext.Set<TModel>().Remove(item);
+            await AppDbContext.SaveChangesAsync();
             return item;
         }
     }

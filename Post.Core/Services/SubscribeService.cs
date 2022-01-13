@@ -34,12 +34,6 @@ namespace Post.Core.Services
             var respondent = await _subscriptionRepository.GetById(subscription.RespondentId);
             var subscriber = await _subscriptionRepository.GetById(subscription.SubscriberId);
 
-            if (respondent == null || subscriber == null)
-            {
-                result.ResponseCode = ResponseCode.BadRequest;
-                return result;
-            }
-
             if (respondent.Subscribers.Contains(subscription.SubscriberId))
             {
                 result.ResponseCode = ResponseCode.BadRequest;
@@ -49,19 +43,36 @@ namespace Post.Core.Services
             respondent.Subscribers.Add(subscription.SubscriberId);
             subscriber.Subscriptions.Add(subscription.RespondentId);
 
-            /*await _subscriptionRepository.Update(respondent);
-            await _subscriptionRepository.Update(subscriber);*/
+            await _subscriptionRepository.Update(respondent);
+            await _subscriptionRepository.Update(subscriber);
             
             result = _mapper.Map<ResultContainer<SubscriptionResponseDto>>(subscription);
-
-            result.ResponseCode = ResponseCode.Success;
 
             return result;
         }
 
-        public Task<ResultContainer<SubscriptionResponseDto>> Unsubscribe(Guid userId)
+        public async Task<ResultContainer<SubscriptionResponseDto>> Unsubscribe(SubscriptionRequestDto subscription)
         {
-            throw new NotImplementedException();
+            var result = new ResultContainer<SubscriptionResponseDto>();
+
+            var respondent = await _subscriptionRepository.GetById(subscription.RespondentId);
+            var subscriber = await _subscriptionRepository.GetById(subscription.SubscriberId);
+
+            if (!respondent.Subscribers.Contains(subscription.SubscriberId))
+            {
+                result.ResponseCode = ResponseCode.BadRequest;
+                return result;
+            }
+
+            respondent.Subscribers.Remove(subscription.SubscriberId);
+            subscriber.Subscriptions.Remove(subscription.RespondentId);
+
+            await _subscriptionRepository.Update(respondent);
+            await _subscriptionRepository.Update(subscriber);
+            
+            result = _mapper.Map<ResultContainer<SubscriptionResponseDto>>(subscription);
+
+            return result;
         }
     }
 }

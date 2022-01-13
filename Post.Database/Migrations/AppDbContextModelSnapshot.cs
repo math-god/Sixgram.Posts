@@ -46,13 +46,13 @@ namespace Post.Database.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("ab595a68-9f55-4c5b-9098-fb4fcbf0b193"),
+                            Id = new Guid("5cfa2115-d60c-4d8c-941c-634386b2f616"),
                             Subscribers = new string[0],
                             Subscriptions = new string[0]
                         },
                         new
                         {
-                            Id = new Guid("b040e56b-93a6-4366-9118-56322c308751"),
+                            Id = new Guid("acdfb37c-82b0-4406-8e70-121c7043af48"),
                             Subscribers = new string[0],
                             Subscriptions = new string[0]
                         });

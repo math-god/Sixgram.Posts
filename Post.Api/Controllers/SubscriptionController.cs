@@ -33,7 +33,7 @@ namespace Post.Controllers
             _subscriptionService = subscriptionService;
         }
 
-        [HttpPost("CreateSubscriptionEntity/{str}")]
+        /*[HttpPost("CreateSubscriptionEntity/{str}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<JsonResult> CreateSubscriptionEntity(string str)
@@ -46,12 +46,12 @@ namespace Post.Controllers
             var replace = resultString.Replace("\\", string.Empty);
 
             return Json(replace);
-        }
+        }*/
         
         /// <summary>
         ///  Subscribe one user to another one
         /// </summary>
-        /// <param name="subscription"></param>
+        /// <param name="subscription">Respondent Id and subscriber Id</param>
         /// <response code="200">Return respondent Id and subscriber Id</response>
         /// <response code="400">Subscription has been already done</response>
         /// <response code="404">User Id doesn't exist</response>
@@ -62,5 +62,21 @@ namespace Post.Controllers
         public async Task<ActionResult<SubscriptionResponseDto>> Subscribe([FromForm]SubscriptionRequestDto subscription)
             => await ReturnResult<ResultContainer<SubscriptionResponseDto>, SubscriptionResponseDto>
                 (_subscriptionService.Subscribe(subscription));
+        
+        
+        /// <summary>
+        ///  Unsubscribe one user from another one
+        /// </summary>
+        /// <param name="subscription">Respondent Id and subscriber Id</param>
+        /// <response code="200">Return respondent Id and subscriber Id</response>
+        /// <response code="400">One user is not subscribed to another one</response>
+        /// <response code="404">User Id doesn't exist</response>
+        [HttpPost("[action]")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<SubscriptionResponseDto>> Unsubscribe([FromForm]SubscriptionRequestDto subscription)
+            => await ReturnResult<ResultContainer<SubscriptionResponseDto>, SubscriptionResponseDto>
+                (_subscriptionService.Unsubscribe(subscription));
     }
 }

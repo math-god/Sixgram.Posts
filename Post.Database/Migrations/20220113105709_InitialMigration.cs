@@ -27,8 +27,8 @@ namespace Post.Database.Migrations
                 columns: new[] { "user_id", "subscribers", "subscriptions" },
                 values: new object[,]
                 {
-                    { new Guid("ab595a68-9f55-4c5b-9098-fb4fcbf0b193"), new string[0], new string[0] },
-                    { new Guid("b040e56b-93a6-4366-9118-56322c308751"), new string[0], new string[0] }
+                    { new Guid("5cfa2115-d60c-4d8c-941c-634386b2f616"), new string[0], new string[0] },
+                    { new Guid("acdfb37c-82b0-4406-8e70-121c7043af48"), new string[0], new string[0] }
                 });
         }
 
