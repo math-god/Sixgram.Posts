@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Post.Common.Response;
 using Post.Common.Result;
-using Post.Core.Dto.Subscription;
 
 namespace Post.Controllers;
 
 public class BaseController : Controller
 {
-    protected async Task<ActionResult> ReturnResult<T, TM>(Task<ResultContainer<SubscriptionResponseDto>> task) where T : ResultContainer<TM>
+    protected async Task<ActionResult> ReturnResult<T, TM>(Task<T> task) where T : ResultContainer<TM>
     {
         var result = await task;
 
@@ -15,9 +14,9 @@ public class BaseController : Controller
         {
             return result.ResponseCode switch
             {
-                ResponseCode.NotFound => NotFound(),
-                ResponseCode.BadRequest => BadRequest(),
-                ResponseCode.Unauthorized => Unauthorized(),
+                ErrorType.NotFound => NotFound(),
+                ErrorType.BadRequest => BadRequest(),
+                ErrorType.Unauthorized => Unauthorized(),
                 _ => throw new ArgumentOutOfRangeException()
             };
         }

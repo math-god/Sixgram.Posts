@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Post.Common.Result;
+using Post.Core.Dto.Post;
+using Post.Core.Post;
 
 namespace Post.Controllers;
 
@@ -6,35 +9,43 @@ namespace Post.Controllers;
 [ApiController]
 public class PostController : BaseController
 {
-    [HttpPost]
-    public StatusCodeResult Post(IFormFile file)
+    private readonly IPostService _postService;
+
+    public PostController
+    (
+        IPostService postService
+    )
     {
-        if (file != null && file.Length > 0)
-        {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("http://localhost:5000/");
-
-                byte[] data;
-                using (var br = new BinaryReader(file.OpenReadStream()))
-                    data = br.ReadBytes((int) file.OpenReadStream().Length);
-
-                ByteArrayContent bytes = new ByteArrayContent(data);
-
-
-                MultipartFormDataContent multiContent = new MultipartFormDataContent();
-
-                multiContent.Add(bytes, "file", file.FileName);
-
-                var result = client.PostAsync("api/v1/task/downloadfile", multiContent).Result;
-
-
-                return
-                    StatusCode((int) result
-                        .StatusCode); //201 Created the request has been fulfilled, resulting in the creation of a new resource.
-            }
-        }
-
-        return BadRequest();
+        _postService = postService;
     }
+
+    /// <summary>
+    ///  Create the post
+    /// </summary>
+    /// <param name="postRequestDto"></param>
+    /// <response code="200"></response>
+    /// <response code="400"></response>
+    /// <response code="404"></response>
+    [HttpPost("[action]")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<PostResponseDto>> Create([FromForm] PostRequestDto postRequestDto)
+        => await ReturnResult<ResultContainer<PostResponseDto>, PostResponseDto>
+            (_postService.Create(postRequestDto));
+
+    /// <summary>
+    ///  Delete the post
+    /// </summary>
+    /// <param name="postRequestDto"></param>
+    /// <response code="200"></response>
+    /// <response code="400"></response>
+    /// <response code="404"></response>
+    [HttpPost("[action]")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<PostResponseDto>> Delete([FromForm] PostRequestDto postRequestDto)
+        => await ReturnResult<ResultContainer<PostResponseDto>, PostResponseDto>
+            (_postService.Delete(postRequestDto));
 }

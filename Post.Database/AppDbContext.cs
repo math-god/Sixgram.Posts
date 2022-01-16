@@ -11,6 +11,8 @@ namespace Post.Database
         }
 
         public DbSet<SubscriptionModel> Subscriptions { get; set; }
+        public DbSet<PostModel> Posts { get; set; }
+        public DbSet<CommentaryModel> Commentaries { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

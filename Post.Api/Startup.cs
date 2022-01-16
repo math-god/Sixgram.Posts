@@ -11,7 +11,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Post.Core;
 using Post.Core.Http;
+using Post.Core.Options;
+using Post.Core.Post;
 using Post.Core.Profiles;
 using Post.Core.Services;
 using Post.Core.Subscription;
@@ -35,7 +38,8 @@ namespace Post
 
             services.AddScoped<IHttpService, HttpService>();
             services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
-            services.AddScoped<ISubscriptionService, SubscribeService>();
+            services.AddScoped<ISubscriptionService, SubscriptionService>();
+            services.AddScoped<IPostService, PostService>();
 
             var connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connection,

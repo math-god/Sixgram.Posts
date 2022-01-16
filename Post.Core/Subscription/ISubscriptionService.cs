@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Post.Common.Result;
-using Post.Core.Dto;
+﻿using Post.Common.Result;
 using Post.Core.Dto.Subscription;
 
 namespace Post.Core.Subscription

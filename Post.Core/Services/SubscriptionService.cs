@@ -9,13 +9,13 @@ using Post.Database.Repository.Subscription;
 
 namespace Post.Core.Services
 {
-    public class SubscribeService : ISubscriptionService
+    public class SubscriptionService : ISubscriptionService
     {
         /*private readonly ITokenService _tokenService;*/
         private readonly ISubscriptionRepository _subscriptionRepository;
         private readonly IMapper _mapper;
 
-        public SubscribeService
+        public SubscriptionService
         (
             /*ITokenService tokenService,*/
             IMapper mapper,
@@ -27,6 +27,8 @@ namespace Post.Core.Services
             _subscriptionRepository = subscriptionRepository;
         }
         
+        
+        
         public async Task<ResultContainer<SubscriptionResponseDto>> Subscribe(SubscriptionRequestDto subscription)
         {
             var result = new ResultContainer<SubscriptionResponseDto>();
@@ -36,7 +38,7 @@ namespace Post.Core.Services
 
             if (respondent.Subscribers.Contains(subscription.SubscriberId))
             {
-                result.ResponseCode = ResponseCode.BadRequest;
+                result.ResponseCode = ErrorType.BadRequest;
                 return result;
             }
 
@@ -60,7 +62,7 @@ namespace Post.Core.Services
 
             if (!respondent.Subscribers.Contains(subscription.SubscriberId))
             {
-                result.ResponseCode = ResponseCode.BadRequest;
+                result.ResponseCode = ErrorType.BadRequest;
                 return result;
             }
 

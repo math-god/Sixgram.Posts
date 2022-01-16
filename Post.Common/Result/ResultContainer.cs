@@ -5,6 +5,6 @@ namespace Post.Common.Result
     public class ResultContainer<T>
     {
         public T Data { get; set; }
-        public ResponseCode? ResponseCode { get; set; }
+        public ErrorType? ResponseCode { get; set; }
     }
 }
