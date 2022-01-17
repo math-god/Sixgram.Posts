@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Post.Common.Result;
 using Post.Core.Dto.Subscription;
+using Post.Core.Extensions;
 using Post.Core.Http;
 using Post.Core.Subscription;
+using Post.Core.Token;
 using Post.Database;
 
 namespace Post.Controllers
@@ -19,21 +21,24 @@ namespace Post.Controllers
     {
         private readonly IHttpService _httpService;
         private readonly ISubscriptionService _subscriptionService;
+        private readonly ITokenService _tokenService;
 
         public SubscriptionController
         (
             IHttpService httpService,
-            ISubscriptionService subscriptionService
+            ISubscriptionService subscriptionService,
+            ITokenService tokenService
         )
         {
             _httpService = httpService;
             _subscriptionService = subscriptionService;
+            _tokenService = tokenService;
         }
 
         [HttpPost("[action]")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<JsonResult> CreateSubscriptionEntity(string str)
+        public async Task<JsonResult> CreateSubscriptionEntity()
         {
             var buffer = new byte[Request.ContentLength.Value];
 
@@ -41,8 +46,10 @@ namespace Post.Controllers
 
             var resultString = Regex.Replace(Encoding.ASCII.GetString(buffer), @"\p{C}+", string.Empty);
             var replace = resultString.Replace("\\", string.Empty);
+            Console.WriteLine(_tokenService.GetClaim(replace, "id"));
 
             return Json(replace);
+            
         }
 
         /// <summary>

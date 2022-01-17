@@ -18,6 +18,7 @@ using Post.Core.Post;
 using Post.Core.Profiles;
 using Post.Core.Services;
 using Post.Core.Subscription;
+using Post.Core.Token;
 using Post.Database;
 using Post.Database.Repository.Subscription;
 
@@ -40,6 +41,7 @@ namespace Post
             services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
             services.AddScoped<ISubscriptionService, SubscriptionService>();
             services.AddScoped<IPostService, PostService>();
+            services.AddScoped<ITokenService, TokenService>();
 
             var connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connection,

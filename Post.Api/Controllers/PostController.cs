@@ -41,7 +41,7 @@ public class PostController : BaseController
     /// <response code="200"></response>
     /// <response code="400"></response>
     /// <response code="404"></response>
-    [HttpPost("[action]")]
+    [HttpDelete("[action]")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
