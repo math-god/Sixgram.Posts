@@ -6,9 +6,19 @@ namespace Post.Database.EntityModels;
 [Table("commentaries")]
 public class CommentaryModel : BaseModel
 {
-    [Column("post_id")]
+    [Column("commentary_id")] 
     public override Guid Id { get; set; }
+    
+    
+    [Column("post_id")]
+    [ForeignKey("PostModel")]
+    public Guid PostId { get; set; }
 
-    [Column("commentary_dict")]
-    public Dictionary<Guid, string> CommentaryArray { get; set; }
+    [Column("user_id")]
+    public Guid UserId { get; set; }
+
+    [Column("commentary")]
+    public string Commentary { get; set; }
+    
+    public PostModel PostModel { get; set; }
 }

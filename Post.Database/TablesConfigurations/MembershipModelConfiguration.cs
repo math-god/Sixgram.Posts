@@ -4,9 +4,9 @@ using Post.Database.EntityModels;
 
 namespace Post.Database.TablesConfigurations;
 
-public class SubscriptionModelConfiguration : IEntityTypeConfiguration<SubscriptionModel>
+public class MembershipModelConfiguration : IEntityTypeConfiguration<MembershipModel>
 {
-    public void Configure(EntityTypeBuilder<SubscriptionModel> builder)
+    public void Configure(EntityTypeBuilder<MembershipModel> builder)
     {
         builder
             .Property(p => p.Subscribers)
@@ -18,8 +18,8 @@ public class SubscriptionModelConfiguration : IEntityTypeConfiguration<Subscript
 
         builder.HasData
         (
-            new SubscriptionModel() { },
-            new SubscriptionModel() { }
+            new MembershipModel() { },
+            new MembershipModel() { }
         );
     }
 }

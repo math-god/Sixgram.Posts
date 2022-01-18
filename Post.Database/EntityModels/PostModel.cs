@@ -15,5 +15,8 @@ public class PostModel : BaseModel
     [Column("file_id")]
     public Guid FileId { get; set; }
     
-    public ICollection<CommentaryModel> Commentaries { get; set; }
+    [Column("commentaries")]
+    public List<Guid> Commentaries { get; set; }
+
+    public ICollection<CommentaryModel> CommentaryModel { get; set; }
 }

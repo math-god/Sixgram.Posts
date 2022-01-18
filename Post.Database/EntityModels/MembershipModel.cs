@@ -5,8 +5,8 @@ using Post.Common.Base;
 
 namespace Post.Database.EntityModels
 {
-    [Table("subscriptions")]
-    public class SubscriptionModel : BaseModel
+    [Table("membership")]
+    public class MembershipModel : BaseModel
     {
         [Column("user_id")] 
         public override Guid Id { get; set; } = Guid.NewGuid();

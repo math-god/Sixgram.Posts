@@ -3,16 +3,16 @@ using Post.Database.Repository.Base;
 
 namespace Post.Database.Repository.Subscription
 {
-    public class SubscriptionRepository : BaseRepository<SubscriptionModel>, ISubscriptionRepository
+    public class MembershipRepository : BaseRepository<MembershipModel>, IMembershipRepository
     {
-        public SubscriptionRepository(AppDbContext appDbContext) : base(appDbContext)
+        public MembershipRepository(AppDbContext appDbContext) : base(appDbContext)
         {
         }
 
-        public override async Task<SubscriptionModel> Create(SubscriptionModel item)
+        public override async Task<MembershipModel> Create(MembershipModel item)
         {
             /*item.DateCreated = DateTime.Now;*/
-            await AppDbContext.Set<SubscriptionModel>().AddAsync(item);
+            await AppDbContext.Set<MembershipModel>().AddAsync(item);
             await AppDbContext.SaveChangesAsync();
             return item;
         }

@@ -13,11 +13,11 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Post.Core;
 using Post.Core.Http;
+using Post.Core.Membership;
 using Post.Core.Options;
 using Post.Core.Post;
 using Post.Core.Profiles;
 using Post.Core.Services;
-using Post.Core.Subscription;
 using Post.Core.Token;
 using Post.Database;
 using Post.Database.Repository.Subscription;
@@ -38,8 +38,8 @@ namespace Post
             services.AddControllers();
 
             services.AddScoped<IHttpService, HttpService>();
-            services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
-            services.AddScoped<ISubscriptionService, SubscriptionService>();
+            services.AddScoped<IMembershipRepository, MembershipRepository>();
+            services.AddScoped<IMembershipService, MembershipService>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<ITokenService, TokenService>();
 

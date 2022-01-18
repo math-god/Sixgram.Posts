@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Post.Common.Result;
+using Post.Core.Dto.Membership;
 using Post.Core.Dto.Subscription;
 using Post.Core.Dto.Token;
 using Post.Core.Token;
@@ -11,12 +12,12 @@ public class AppProfile : Profile
 {
     public AppProfile()
     {
-        CreateMap<SubscriptionModel, SubscriptionDto>();
-        CreateMap<SubscriptionRequestDto, ResultContainer<SubscriptionResponseDto>>()
+        CreateMap<MembershipModel, MembershipDto>();
+        CreateMap<MembershipRequestDto, ResultContainer<MembershipResponseDto>>()
             .ForMember("Data", opt
                 => opt.MapFrom(u => u));
         
-        CreateMap<SubscriptionRequestDto, SubscriptionResponseDto>();
+        CreateMap<MembershipRequestDto, MembershipResponseDto>();
         CreateMap<TokenModel, TokenDto>();
     }
 }

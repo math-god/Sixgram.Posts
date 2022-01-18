@@ -1,6 +1,6 @@
-﻿namespace Post.Core.Dto.Subscription;
+﻿namespace Post.Core.Dto.Membership;
 
-public class SubscriptionResponseDto
+public class MembershipResponseDto
 {
     public Guid RespondentId { get; set; }
     public Guid SubscriberId { get; set; }

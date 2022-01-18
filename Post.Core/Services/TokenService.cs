@@ -1,4 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Post.Core.Token;
 
@@ -16,7 +17,11 @@ public class TokenService : ITokenService
         _httpContext = httpContextAccessor.HttpContext;
     }
 
-    public string  GetClaim(string token, string claimType)
+    public Guid? GetCurrentUserId() =>
+        Guid.TryParse(_httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier), out var userId) 
+            ? userId : null;
+
+    public string GetClaim(string token, string claimType)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var securityToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
