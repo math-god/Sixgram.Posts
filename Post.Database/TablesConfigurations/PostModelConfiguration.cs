@@ -8,5 +8,9 @@ public class PostModelConfiguration : IEntityTypeConfiguration<PostModel>
 {
     public void Configure(EntityTypeBuilder<PostModel> builder)
     {
+        builder.HasData
+        (
+            new PostModel() { }
+        );
     }
 }

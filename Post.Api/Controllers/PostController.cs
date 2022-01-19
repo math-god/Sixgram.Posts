@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Post.Common.Result;
 using Post.Core.Dto.Post;
 using Post.Core.Post;
 
 namespace Post.Controllers;
 
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class PostController : BaseController
@@ -17,6 +20,38 @@ public class PostController : BaseController
     )
     {
         _postService = postService;
+    }
+
+
+    [HttpPost]
+    public StatusCodeResult Post(IFormFile file)
+    {
+        if (file != null && file.Length > 0)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:5000/");
+
+                byte[] data;
+                using (var br = new BinaryReader(file.OpenReadStream()))
+                    data = br.ReadBytes((int) file.OpenReadStream().Length);
+
+                ByteArrayContent bytes = new ByteArrayContent(data);
+
+
+                MultipartFormDataContent multiContent = new MultipartFormDataContent();
+
+                multiContent.Add(bytes, "file", file.FileName);
+                var result = client.PostAsync("api/v1/task/downloadfile", multiContent).Result;
+
+
+                return
+                    StatusCode((int) result
+                        .StatusCode); //201 Created the request has been fulfilled, resulting in the creation of a new resource.
+            }
+        }
+
+        return BadRequest();
     }
 
     /// <summary>

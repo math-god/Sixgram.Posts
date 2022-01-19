@@ -7,4 +7,5 @@ public interface IPostService
 {
     Task<ResultContainer<PostResponseDto>> Create(PostRequestDto postRequestDto);
     Task<ResultContainer<PostResponseDto>> Delete(PostRequestDto postRequestDto);
+    Task<ResultContainer<PostResponseDto>> Comment(CommentRequestDto commentRequestDto);
 }

@@ -15,4 +15,11 @@ public class PostService : IPostService
     {
         throw new NotImplementedException();
     }
+
+    public async Task<ResultContainer<PostResponseDto>> Comment(CommentRequestDto commentRequestDto)
+    {
+        var result = new ResultContainer<PostResponseDto>();
+        
+        
+    }
 }
