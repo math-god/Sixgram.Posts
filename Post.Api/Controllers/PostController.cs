@@ -97,4 +97,10 @@ public class PostController : BaseController
     public async Task<ActionResult<CommentResponseDto>> Comment([FromForm] CommentRequestDto commentRequestDto)
         => await ReturnResult<ResultContainer<CommentResponseDto>, CommentResponseDto>
             (_postService.Comment(commentRequestDto));
+    
+    /*[NonAction]
+    private IActionResult StreamDownload(IFormFile iFormFile)
+    {
+        return new NotImplementedException();
+    }*/
 }

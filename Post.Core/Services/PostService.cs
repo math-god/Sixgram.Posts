@@ -33,7 +33,14 @@ public class PostService : IPostService
 
     public async Task<ResultContainer<PostResponseDto>> Create(PostRequestDto postRequestDto)
     {
-        throw new NotImplementedException();
+        var result = new ResultContainer<PostResponseDto>();
+        if (postRequestDto.FormFile == null)
+        {
+            result.ErrorType = ErrorType.BadRequest;
+            return result;
+        }
+        
+        
     }
 
     public async Task<ResultContainer<PostResponseDto>> Delete(PostRequestDto postRequestDto)

@@ -1,5 +1,4 @@
-﻿using System.Data.Entity.ModelConfiguration;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Post.Database.EntityModels;
 
@@ -9,5 +8,7 @@ public class CommentaryModelConfiguration : IEntityTypeConfiguration<CommentaryM
 {
     public void Configure(EntityTypeBuilder<CommentaryModel> builder)
     {
+        builder.Property(p => p.DateCreated)
+            .HasColumnType("timestamp without time zone");
     }
 }

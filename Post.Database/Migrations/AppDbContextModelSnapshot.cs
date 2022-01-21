@@ -34,6 +34,10 @@ namespace Post.Database.Migrations
                         .HasColumnType("text")
                         .HasColumnName("commentary");
 
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("day_created");
+
                     b.Property<Guid>("PostId")
                         .HasColumnType("uuid")
                         .HasColumnName("post_id");
@@ -56,6 +60,10 @@ namespace Post.Database.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("user_id");
 
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("day_created");
+
                     b.Property<string[]>("Subscribers")
                         .IsRequired()
                         .HasColumnType("text[]")
@@ -73,13 +81,15 @@ namespace Post.Database.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a75ec510-fec2-4dbb-a6cb-aba1da7e48bc"),
+                            Id = new Guid("ba2836a5-86e7-4694-bf49-2dbe12fb237e"),
+                            DateCreated = new DateTime(2022, 1, 21, 15, 49, 18, 528, DateTimeKind.Local).AddTicks(4484),
                             Subscribers = new string[0],
                             Subscriptions = new string[0]
                         },
                         new
                         {
-                            Id = new Guid("b65d2233-8fc9-4015-b481-4967cdeae822"),
+                            Id = new Guid("149c7712-3bdb-4da0-9e2d-81649b9d34ee"),
+                            DateCreated = new DateTime(2022, 1, 21, 15, 49, 18, 528, DateTimeKind.Local).AddTicks(4494),
                             Subscribers = new string[0],
                             Subscriptions = new string[0]
                         });
@@ -97,6 +107,15 @@ namespace Post.Database.Migrations
                         .HasColumnType("text[]")
                         .HasColumnName("commentaries");
 
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("day_created");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
                     b.Property<Guid>("FileId")
                         .HasColumnType("uuid")
                         .HasColumnName("file_id");
@@ -112,9 +131,11 @@ namespace Post.Database.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("3438a1dc-57cf-4c54-81d0-d26a31583693"),
+                            Id = new Guid("e1b7c670-5957-46ef-a00d-94b2701642dc"),
                             Commentaries = new string[0],
-                            FileId = new Guid("00000000-0000-0000-0000-000000000000"),
+                            DateCreated = new DateTime(2022, 1, 21, 15, 49, 18, 528, DateTimeKind.Local).AddTicks(5009),
+                            Description = "",
+                            FileId = new Guid("deca27d7-b0cb-44e9-b349-0c2b61bdfcf3"),
                             UserId = new Guid("00000000-0000-0000-0000-000000000000")
                         });
                 });

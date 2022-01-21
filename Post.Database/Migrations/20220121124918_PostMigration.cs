@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -16,7 +15,8 @@ namespace Post.Database.Migrations
                 {
                     user_id = table.Column<Guid>(type: "uuid", nullable: false),
                     subscribers = table.Column<string[]>(type: "text[]", nullable: false),
-                    subscriptions = table.Column<string[]>(type: "text[]", nullable: false)
+                    subscriptions = table.Column<string[]>(type: "text[]", nullable: false),
+                    day_created = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -30,7 +30,9 @@ namespace Post.Database.Migrations
                     post_id = table.Column<Guid>(type: "uuid", nullable: false),
                     user_id = table.Column<Guid>(type: "uuid", nullable: false),
                     file_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    commentaries = table.Column<List<Guid>>(type: "uuid[]", nullable: false)
+                    description = table.Column<string>(type: "text", nullable: false),
+                    commentaries = table.Column<string[]>(type: "text[]", nullable: false),
+                    day_created = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -44,7 +46,8 @@ namespace Post.Database.Migrations
                     commentary_id = table.Column<Guid>(type: "uuid", nullable: false),
                     post_id = table.Column<Guid>(type: "uuid", nullable: false),
                     user_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    commentary = table.Column<string>(type: "text", nullable: false)
+                    commentary = table.Column<string>(type: "text", nullable: false),
+                    day_created = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -59,12 +62,17 @@ namespace Post.Database.Migrations
 
             migrationBuilder.InsertData(
                 table: "membership",
-                columns: new[] { "user_id", "subscribers", "subscriptions" },
+                columns: new[] { "user_id", "day_created", "subscribers", "subscriptions" },
                 values: new object[,]
                 {
-                    { new Guid("4b559cc5-e1b9-453f-8658-e4fbb8e2e642"), new string[0], new string[0] },
-                    { new Guid("a6f8bf7b-bb85-47d6-a889-f0310761497b"), new string[0], new string[0] }
+                    { new Guid("149c7712-3bdb-4da0-9e2d-81649b9d34ee"), new DateTime(2022, 1, 21, 15, 49, 18, 528, DateTimeKind.Local).AddTicks(4494), new string[0], new string[0] },
+                    { new Guid("ba2836a5-86e7-4694-bf49-2dbe12fb237e"), new DateTime(2022, 1, 21, 15, 49, 18, 528, DateTimeKind.Local).AddTicks(4484), new string[0], new string[0] }
                 });
+
+            migrationBuilder.InsertData(
+                table: "posts",
+                columns: new[] { "post_id", "commentaries", "day_created", "description", "file_id", "user_id" },
+                values: new object[] { new Guid("e1b7c670-5957-46ef-a00d-94b2701642dc"), new string[0], new DateTime(2022, 1, 21, 15, 49, 18, 528, DateTimeKind.Local).AddTicks(5009), "", new Guid("deca27d7-b0cb-44e9-b349-0c2b61bdfcf3"), new Guid("00000000-0000-0000-0000-000000000000") });
 
             migrationBuilder.CreateIndex(
                 name: "IX_commentaries_post_id",

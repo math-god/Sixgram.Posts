@@ -15,6 +15,9 @@ public class PostModel : BaseModel
     [Column("file_id")]
     public Guid FileId { get; set; } = Guid.NewGuid();
 
+    [Column("description")]
+    public string Description { get; set; } = string.Empty;
+
     [Column("commentaries")]
     public List<Guid> Commentaries { get; set; } = new();
 

@@ -8,10 +8,10 @@ namespace Post.Common.Base
         [Column("id")]
         public virtual Guid Id { get; set; }
         
-        /*[Column("day_created")]
-        public DateTime DateCreated { get; set; }
+        [Column("day_created")]
+        public DateTime DateCreated { get; set; } = DateTime.Now;
         
-        [Column("day_updated")]
+        /*[Column("day_updated")]
         public DateTime? DateUpdated { get; set; }*/
     }
 }

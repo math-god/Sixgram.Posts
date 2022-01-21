@@ -16,6 +16,9 @@ public class MembershipModelConfiguration : IEntityTypeConfiguration<MembershipM
             .Property(p => p.Subscriptions)
             .HasColumnType("text[]");
 
+        builder.Property(p => p.DateCreated)
+            .HasColumnType("timestamp without time zone");
+
         builder.HasData
         (
             new MembershipModel() { },
