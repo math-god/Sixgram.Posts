@@ -21,8 +21,7 @@ public class PostController : BaseController
     {
         _postService = postService;
     }
-
-
+    
     [HttpPost]
     public StatusCodeResult Post(IFormFile file)
     {
@@ -83,4 +82,19 @@ public class PostController : BaseController
     public async Task<ActionResult<PostResponseDto>> Delete([FromForm] PostRequestDto postRequestDto)
         => await ReturnResult<ResultContainer<PostResponseDto>, PostResponseDto>
             (_postService.Delete(postRequestDto));
+    
+    /// <summary>
+    ///  Comment the post
+    /// </summary>
+    /// <param name="commentRequestDto"></param>
+    /// <response code="200"></response>
+    /// <response code="400"></response>
+    /// <response code="404"></response>
+    [HttpPost("[action]")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<CommentResponseDto>> Comment([FromForm] CommentRequestDto commentRequestDto)
+        => await ReturnResult<ResultContainer<CommentResponseDto>, CommentResponseDto>
+            (_postService.Comment(commentRequestDto));
 }

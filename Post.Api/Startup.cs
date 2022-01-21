@@ -20,7 +20,9 @@ using Post.Core.Profiles;
 using Post.Core.Services;
 using Post.Core.Token;
 using Post.Database;
-using Post.Database.Repository.Subscription;
+using Post.Database.Repository.Commentary;
+using Post.Database.Repository.Membership;
+using Post.Database.Repository.Post;
 
 namespace Post
 {
@@ -39,6 +41,8 @@ namespace Post
 
             services.AddScoped<IHttpService, HttpService>();
             services.AddScoped<IMembershipRepository, MembershipRepository>();
+            services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<ICommentaryRepository, CommentaryRepository>();
             services.AddScoped<IMembershipService, MembershipService>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<ITokenService, TokenService>();

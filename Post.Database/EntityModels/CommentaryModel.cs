@@ -8,8 +8,7 @@ public class CommentaryModel : BaseModel
 {
     [Column("commentary_id")] 
     public override Guid Id { get; set; }
-    
-    
+
     [Column("post_id")]
     [ForeignKey("PostModel")]
     public Guid PostId { get; set; }

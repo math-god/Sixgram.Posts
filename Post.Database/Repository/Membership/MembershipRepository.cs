@@ -1,7 +1,7 @@
 ﻿using Post.Database.EntityModels;
 using Post.Database.Repository.Base;
 
-namespace Post.Database.Repository.Subscription
+namespace Post.Database.Repository.Membership
 {
     public class MembershipRepository : BaseRepository<MembershipModel>, IMembershipRepository
     {

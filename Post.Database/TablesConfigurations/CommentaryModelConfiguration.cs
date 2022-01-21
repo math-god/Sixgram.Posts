@@ -9,9 +9,5 @@ public class CommentaryModelConfiguration : IEntityTypeConfiguration<CommentaryM
 {
     public void Configure(EntityTypeBuilder<CommentaryModel> builder)
     {
-        builder.HasData
-        (
-            new CommentaryModel() { }
-        );
     }
 }

@@ -6,7 +6,7 @@ using Post.Core.Dto.Membership;
 using Post.Core.Dto.Subscription;
 using Post.Core.Membership;
 using Post.Database.EntityModels;
-using Post.Database.Repository.Subscription;
+using Post.Database.Repository.Membership;
 
 namespace Post.Core.Services
 {
@@ -39,7 +39,7 @@ namespace Post.Core.Services
 
             if (respondent.Subscribers.Contains(membership.SubscriberId))
             {
-                result.ResponseCode = ErrorType.BadRequest;
+                result.ErrorType = ErrorType.BadRequest;
                 return result;
             }
 
@@ -63,7 +63,7 @@ namespace Post.Core.Services
 
             if (!respondent.Subscribers.Contains(membership.SubscriberId))
             {
-                result.ResponseCode = ErrorType.BadRequest;
+                result.ErrorType = ErrorType.BadRequest;
                 return result;
             }
 

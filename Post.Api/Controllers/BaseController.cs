@@ -10,9 +10,9 @@ public class BaseController : Controller
     {
         var result = await task;
 
-        if (result.ResponseCode.HasValue)
+        if (result.ErrorType.HasValue)
         {
-            return result.ResponseCode switch
+            return result.ErrorType switch
             {
                 ErrorType.NotFound => NotFound(),
                 ErrorType.BadRequest => BadRequest(),
