@@ -41,12 +41,8 @@ namespace Post.Database.Repository.Base
             return item;
         }
 
-        public async Task<TModel> Delete(Guid id)
+        public async Task<TModel> Delete(TModel item)
         {
-            var item = await AppDbContext.Set<TModel>().FindAsync(id);
-            if (item == null)
-                return null;
-
             AppDbContext.Set<TModel>().Remove(item);
             await AppDbContext.SaveChangesAsync();
             return item;

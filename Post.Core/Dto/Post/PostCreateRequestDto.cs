@@ -2,7 +2,7 @@
 
 namespace Post.Core.Dto.Post;
 
-public class PostRequestDto
+public class PostCreateRequestDto
 {
     public IFormFile FormFile { get; set; }
     public string Description { get; set; }

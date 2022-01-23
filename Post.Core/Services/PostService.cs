@@ -31,21 +31,43 @@ public class PostService : IPostService
         _tokenService = tokenService;
     }
 
-    public async Task<ResultContainer<PostResponseDto>> Create(PostRequestDto postRequestDto)
+    public async Task<ResultContainer<PostResponseDto>> Create(PostCreateRequestDto postCreateRequestDto)
     {
         var result = new ResultContainer<PostResponseDto>();
-        if (postRequestDto.FormFile == null)
+        
+        if (postCreateRequestDto.FormFile == null)
+        {
+            result.ErrorType = ErrorType.BadRequest;
+            return result;
+        }
+
+        var post = new PostModel()
+        {
+            UserId = _tokenService.GetCurrentUserId(),
+            FileId = Guid.Empty,
+            Description = postCreateRequestDto.Description,
+        };
+
+        result = _mapper.Map<ResultContainer<PostResponseDto>>(await _postRepository.Create(post));
+
+        return result;
+    }
+
+    public async Task<ResultContainer<PostResponseDto>> Delete(PostDeleteRequestDto postDeleteRequestDto)
+    {
+        var result = new ResultContainer<PostResponseDto>();
+
+        var post = await _postRepository.GetById(postDeleteRequestDto.PostId);
+        
+        if (post == null)
         {
             result.ErrorType = ErrorType.BadRequest;
             return result;
         }
         
-        
-    }
+        result = _mapper.Map<ResultContainer<PostResponseDto>>(await _postRepository.Delete(post));
 
-    public async Task<ResultContainer<PostResponseDto>> Delete(PostRequestDto postRequestDto)
-    {
-        throw new NotImplementedException();
+        return result;
     }
 
     public async Task<ResultContainer<CommentResponseDto>> Comment(CommentRequestDto commentRequestDto)

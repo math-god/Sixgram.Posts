@@ -17,13 +17,23 @@ public class AppProfile : Profile
         CreateMap<MembershipRequestDto, ResultContainer<MembershipResponseDto>>()
             .ForMember("Data", opt
                 => opt.MapFrom(m => m));
+        
         CreateMap<PostModel, ResultContainer<CommentResponseDto>>()
             .ForMember("Data", opt
                 => opt.MapFrom(c => c));
 
         CreateMap<PostModel, CommentResponseDto>()
             .ForMember("PostId", opt
-                => opt.MapFrom(c => c.Id));
+                => opt.MapFrom(p => p.Id));
+        
+        CreateMap<PostModel, PostResponseDto>()
+            .ForMember("PostId", opt
+                => opt.MapFrom(p => p.Id));
+        
+        CreateMap<PostModel, ResultContainer<PostResponseDto>>()
+            .ForMember("Data", opt 
+                => opt.MapFrom(p => p));
+        
         CreateMap<MembershipRequestDto, MembershipResponseDto>();
         CreateMap<TokenModel, TokenDto>();
     }

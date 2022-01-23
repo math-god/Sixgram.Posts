@@ -5,7 +5,7 @@ namespace Post.Core.Post;
 
 public interface IPostService
 {
-    Task<ResultContainer<PostResponseDto>> Create(PostRequestDto postRequestDto);
-    Task<ResultContainer<PostResponseDto>> Delete(PostRequestDto postRequestDto);
+    Task<ResultContainer<PostResponseDto>> Create(PostCreateRequestDto postCreateRequestDto);
+    Task<ResultContainer<PostResponseDto>> Delete(PostDeleteRequestDto postDeleteRequestDto);
     Task<ResultContainer<CommentResponseDto>> Comment(CommentRequestDto commentRequestDto);
 }

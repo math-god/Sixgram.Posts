@@ -21,7 +21,7 @@ public class PostController : BaseController
     {
         _postService = postService;
     }
-    
+
     [HttpPost]
     public StatusCodeResult Post(IFormFile file)
     {
@@ -33,7 +33,7 @@ public class PostController : BaseController
 
                 byte[] data;
                 using (var br = new BinaryReader(file.OpenReadStream()))
-                    data = br.ReadBytes((int) file.OpenReadStream().Length);
+                    data = br.ReadBytes((int)file.OpenReadStream().Length);
 
                 ByteArrayContent bytes = new ByteArrayContent(data);
 
@@ -45,7 +45,7 @@ public class PostController : BaseController
 
 
                 return
-                    StatusCode((int) result
+                    StatusCode((int)result
                         .StatusCode); //201 Created the request has been fulfilled, resulting in the creation of a new resource.
             }
         }
@@ -56,7 +56,7 @@ public class PostController : BaseController
     /// <summary>
     ///  Create the post
     /// </summary>
-    /// <param name="postRequestDto"></param>
+    /// <param name="postCreateRequestDto"></param>
     /// <response code="200"></response>
     /// <response code="400"></response>
     /// <response code="404"></response>
@@ -64,14 +64,14 @@ public class PostController : BaseController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<PostResponseDto>> Create([FromForm] PostRequestDto postRequestDto)
+    public async Task<ActionResult<PostResponseDto>> Create([FromForm] PostCreateRequestDto postCreateRequestDto)
         => await ReturnResult<ResultContainer<PostResponseDto>, PostResponseDto>
-            (_postService.Create(postRequestDto));
+            (_postService.Create(postCreateRequestDto));
 
     /// <summary>
     ///  Delete the post
     /// </summary>
-    /// <param name="postRequestDto"></param>
+    /// <param name="postDeleteRequestDto"></param>
     /// <response code="200"></response>
     /// <response code="400"></response>
     /// <response code="404"></response>
@@ -79,10 +79,10 @@ public class PostController : BaseController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<PostResponseDto>> Delete([FromForm] PostRequestDto postRequestDto)
+    public async Task<ActionResult<PostResponseDto>> Delete([FromForm] PostDeleteRequestDto postDeleteRequestDto)
         => await ReturnResult<ResultContainer<PostResponseDto>, PostResponseDto>
-            (_postService.Delete(postRequestDto));
-    
+            (_postService.Delete(postDeleteRequestDto));
+
     /// <summary>
     ///  Comment the post
     /// </summary>
@@ -97,7 +97,7 @@ public class PostController : BaseController
     public async Task<ActionResult<CommentResponseDto>> Comment([FromForm] CommentRequestDto commentRequestDto)
         => await ReturnResult<ResultContainer<CommentResponseDto>, CommentResponseDto>
             (_postService.Comment(commentRequestDto));
-    
+
     /*[NonAction]
     private IActionResult StreamDownload(IFormFile iFormFile)
     {
