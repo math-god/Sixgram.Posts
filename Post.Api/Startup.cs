@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Post.Core;
+using Post.Core.File;
 using Post.Core.Http;
 using Post.Core.Membership;
 using Post.Core.Options;
@@ -37,6 +38,18 @@ namespace Post
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            { 
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:5000")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials();
+                    });
+            });
+            
             services.AddControllers();
 
             services.AddScoped<IHttpService, HttpService>();
@@ -46,6 +59,7 @@ namespace Post
             services.AddScoped<IMembershipService, MembershipService>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IFileService, FileService>();
 
             var connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connection,
@@ -69,6 +83,7 @@ namespace Post
 
             //Configure HttpClient
             services.AddHttpClient("auth", p => { p.BaseAddress = new Uri("http://localhost:5000/"); });
+            services.AddHttpClient("file_storage", p => { p.BaseAddress = new Uri("http://localhost:5000/"); });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -78,11 +93,13 @@ namespace Post
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Test v1"));
-                app.UseCors(builder => builder.AllowAnyOrigin());
+               
             }
 
+            app.UseHttpsRedirection();
             app.UseRouting();
 
+            app.UseCors();
             app.UseAuthentication();
             app.UseAuthorization();
 

@@ -1,5 +1,4 @@
-﻿using System.Net.Http.Headers;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Post.Common.Result;
 using Post.Core.Dto.Post;
@@ -23,9 +22,9 @@ public class PostController : BaseController
     }
 
     [HttpPost]
-    public StatusCodeResult Post(IFormFile file)
+    public IActionResult Post(IFormFile uploadedFile)
     {
-        if (file != null && file.Length > 0)
+        /*if (file != null && file.Length > 0)
         {
             using (var client = new HttpClient())
             {
@@ -50,7 +49,9 @@ public class PostController : BaseController
             }
         }
 
-        return BadRequest();
+        return BadRequest();*/
+
+        return RedirectPermanentPreserveMethod("http://localhost:5000/api/v1/task/downloadfile");
     }
 
     /// <summary>

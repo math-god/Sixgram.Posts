@@ -52,7 +52,7 @@ namespace Post.Controllers
         /// <summary>
         ///  Subscribe one user to another one
         /// </summary>
-        /// <param name="membershipRequestDto">Respondent Id and subscriber Id</param>
+        /// <param name="membershipRequestDto">Respondent Id</param>
         /// <response code="204">Success</response>
         /// <response code="400">Subscription has been already done or you are trying to subscribe to yourself</response>
         /// <response code="404">User Id doesn't exist</response>
@@ -69,7 +69,7 @@ namespace Post.Controllers
         /// <summary>
         ///  Unsubscribe one user from another one
         /// </summary>
-        /// <param name="membershipRequestDto">Respondent Id and subscriber Id</param>
+        /// <param name="membershipRequestDto">Respondent Id</param>
         /// <response code="204">Success</response>
         /// <response code="400">One user is not subscribed to another one</response>
         /// <response code="404">User Id doesn't exist</response>

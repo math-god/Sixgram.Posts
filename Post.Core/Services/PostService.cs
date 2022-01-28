@@ -41,11 +41,11 @@ public class PostService : IPostService
             return result;
         }
 
-        var post = new PostModel()
+        var post = new PostModel
         {
             UserId = _tokenService.GetCurrentUserId(),
             FileId = Guid.Empty,
-            Description = postCreateRequestDto.Description,
+            Description = postCreateRequestDto.Description
         };
 
         result = _mapper.Map<ResultContainer<PostResponseDto>>(await _postRepository.Create(post));
@@ -82,13 +82,13 @@ public class PostService : IPostService
             return result;
         }
 
-        var comment = new CommentaryModel()
+        var comment = new CommentaryModel
         {
             PostId = post.Id,
             UserId = _tokenService.GetCurrentUserId(),
             Commentary = commentRequestDto.Commentary
         };
-
+        
         await _commentaryRepository.Create(comment);
 
         post.Commentaries.Add(comment.Id);

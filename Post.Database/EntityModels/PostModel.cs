@@ -21,5 +21,5 @@ public class PostModel : BaseModel
     [Column("commentaries")]
     public List<Guid> Commentaries { get; set; } = new();
 
-    public ICollection<CommentaryModel> CommentaryModel { get; set; }
+    public ICollection<CommentaryModel> CommentaryModels { get; set; }
 }
