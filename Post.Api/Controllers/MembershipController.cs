@@ -37,7 +37,7 @@ namespace Post.Controllers
         public async Task<JsonResult> CreateSubscriptionEntity()
         {
             Console.WriteLine(_tokenService.GetCurrentUserId());
-            
+
             var buffer = new byte[Request.ContentLength.Value];
 
             await HttpContext.Request.Body.ReadAsync(buffer, 0, buffer.Length);
@@ -47,18 +47,17 @@ namespace Post.Controllers
             /*Console.WriteLine(_tokenService.GetClaim(replace, "id"));*/
 
             return Json(replace);
-            
         }
 
         /// <summary>
         ///  Subscribe one user to another one
         /// </summary>
         /// <param name="membershipRequestDto">Respondent Id and subscriber Id</param>
-        /// <response code="200">Return respondent Id and subscriber Id</response>
-        /// <response code="400">Subscription has been already done</response>
+        /// <response code="204">Success</response>
+        /// <response code="400">Subscription has been already done or you are trying to subscribe to yourself</response>
         /// <response code="404">User Id doesn't exist</response>
         [HttpPost("[action]")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<MembershipResponseDto>> Subscribe(
@@ -71,11 +70,11 @@ namespace Post.Controllers
         ///  Unsubscribe one user from another one
         /// </summary>
         /// <param name="membershipRequestDto">Respondent Id and subscriber Id</param>
-        /// <response code="200">Return respondent Id and subscriber Id</response>
+        /// <response code="204">Success</response>
         /// <response code="400">One user is not subscribed to another one</response>
         /// <response code="404">User Id doesn't exist</response>
         [HttpPost("[action]")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<MembershipResponseDto>> Unsubscribe(
