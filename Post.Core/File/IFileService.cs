@@ -4,5 +4,5 @@ namespace Post.Core.File;
 
 public interface IFileService
 {
-    Task<Guid> Send(IFormFile file);
+    Task<Guid?> Send(IFormFile file);
 }

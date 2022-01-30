@@ -82,8 +82,8 @@ namespace Post
             services.AddHttpContextAccessor();
 
             //Configure HttpClient
-            services.AddHttpClient("auth", p => { p.BaseAddress = new Uri("http://localhost:5000/"); });
-            services.AddHttpClient("file_storage", p => { p.BaseAddress = new Uri("http://localhost:5000/"); });
+            services.AddHttpClient("auth", p => { p.BaseAddress = new Uri("http://localhost:5000"); });
+            services.AddHttpClient("file_storage", p => { p.BaseAddress = new Uri("http://localhost:5000"); });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

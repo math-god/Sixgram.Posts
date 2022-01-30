@@ -1,6 +1,8 @@
-﻿using System.Text;
+﻿using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Post.Core.File;
+using Newtonsoft.Json.Linq;
 
 namespace Post.Core.Services;
 
@@ -19,8 +21,31 @@ public class FileService : IFileService
         _httpContext = httpContextAccessor.HttpContext;
     }
 
-    public async Task<Guid> Send(IFormFile file)
+    public async Task<Guid?> Send(IFormFile file)
     {
-        throw new NotImplementedException();
+        byte[] data;
+        using (var binaryReader = new BinaryReader(file.OpenReadStream()))
+            data = binaryReader.ReadBytes((int)file.OpenReadStream().Length);
+
+        var bytes = new ByteArrayContent(data);
+
+        var multiContent = new MultipartFormDataContent();
+
+        multiContent.Add(bytes, "file", file.FileName);
+
+        _httpClient.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", await _httpContext.GetTokenAsync("access_token"));
+
+        var responseMessage = await _httpClient.PostAsync("/api/v1/task/downloadfile", multiContent);
+
+        var content = await responseMessage.Content.ReadAsStringAsync();
+
+        var json = JObject.Parse(content);
+
+        var id = json["id"].ToString();
+
+        var result = new Guid(id);
+
+        return result;
     }
 }

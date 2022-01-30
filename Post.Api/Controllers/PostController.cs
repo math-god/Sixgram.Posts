@@ -21,39 +21,6 @@ public class PostController : BaseController
         _postService = postService;
     }
 
-    [HttpPost]
-    public IActionResult Post(IFormFile uploadedFile)
-    {
-        /*if (file != null && file.Length > 0)
-        {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("http://localhost:5000/");
-
-                byte[] data;
-                using (var br = new BinaryReader(file.OpenReadStream()))
-                    data = br.ReadBytes((int)file.OpenReadStream().Length);
-
-                ByteArrayContent bytes = new ByteArrayContent(data);
-
-
-                MultipartFormDataContent multiContent = new MultipartFormDataContent();
-
-                multiContent.Add(bytes, "file", file.FileName);
-                var result = client.PostAsync("api/v1/task/downloadfile", multiContent).Result;
-
-
-                return
-                    StatusCode((int)result
-                        .StatusCode); //201 Created the request has been fulfilled, resulting in the creation of a new resource.
-            }
-        }
-
-        return BadRequest();*/
-
-        return RedirectPermanentPreserveMethod("http://localhost:5000/api/v1/task/downloadfile");
-    }
-
     /// <summary>
     ///  Create the post
     /// </summary>
@@ -98,10 +65,5 @@ public class PostController : BaseController
     public async Task<ActionResult<CommentResponseDto>> Comment([FromForm] CommentRequestDto commentRequestDto)
         => await ReturnResult<ResultContainer<CommentResponseDto>, CommentResponseDto>
             (_postService.Comment(commentRequestDto));
-
-    /*[NonAction]
-    private IActionResult StreamDownload(IFormFile iFormFile)
-    {
-        return new NotImplementedException();
-    }*/
+    
 }
