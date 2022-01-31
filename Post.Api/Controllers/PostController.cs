@@ -11,6 +11,7 @@ namespace Post.Controllers;
 [ApiController]
 public class PostController : BaseController
 {
+    private const long MaxFileSize = 10L * 1024L * 1024L * 1024L;
     private readonly IPostService _postService;
 
     public PostController
@@ -32,6 +33,8 @@ public class PostController : BaseController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequestSizeLimit(MaxFileSize)]
+    [RequestFormLimits(MultipartBodyLengthLimit = MaxFileSize)]
     public async Task<ActionResult<PostResponseDto>> Create([FromForm] PostCreateRequestDto postCreateRequestDto)
         => await ReturnResult<ResultContainer<PostResponseDto>, PostResponseDto>
             (_postService.Create(postCreateRequestDto));

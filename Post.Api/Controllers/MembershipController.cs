@@ -1,6 +1,4 @@
-﻿using System.Text;
-using System.Text.RegularExpressions;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Post.Common.Result;
 using Post.Core.Dto.Membership;
@@ -13,13 +11,13 @@ namespace Post.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class SubscriptionController : BaseController
+    public class MembershipController : BaseController
     {
         private readonly IHttpService _httpService;
         private readonly IMembershipService _membershipService;
         private readonly ITokenService _tokenService;
 
-        public SubscriptionController
+        public MembershipController
         (
             IHttpService httpService,
             IMembershipService membershipService,
@@ -31,26 +29,8 @@ namespace Post.Controllers
             _tokenService = tokenService;
         }
 
-        [HttpPost("[action]")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<JsonResult> CreateSubscriptionEntity()
-        {
-            Console.WriteLine(_tokenService.GetCurrentUserId());
-
-            var buffer = new byte[Request.ContentLength.Value];
-
-            await HttpContext.Request.Body.ReadAsync(buffer, 0, buffer.Length);
-
-            var resultString = Regex.Replace(Encoding.ASCII.GetString(buffer), @"\p{C}+", string.Empty);
-            var replace = resultString.Replace("\\", string.Empty);
-            /*Console.WriteLine(_tokenService.GetClaim(replace, "id"));*/
-
-            return Json(replace);
-        }
-
         /// <summary>
-        ///  Subscribe one user to another one
+        ///  Subscribes one user to another one
         /// </summary>
         /// <param name="membershipRequestDto">Respondent Id</param>
         /// <response code="204">Success</response>
@@ -64,10 +44,9 @@ namespace Post.Controllers
             [FromForm] MembershipRequestDto membershipRequestDto)
             => await ReturnResult<ResultContainer<MembershipResponseDto>, MembershipResponseDto>
                 (_membershipService.Subscribe(membershipRequestDto));
-
-
+        
         /// <summary>
-        ///  Unsubscribe one user from another one
+        ///  Unsubscribes one user from another one
         /// </summary>
         /// <param name="membershipRequestDto">Respondent Id</param>
         /// <response code="204">Success</response>
@@ -81,5 +60,18 @@ namespace Post.Controllers
             [FromForm] MembershipRequestDto membershipRequestDto)
             => await ReturnResult<ResultContainer<MembershipResponseDto>, MembershipResponseDto>
                 (_membershipService.Unsubscribe(membershipRequestDto));
+        
+        /// <summary>
+        ///  Creates the member
+        /// </summary>
+        /// <param name=""></param>
+        /// <response code="204">Success</response>
+        /// <response code="400"></response>
+        [HttpPost("[action]")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<UserDto>> CreateMember()
+            => await ReturnResult<ResultContainer<UserDto>, UserDto>
+                (_membershipService.CreateMember());
     }
 }

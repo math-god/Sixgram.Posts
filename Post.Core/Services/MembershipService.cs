@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Post.Common.Response;
 using Post.Common.Result;
 using Post.Core.Dto.Membership;
-using Post.Core.Dto.Subscription;
 using Post.Core.Membership;
 using Post.Core.Token;
 using Post.Database.EntityModels;
@@ -28,7 +27,7 @@ namespace Post.Core.Services
             _membershipRepository = membershipRepository;
             _tokenService = tokenService;
         }
-        
+
         public async Task<ResultContainer<MembershipResponseDto>> Subscribe(MembershipRequestDto membership)
         {
             var result = new ResultContainer<MembershipResponseDto>();
@@ -42,7 +41,7 @@ namespace Post.Core.Services
                 result.ErrorType = ErrorType.BadRequest;
                 return result;
             }
-            
+
             if (respondent.Subscribers.Contains(currentUserId))
             {
                 result.ErrorType = ErrorType.BadRequest;
@@ -54,7 +53,7 @@ namespace Post.Core.Services
 
             await _membershipRepository.Update(respondent);
             await _membershipRepository.Update(subscriber);
-            
+
             return result;
         }
 
@@ -77,7 +76,23 @@ namespace Post.Core.Services
 
             await _membershipRepository.Update(respondent);
             await _membershipRepository.Update(subscriber);
-            
+
+            return result;
+        }
+
+        public async Task<ResultContainer<UserDto>> CreateMember()
+        {
+            var result = new ResultContainer<UserDto>();
+
+            var userId = _tokenService.GetCurrentUserId();
+
+            var member = new MembershipModel()
+            {
+                Id = userId
+            };
+
+            await _membershipRepository.Create(member);
+
             return result;
         }
     }

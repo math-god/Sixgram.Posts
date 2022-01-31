@@ -47,5 +47,10 @@ public class FileService : IFileService
         var result = new Guid(id);
 
         return result;
+        
+        
+        /*1. FileStorageHttpClient, IFileStorage....
+        2. DI
+        3. Call by constructor IFileStorage*/
     }
 }

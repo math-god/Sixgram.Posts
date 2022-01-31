@@ -1,4 +1,4 @@
-﻿namespace Post.Core.Dto.Subscription;
+﻿namespace Post.Core.Dto.Membership;
 
 public class UserDto
 {
