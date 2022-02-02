@@ -36,18 +36,18 @@ namespace Post.Core.Services
             var respondent = await _membershipRepository.GetById(membership.RespondentId);
             var subscriber = await _membershipRepository.GetById(currentUserId);
 
-            if (respondent == subscriber)
+            if (respondent == null)
+            {
+                result.ErrorType = ErrorType.NotFound;
+                return result;
+            }
+            
+            if (respondent == subscriber || respondent.Subscribers.Contains(currentUserId))
             {
                 result.ErrorType = ErrorType.BadRequest;
                 return result;
             }
-
-            if (respondent.Subscribers.Contains(currentUserId))
-            {
-                result.ErrorType = ErrorType.BadRequest;
-                return result;
-            }
-
+            
             respondent.Subscribers.Add(currentUserId);
             subscriber.Subscriptions.Add(membership.RespondentId);
 
@@ -65,6 +65,12 @@ namespace Post.Core.Services
             var respondent = await _membershipRepository.GetById(membership.RespondentId);
             var subscriber = await _membershipRepository.GetById(currentUserId);
 
+            if (respondent == null)
+            {
+                result.ErrorType = ErrorType.NotFound;
+                return result;
+            }
+            
             if (!respondent.Subscribers.Contains(currentUserId))
             {
                 result.ErrorType = ErrorType.BadRequest;

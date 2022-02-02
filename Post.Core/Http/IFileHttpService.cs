@@ -4,6 +4,6 @@ namespace Post.Core.Http
 {
     public interface IFileHttpService
     {
-        public Task<string> SendRequest(byte[] request);
+        public Task<string> SendRequest(byte[] request, string fileName);
     }
 }

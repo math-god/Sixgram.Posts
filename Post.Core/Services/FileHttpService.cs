@@ -20,20 +20,22 @@ namespace Post.Core.Services
             _httpContext = httpContextAccessor.HttpContext;
         }
 
-        public async Task<string> SendRequest(byte[] data)
+        public async Task<string> SendRequest(byte[] data, string fileName)
         {
             var bytes = new ByteArrayContent(data);
 
             var multiContent = new MultipartFormDataContent();
 
-            multiContent.Add(bytes, "file", "file");
+            multiContent.Add(bytes, "file", fileName);
 
             _httpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", await _httpContext.GetTokenAsync("access_token"));
 
             var responseMessage = await _httpClient.PostAsync("/api/v1/task/downloadfile", multiContent);
 
-            return responseMessage.ToString();
+            var result = await responseMessage.Content.ReadAsStringAsync();
+            
+            return result;
         }
     }
 }
