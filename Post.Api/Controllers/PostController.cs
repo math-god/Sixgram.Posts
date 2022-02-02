@@ -57,7 +57,7 @@ public class PostController : BaseController
     /// <summary>
     ///  Comment the post
     /// </summary>
-    /// <param name="commentRequestDto"></param>
+    /// <param name="commentCreateRequestDto"></param>
     /// <response code="200"></response>
     /// <response code="400"></response>
     /// <response code="404"></response>
@@ -65,8 +65,24 @@ public class PostController : BaseController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<CommentResponseDto>> Comment([FromForm] CommentRequestDto commentRequestDto)
+    public async Task<ActionResult<CommentResponseDto>> CreateComment(
+        [FromForm] CommentCreateRequestDto commentCreateRequestDto)
         => await ReturnResult<ResultContainer<CommentResponseDto>, CommentResponseDto>
-            (_postService.Comment(commentRequestDto));
-    
+            (_postService.CreateComment(commentCreateRequestDto));
+
+    /// <summary>
+    ///  Delete the comment
+    /// </summary>
+    /// <param name="commentDeleteRequestDto"></param>
+    /// <response code="200"></response>
+    /// <response code="400"></response>
+    /// <response code="404"></response>
+    [HttpDelete("[action]")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<CommentResponseDto>> DeleteComment(
+        [FromForm] CommentDeleteRequestDto commentDeleteRequestDto)
+        => await ReturnResult<ResultContainer<CommentResponseDto>, CommentResponseDto>
+            (_postService.DeleteComment(commentDeleteRequestDto));
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 using AutoMapper;
@@ -52,7 +53,7 @@ namespace Post
             
             services.AddControllers();
 
-            services.AddScoped<IHttpService, HttpService>();
+            services.AddScoped<IFileHttpService, FileHttpService>();
             services.AddScoped<IMembershipRepository, MembershipRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<ICommentaryRepository, CommentaryRepository>();
@@ -83,7 +84,11 @@ namespace Post
 
             //Configure HttpClient
             services.AddHttpClient("auth", p => { p.BaseAddress = new Uri("http://localhost:5000"); });
-            services.AddHttpClient("file_storage", p => { p.BaseAddress = new Uri("http://localhost:5000"); });
+            services.AddHttpClient("file_storage",
+                c =>
+                {
+                    c.BaseAddress = new Uri("http://localhost:5000");
+                });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

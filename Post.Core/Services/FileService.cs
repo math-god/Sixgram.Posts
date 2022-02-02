@@ -3,22 +3,20 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Post.Core.File;
 using Newtonsoft.Json.Linq;
+using Post.Core.Http;
 
 namespace Post.Core.Services;
 
 public class FileService : IFileService
 {
-    private readonly HttpClient _httpClient;
-    private readonly HttpContext _httpContext;
+    private readonly IFileHttpService _fileHttpService;
 
     public FileService
     (
-        IHttpClientFactory httpClientFactory,
-        IHttpContextAccessor httpContextAccessor
+        IFileHttpService fileHttpService
     )
     {
-        _httpClient = httpClientFactory.CreateClient("file_storage");
-        _httpContext = httpContextAccessor.HttpContext;
+        _fileHttpService = fileHttpService;
     }
 
     public async Task<Guid?> Send(IFormFile file)
@@ -27,30 +25,12 @@ public class FileService : IFileService
         using (var binaryReader = new BinaryReader(file.OpenReadStream()))
             data = binaryReader.ReadBytes((int)file.OpenReadStream().Length);
 
-        var bytes = new ByteArrayContent(data);
-
-        var multiContent = new MultipartFormDataContent();
-
-        multiContent.Add(bytes, "file", file.FileName);
-
-        _httpClient.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue("Bearer", await _httpContext.GetTokenAsync("access_token"));
-
-        var responseMessage = await _httpClient.PostAsync("/api/v1/task/downloadfile", multiContent);
-
-        var content = await responseMessage.Content.ReadAsStringAsync();
+        var content = await _fileHttpService.SendRequest(data);
 
         var json = JObject.Parse(content);
 
-        var id = json["id"].ToString();
-
-        var result = new Guid(id);
+        var result = new Guid(json["id"].ToString());
 
         return result;
-        
-        
-        /*1. FileStorageHttpClient, IFileStorage....
-        2. DI
-        3. Call by constructor IFileStorage*/
     }
 }

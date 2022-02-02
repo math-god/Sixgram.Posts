@@ -13,18 +13,18 @@ namespace Post.Controllers
     [ApiController]
     public class MembershipController : BaseController
     {
-        private readonly IHttpService _httpService;
+        private readonly IFileHttpService _fileHttpService;
         private readonly IMembershipService _membershipService;
         private readonly ITokenService _tokenService;
 
         public MembershipController
         (
-            IHttpService httpService,
+            IFileHttpService fileHttpService,
             IMembershipService membershipService,
             ITokenService tokenService
         )
         {
-            _httpService = httpService;
+            _fileHttpService = fileHttpService;
             _membershipService = membershipService;
             _tokenService = tokenService;
         }
