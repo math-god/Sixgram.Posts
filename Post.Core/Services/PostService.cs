@@ -64,6 +64,32 @@ public class PostService : IPostService
         return result;
     }
 
+    public async Task<ResultContainer<PostUpdateResponseDto>> Edit(PostUpdateRequestDto postUpdateRequestDto)
+    {
+        var result = new ResultContainer<PostUpdateResponseDto>();
+
+        var post = await _postRepository.GetById(postUpdateRequestDto.PostId);
+
+        if (post == null)
+        {
+            result.ErrorType = ErrorType.NotFound;
+            return result;
+        }
+        
+        if (post.UserId != _tokenService.GetCurrentUserId())
+        {
+            result.ErrorType = ErrorType.BadRequest;
+            return result;
+        }
+        
+        post.FileId = await _fileService.Send(postUpdateRequestDto.NewFile);
+        post.Description = postUpdateRequestDto.NewDescription;
+        
+        result = _mapper.Map<ResultContainer<PostUpdateResponseDto>>(await _postRepository.Update(post));
+        
+        return result;
+    }
+
     public async Task<ResultContainer<PostResponseDto>> Delete(PostDeleteRequestDto postDeleteRequestDto)
     {
         var result = new ResultContainer<PostResponseDto>();
@@ -71,6 +97,12 @@ public class PostService : IPostService
         var post = await _postRepository.GetById(postDeleteRequestDto.PostId);
 
         if (post == null)
+        {
+            result.ErrorType = ErrorType.NotFound;
+            return result;
+        }
+
+        if (post.UserId != _tokenService.GetCurrentUserId())
         {
             result.ErrorType = ErrorType.BadRequest;
             return result;
@@ -121,6 +153,12 @@ public class PostService : IPostService
         if (post == null || commentary == null)
         {
             result.ErrorType = ErrorType.NotFound;
+            return result;
+        }
+        
+        if (commentary.UserId != _tokenService.GetCurrentUserId())
+        {
+            result.ErrorType = ErrorType.BadRequest;
             return result;
         }
 

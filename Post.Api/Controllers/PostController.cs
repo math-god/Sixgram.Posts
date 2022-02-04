@@ -38,7 +38,22 @@ public class PostController : BaseController
     public async Task<ActionResult<PostResponseDto>> Create([FromForm] PostCreateRequestDto postCreateRequestDto)
         => await ReturnResult<ResultContainer<PostResponseDto>, PostResponseDto>
             (_postService.Create(postCreateRequestDto));
-
+    
+    /// <summary>
+    ///  Edit the post
+    /// </summary>
+    /// <param name="postUpdateRequestDto"></param>
+    /// <response code="200"></response>
+    /// <response code="400"></response>
+    /// <response code="404"></response>
+    [HttpPut("[action]")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<PostUpdateResponseDto>> Edit([FromForm] PostUpdateRequestDto postUpdateRequestDto)
+        => await ReturnResult<ResultContainer<PostUpdateResponseDto>, PostUpdateResponseDto>
+            (_postService.Edit(postUpdateRequestDto));
+    
     /// <summary>
     ///  Delete the post
     /// </summary>

@@ -13,7 +13,7 @@ public class PostModel : BaseModel
     public Guid UserId { get; set; }
     
     [Column("file_id")]
-    public Guid FileId { get; set; } = Guid.NewGuid();
+    public Guid? FileId { get; set; } 
 
     [Column("description")]
     public string Description { get; set; } = string.Empty;
