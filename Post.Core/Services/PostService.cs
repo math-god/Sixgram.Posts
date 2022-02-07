@@ -75,18 +75,18 @@ public class PostService : IPostService
             result.ErrorType = ErrorType.NotFound;
             return result;
         }
-        
+
         if (post.UserId != _tokenService.GetCurrentUserId())
         {
             result.ErrorType = ErrorType.BadRequest;
             return result;
         }
-        
+
         post.FileId = await _fileService.Send(postUpdateRequestDto.NewFile);
         post.Description = postUpdateRequestDto.NewDescription;
-        
+
         result = _mapper.Map<ResultContainer<PostUpdateResponseDto>>(await _postRepository.Update(post));
-        
+
         return result;
     }
 
@@ -109,64 +109,6 @@ public class PostService : IPostService
         }
 
         result = _mapper.Map<ResultContainer<PostResponseDto>>(await _postRepository.Delete(post));
-
-        return result;
-    }
-
-    public async Task<ResultContainer<CommentResponseDto>> CreateComment(
-        CommentCreateRequestDto commentCreateRequestDto)
-    {
-        var result = new ResultContainer<CommentResponseDto>();
-
-        var post = await _postRepository.GetById(commentCreateRequestDto.PostId);
-
-        if (post == null)
-        {
-            result.ErrorType = ErrorType.BadRequest;
-            return result;
-        }
-
-        var comment = new CommentaryModel
-        {
-            PostId = post.Id,
-            UserId = _tokenService.GetCurrentUserId(),
-            Commentary = commentCreateRequestDto.Commentary
-        };
-
-        await _commentaryRepository.Create(comment);
-
-        post.Commentaries.Add(comment.Id);
-
-        result = _mapper.Map<ResultContainer<CommentResponseDto>>(await _postRepository.Update(post));
-
-        return result;
-    }
-
-    public async Task<ResultContainer<CommentResponseDto>> DeleteComment(
-        CommentDeleteRequestDto commentDeleteRequestDto)
-    {
-        var result = new ResultContainer<CommentResponseDto>();
-
-        var post = await _postRepository.GetById(commentDeleteRequestDto.PostId);
-        var commentary = await _commentaryRepository.GetById(commentDeleteRequestDto.CommentId);
-
-        if (post == null || commentary == null)
-        {
-            result.ErrorType = ErrorType.NotFound;
-            return result;
-        }
-        
-        if (commentary.UserId != _tokenService.GetCurrentUserId())
-        {
-            result.ErrorType = ErrorType.BadRequest;
-            return result;
-        }
-
-        await _commentaryRepository.Delete(commentary);
-
-        post.Commentaries.Remove(commentary.Id);
-
-        result = _mapper.Map<ResultContainer<CommentResponseDto>>(await _postRepository.Update(post));
 
         return result;
     }

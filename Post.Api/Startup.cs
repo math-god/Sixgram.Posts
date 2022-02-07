@@ -1,22 +1,14 @@
-using System;
-using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Post.Core;
+using Post.Core.Commentary;
 using Post.Core.File;
 using Post.Core.Http;
 using Post.Core.Membership;
-using Post.Core.Options;
 using Post.Core.Post;
 using Post.Core.Profiles;
 using Post.Core.Services;
@@ -59,6 +51,7 @@ namespace Post
             services.AddScoped<ICommentaryRepository, CommentaryRepository>();
             services.AddScoped<IMembershipService, MembershipService>();
             services.AddScoped<IPostService, PostService>();
+            services.AddScoped<ICommentaryService, CommentaryService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IFileService, FileService>();
 
