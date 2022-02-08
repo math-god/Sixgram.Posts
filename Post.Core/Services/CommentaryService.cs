@@ -53,8 +53,6 @@ public class CommentaryService : ICommentaryService
 
         await _commentaryRepository.Create(comment);
 
-        post.Commentaries.Add(comment.Id);
-
         result = _mapper.Map<ResultContainer<CommentResponseDto>>(await _postRepository.Update(post));
 
         return result;
@@ -81,8 +79,6 @@ public class CommentaryService : ICommentaryService
         }
 
         await _commentaryRepository.Delete(commentary);
-
-        post.Commentaries.Remove(commentary.Id);
 
         result = _mapper.Map<ResultContainer<CommentResponseDto>>(await _postRepository.Update(post));
 

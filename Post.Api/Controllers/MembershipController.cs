@@ -64,9 +64,8 @@ namespace Post.Controllers
         /// <summary>
         ///  Creates the member
         /// </summary>
-        /// <param name=""></param>
         /// <response code="204">Success</response>
-        /// <response code="400"></response>
+        /// <response code="400">Something went wrong</response>
         [HttpPost("[action]")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

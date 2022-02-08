@@ -8,10 +8,6 @@ public class PostModelConfiguration : IEntityTypeConfiguration<PostModel>
 {
     public void Configure(EntityTypeBuilder<PostModel> builder)
     {
-        builder
-            .Property(p => p.Commentaries)
-            .HasColumnType("text[]");
-
         builder.Property(p => p.DateCreated)
             .HasColumnType("timestamp without time zone");
 

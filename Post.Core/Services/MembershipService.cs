@@ -41,13 +41,13 @@ namespace Post.Core.Services
                 result.ErrorType = ErrorType.NotFound;
                 return result;
             }
-            
+
             if (respondent == subscriber || respondent.Subscribers.Contains(currentUserId))
             {
                 result.ErrorType = ErrorType.BadRequest;
                 return result;
             }
-            
+
             respondent.Subscribers.Add(currentUserId);
             subscriber.Subscriptions.Add(membership.RespondentId);
 
@@ -70,7 +70,7 @@ namespace Post.Core.Services
                 result.ErrorType = ErrorType.NotFound;
                 return result;
             }
-            
+
             if (!respondent.Subscribers.Contains(currentUserId))
             {
                 result.ErrorType = ErrorType.BadRequest;

@@ -18,8 +18,9 @@ public class TokenService : ITokenService
     }
 
     public Guid GetCurrentUserId() =>
-        Guid.TryParse(_httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier), out var userId) 
-            ? userId : new Guid();
+        Guid.TryParse(_httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier), out var userId)
+            ? userId
+            : new Guid();
 
     public string GetClaim(string token, string claimType)
     {

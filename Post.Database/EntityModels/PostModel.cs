@@ -17,9 +17,6 @@ public class PostModel : BaseModel
 
     [Column("description")]
     public string Description { get; set; } = string.Empty;
-
-    [Column("commentaries")]
-    public List<Guid> Commentaries { get; set; } = new();
-
+    
     public ICollection<CommentaryModel> CommentaryModels { get; set; }
 }

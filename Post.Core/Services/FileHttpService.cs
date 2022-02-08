@@ -34,7 +34,7 @@ namespace Post.Core.Services
             var responseMessage = await _httpClient.PostAsync("/api/v1/task/downloadfile", multiContent);
 
             var result = await responseMessage.Content.ReadAsStringAsync();
-            
+
             return result;
         }
     }

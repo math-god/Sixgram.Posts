@@ -45,9 +45,9 @@ public class PostController : BaseController
     ///  Edits the post
     /// </summary>
     /// <param name="postUpdateRequestDto"></param>
-    /// <response code="200"></response>
-    /// <response code="400"></response>
-    /// <response code="404"></response>
+    /// <response code="200">Success</response>
+    /// <response code="400">Post not found</response>
+    /// <response code="404">The post doesn't belong to the current user</response>
     [HttpPut("[action]")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -61,7 +61,7 @@ public class PostController : BaseController
     /// </summary>
     /// <param name="postDeleteRequestDto"></param>
     /// <response code="200">Success</response>
-    /// <response code="400">There is no file Id in the request</response>
+    /// <response code="400">The post doesn't belong to the current user</response>
     /// <response code="404">File not found</response>
     [HttpDelete("[action]")]
     [ProducesResponseType(StatusCodes.Status200OK)]
