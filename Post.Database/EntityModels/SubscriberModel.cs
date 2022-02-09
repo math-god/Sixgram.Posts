@@ -6,9 +6,15 @@ namespace Post.Database.EntityModels;
 [Table("subscribers")]
 public class SubscriberModel : BaseModel
 {
-    [Column("user_id")] 
+    [Column("id")]
     public override Guid Id { get; set; } = Guid.NewGuid();
     
-    [Column("subscriber_id")]
-    public Guid SubscriberId { get; set; }
+    [Column("member_id")]
+    [ForeignKey("MembershipModel")]
+    public Guid MemberId { get; set; }
+    
+    [Column("respondent_id")]
+    public  Guid SubscriberId { get; set; }
+    
+    public MembershipModel MembershipModel { get; set; }
 }

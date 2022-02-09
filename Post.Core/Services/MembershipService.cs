@@ -1,30 +1,33 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
 using Post.Common.Response;
 using Post.Common.Result;
 using Post.Core.Dto.Membership;
 using Post.Core.Membership;
 using Post.Core.Token;
-using Post.Database.EntityModels;
-using Post.Database.Repository.Membership;
+using Post.Database.Repository.Subscriber;
+using Post.Database.Repository.Subscription;
+
 
 namespace Post.Core.Services
 {
     public class MembershipService : IMembershipService
     {
-        private readonly IMembershipRepository _membershipRepository;
+        private readonly ISubscriptionRepository _subscriptionRepository;
+        private readonly ISubscriberRepository _subscriberRepository;
         private readonly IMapper _mapper;
         private readonly ITokenService _tokenService;
 
         public MembershipService
         (
             IMapper mapper,
-            IMembershipRepository membershipRepository,
+            ISubscriptionRepository subscriptionRepository,
+            ISubscriberRepository subscriberRepository,
             ITokenService tokenService
         )
         {
+            _subscriptionRepository = subscriptionRepository;
+            _subscriberRepository = subscriberRepository;
             _mapper = mapper;
-            _membershipRepository = membershipRepository;
             _tokenService = tokenService;
         }
 

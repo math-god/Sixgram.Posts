@@ -3,12 +3,18 @@ using Post.Common.Base;
 
 namespace Post.Database.EntityModels;
 
-[Table("subscription")]
+[Table("subscriptions")]
 public class SubscriptionModel : BaseModel
 {
-    [Column("user_id")] 
+    [Column("id")]
     public override Guid Id { get; set; } = Guid.NewGuid();
     
-    [Column("subscription_id")]
-    public Guid SubscriptionId { get; set; }
+    [Column("member_id")]
+    [ForeignKey("MembershipModel")]
+    public Guid MemberId { get; set; }
+    
+    [Column("subscriber_id")]
+    public  Guid SubscriberId { get; set; }
+    
+    public MembershipModel MembershipModel { get; set; }
 }

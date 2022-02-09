@@ -6,13 +6,10 @@ namespace Post.Database.EntityModels
     [Table("membership")]
     public class MembershipModel : BaseModel
     {
-        [Column("user_id")] 
+        [Column("member_id")] 
         public override Guid Id { get; set; } = Guid.NewGuid();
         
-        [Column("subscribers")]
-        public List<Guid> Subscribers { get; set; } = new();
-        
-        [Column("subscriptions")]
-        public List<Guid> Subscriptions { get; set; } = new();
+        public ICollection<SubscriptionModel> Subscriptions { get; set; }
+        public ICollection<SubscriberModel> Subscribers { get; set; }
     }
 }

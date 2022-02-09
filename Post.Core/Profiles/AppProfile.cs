@@ -10,7 +10,6 @@ public class AppProfile : Profile
 {
     public AppProfile()
     {
-        CreateMap<MembershipModel, MembershipDto>();
         CreateMap<MembershipRequestDto, ResultContainer<MembershipResponseDto>>()
             .ForMember("Data", opt
                 => opt.MapFrom(m => m));

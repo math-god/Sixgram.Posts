@@ -4,17 +4,11 @@ using Post.Database.EntityModels;
 
 namespace Post.Database.TablesConfigurations;
 
-public class MembershipModelConfiguration : IEntityTypeConfiguration<MembershipModel>
+public class SubscriberModelConfiguration : IEntityTypeConfiguration<SubscriberModel>
 {
-    public void Configure(EntityTypeBuilder<MembershipModel> builder)
+    public void Configure(EntityTypeBuilder<SubscriberModel> builder)
     {
         builder.Property(p => p.DateCreated)
             .HasColumnType("timestamp without time zone");
-
-        builder.HasData
-        (
-            new MembershipModel() { },
-            new MembershipModel() { }
-        );
     }
 }
