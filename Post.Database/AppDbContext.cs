@@ -10,7 +10,7 @@ namespace Post.Database
         {
         }
 
-        public DbSet<SubscriptionModel> Subscriptions { get; set; }
+        public DbSet<RespondentModel> Subscriptions { get; set; }
         public DbSet<CommentaryModel> Commentaries { get; set; }
         public DbSet<SubscriberModel> Subscribers { get; set; }
         public DbSet<MembershipModel> Memberships { get; set; }
@@ -19,7 +19,7 @@ namespace Post.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new SubscriberModelConfiguration());
-            modelBuilder.ApplyConfiguration(new SubscriptionModelConfiguration());
+            modelBuilder.ApplyConfiguration(new RespondentModelConfiguration());
             modelBuilder.ApplyConfiguration(new MembershipModelConfiguration());
             modelBuilder.ApplyConfiguration(new CommentaryModelConfiguration());
             modelBuilder.ApplyConfiguration(new PostModelConfiguration());

@@ -4,31 +4,35 @@ using Post.Common.Result;
 using Post.Core.Dto.Membership;
 using Post.Core.Membership;
 using Post.Core.Token;
+using Post.Database.EntityModels;
+using Post.Database.Repository.Membership;
+using Post.Database.Repository.Respondent;
 using Post.Database.Repository.Subscriber;
-using Post.Database.Repository.Subscription;
 
-
-namespace Post.Core.Services
+namespace Post.Core.ControllerServices
 {
     public class MembershipService : IMembershipService
     {
-        private readonly ISubscriptionRepository _subscriptionRepository;
+        private readonly IRespondentRepository _respondentRepository;
         private readonly ISubscriberRepository _subscriberRepository;
         private readonly IMapper _mapper;
         private readonly ITokenService _tokenService;
+        private readonly IMembershipRepository _membershipRepository;
 
         public MembershipService
         (
             IMapper mapper,
-            ISubscriptionRepository subscriptionRepository,
+            IRespondentRepository respondentRepository,
             ISubscriberRepository subscriberRepository,
-            ITokenService tokenService
+            ITokenService tokenService,
+            IMembershipRepository membershipRepository
         )
         {
-            _subscriptionRepository = subscriptionRepository;
+            _respondentRepository = respondentRepository;
             _subscriberRepository = subscriberRepository;
             _mapper = mapper;
             _tokenService = tokenService;
+            _membershipRepository = membershipRepository;
         }
 
         public async Task<ResultContainer<MembershipResponseDto>> Subscribe(MembershipRequestDto membership)
@@ -36,26 +40,38 @@ namespace Post.Core.Services
             var result = new ResultContainer<MembershipResponseDto>();
             var currentUserId = _tokenService.GetCurrentUserId();
 
-            var respondent = await _membershipRepository.GetById(membership.RespondentId);
-            var subscriber = await _membershipRepository.GetById(currentUserId);
+            var respondentMember = await _membershipRepository.GetById(membership.RespondentId);
+            var subscriberMember = await _membershipRepository.GetById(currentUserId);
 
-            if (respondent == null)
+            if (respondentMember == null)
             {
                 result.ErrorType = ErrorType.NotFound;
                 return result;
             }
 
-            if (respondent == subscriber || respondent.Subscribers.Contains(currentUserId))
+            var subscriber = await _subscriberRepository.GetById(subscriberMember.Id);
+            var respondent = await _respondentRepository.GetById(respondentMember.Id);
+            
+            if (respondentMember.Id == subscriberMember.Id || subscriber != null || respondent != null)
             {
                 result.ErrorType = ErrorType.BadRequest;
                 return result;
             }
 
-            respondent.Subscribers.Add(currentUserId);
-            subscriber.Subscriptions.Add(membership.RespondentId);
+            var newSubscriber = new SubscriberModel()
+            {
+                Id = subscriberMember.Id,
+                MemberId = respondentMember.Id
+            };
 
-            await _membershipRepository.Update(respondent);
-            await _membershipRepository.Update(subscriber);
+            var newRespondent = new RespondentModel()
+            {
+                Id = respondentMember.Id,
+                MemberId = subscriberMember.Id
+            };
+
+            await _subscriberRepository.Create(newSubscriber);
+            await _respondentRepository.Create(newRespondent);
 
             return result;
         }
@@ -65,8 +81,8 @@ namespace Post.Core.Services
             var result = new ResultContainer<MembershipResponseDto>();
             var currentUserId = _tokenService.GetCurrentUserId();
 
-            var respondent = await _membershipRepository.GetById(membership.RespondentId);
-            var subscriber = await _membershipRepository.GetById(currentUserId);
+            var respondent = await _respondentRepository.GetById(membership.RespondentId);
+            var subscriber = await _subscriberRepository.GetById(currentUserId);
 
             if (respondent == null)
             {
@@ -74,17 +90,14 @@ namespace Post.Core.Services
                 return result;
             }
 
-            if (!respondent.Subscribers.Contains(currentUserId))
+            if (respondent.Id == subscriber.Id)
             {
                 result.ErrorType = ErrorType.BadRequest;
                 return result;
             }
-
-            respondent.Subscribers.Remove(currentUserId);
-            subscriber.Subscriptions.Remove(membership.RespondentId);
-
-            await _membershipRepository.Update(respondent);
-            await _membershipRepository.Update(subscriber);
+            
+            await _subscriberRepository.Delete(subscriber);
+            await _respondentRepository.Delete(respondent);
 
             return result;
         }
@@ -94,7 +107,14 @@ namespace Post.Core.Services
             var result = new ResultContainer<UserDto>();
 
             var userId = _tokenService.GetCurrentUserId();
-
+            var user = await _membershipRepository.GetById(userId);
+            
+            if (userId == user.Id)
+            {
+                result.ErrorType = ErrorType.BadRequest;
+                return result;
+            }
+            
             var member = new MembershipModel()
             {
                 Id = userId

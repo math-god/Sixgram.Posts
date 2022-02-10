@@ -1,6 +1,8 @@
 ﻿using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
+using Post.Common.Types;
+using Post.Core.Dto.File;
 using Post.Core.Http;
 
 namespace Post.Core.Services
@@ -20,13 +22,20 @@ namespace Post.Core.Services
             _httpContext = httpContextAccessor.HttpContext;
         }
 
-        public async Task<string> SendRequest(byte[] data, string fileName)
+        public async Task<string> SendRequest(FileSendingDto fileSendingDto)
         {
+            byte[] data;
+            using (var binaryReader = new BinaryReader(fileSendingDto.UploadedFile.OpenReadStream()))
+                data = binaryReader.ReadBytes((int) fileSendingDto.UploadedFile.OpenReadStream().Length);
+            
             var bytes = new ByteArrayContent(data);
+            var postId = new StringContent(fileSendingDto.SourceId.ToString());
+            var fileSource = new StringContent(fileSendingDto.FileSource == FileSource.Post);
 
             var multiContent = new MultipartFormDataContent();
 
             multiContent.Add(bytes, "file", fileName);
+            multiContent.Add(FileSource.Post);
 
             _httpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", await _httpContext.GetTokenAsync("access_token"));

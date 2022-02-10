@@ -8,7 +8,7 @@ using Post.Database.EntityModels;
 using Post.Database.Repository.Commentary;
 using Post.Database.Repository.Post;
 
-namespace Post.Core.Services;
+namespace Post.Core.ControllerServices;
 
 public class CommentaryService : ICommentaryService
 {
@@ -47,7 +47,7 @@ public class CommentaryService : ICommentaryService
         var comment = new CommentaryModel
         {
             PostId = post.Id,
-            UserId = _tokenService.GetCurrentUserId(),
+            MemberId = _tokenService.GetCurrentUserId(),
             Commentary = commentCreateRequestDto.Commentary
         };
 
@@ -72,7 +72,7 @@ public class CommentaryService : ICommentaryService
             return result;
         }
 
-        if (commentary.UserId != _tokenService.GetCurrentUserId())
+        if (commentary.MemberId != _tokenService.GetCurrentUserId())
         {
             result.ErrorType = ErrorType.BadRequest;
             return result;

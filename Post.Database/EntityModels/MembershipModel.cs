@@ -9,7 +9,9 @@ namespace Post.Database.EntityModels
         [Column("member_id")] 
         public override Guid Id { get; set; } = Guid.NewGuid();
         
-        public ICollection<SubscriptionModel> Subscriptions { get; set; }
+        public ICollection<RespondentModel> Respondents { get; set; }
         public ICollection<SubscriberModel> Subscribers { get; set; }
+        public ICollection<CommentaryModel> Commentaries { get; set; }
+        
     }
 }

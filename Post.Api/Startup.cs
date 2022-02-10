@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Post.Core.Commentary;
+using Post.Core.ControllerServices;
 using Post.Core.File;
 using Post.Core.Http;
 using Post.Core.Membership;
@@ -15,9 +16,10 @@ using Post.Core.Services;
 using Post.Core.Token;
 using Post.Database;
 using Post.Database.Repository.Commentary;
+using Post.Database.Repository.Membership;
 using Post.Database.Repository.Post;
+using Post.Database.Repository.Respondent;
 using Post.Database.Repository.Subscriber;
-using Post.Database.Repository.Subscription;
 
 namespace Post
 {
@@ -48,7 +50,8 @@ namespace Post
 
             services.AddScoped<IFileHttpService, FileHttpService>();
             services.AddScoped<ISubscriberRepository, SubscriberRepository>();
-            services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
+            services.AddScoped<IRespondentRepository, RespondentRepository>();
+            services.AddScoped<IMembershipRepository, MembershipRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<ICommentaryRepository, CommentaryRepository>();
             services.AddScoped<IMembershipService, MembershipService>();

@@ -65,7 +65,7 @@ namespace Post.Controllers
         ///  Creates the member
         /// </summary>
         /// <response code="204">Success</response>
-        /// <response code="400">Something went wrong</response>
+        /// <response code="400">The user already exists</response>
         [HttpPost("[action]")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

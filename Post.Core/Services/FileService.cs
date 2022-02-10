@@ -1,8 +1,6 @@
-﻿using System.Net.Http.Headers;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
-using Post.Core.File;
+﻿using Post.Core.File;
 using Newtonsoft.Json.Linq;
+using Post.Core.Dto.File;
 using Post.Core.Http;
 
 namespace Post.Core.Services;
@@ -19,13 +17,9 @@ public class FileService : IFileService
         _fileHttpService = fileHttpService;
     }
 
-    public async Task<Guid?> Send(IFormFile file)
+    public async Task<Guid?> Send(FileSendingDto fileSendingDto)
     {
-        byte[] data;
-        using (var binaryReader = new BinaryReader(file.OpenReadStream()))
-            data = binaryReader.ReadBytes((int)file.OpenReadStream().Length);
-
-        var content = await _fileHttpService.SendRequest(data, file.FileName);
+        var content = await _fileHttpService.SendRequest(data, fileSendingDto.UploadedFile.FileName);
 
         var json = JObject.Parse(content);
 

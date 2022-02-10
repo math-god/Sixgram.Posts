@@ -10,11 +10,5 @@ public class MembershipModelConfiguration : IEntityTypeConfiguration<MembershipM
     {
         builder.Property(p => p.DateCreated)
             .HasColumnType("timestamp without time zone");
-
-        builder.HasData
-        (
-            new MembershipModel() { },
-            new MembershipModel() { }
-        );
     }
 }

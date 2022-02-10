@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Post.Common.Response;
 using Post.Common.Result;
+using Post.Common.Types;
 using Post.Core.Dto.Post;
 using Post.Core.File;
 using Post.Core.Post;
@@ -9,7 +10,7 @@ using Post.Database.EntityModels;
 using Post.Database.Repository.Commentary;
 using Post.Database.Repository.Post;
 
-namespace Post.Core.Services;
+namespace Post.Core.ControllerServices;
 
 public class PostService : IPostService
 {
@@ -45,7 +46,9 @@ public class PostService : IPostService
             return result;
         }
 
-        var fileId = await _fileService.Send(postCreateRequestDto.File);
+        var postId = Guid.NewGuid();
+        
+        var fileId = await _fileService.Send(postCreateRequestDto.File, postId, FileSource.Post);
 
         if (fileId == null)
         {
@@ -54,7 +57,8 @@ public class PostService : IPostService
 
         var post = new PostModel
         {
-            UserId = _tokenService.GetCurrentUserId(),
+            Id = postId,
+            MemberId = _tokenService.GetCurrentUserId(),
             FileId = (Guid)fileId,
             Description = postCreateRequestDto.Description
         };
@@ -76,7 +80,7 @@ public class PostService : IPostService
             return result;
         }
 
-        if (post.UserId != _tokenService.GetCurrentUserId())
+        if (post.MemberId != _tokenService.GetCurrentUserId())
         {
             result.ErrorType = ErrorType.BadRequest;
             return result;
@@ -102,7 +106,7 @@ public class PostService : IPostService
             return result;
         }
 
-        if (post.UserId != _tokenService.GetCurrentUserId())
+        if (post.MemberId != _tokenService.GetCurrentUserId())
         {
             result.ErrorType = ErrorType.BadRequest;
             return result;
