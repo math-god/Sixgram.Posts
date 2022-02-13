@@ -30,12 +30,13 @@ namespace Post.Core.Services
             
             var bytes = new ByteArrayContent(data);
             var postId = new StringContent(fileSendingDto.SourceId.ToString());
-            var fileSource = new StringContent(fileSendingDto.FileSource == FileSource.Post);
+            var fileSource = new StringContent(FileSource.Post.ToString());
 
             var multiContent = new MultipartFormDataContent();
 
-            multiContent.Add(bytes, "file", fileName);
-            multiContent.Add(FileSource.Post);
+            multiContent.Add(bytes, "file", "uploadedFile");
+            multiContent.Add(postId);
+            multiContent.Add(fileSource);
 
             _httpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", await _httpContext.GetTokenAsync("access_token"));

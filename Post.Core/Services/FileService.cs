@@ -1,4 +1,5 @@
-﻿using Post.Core.File;
+﻿using Microsoft.AspNetCore.Http;
+using Post.Core.File;
 using Newtonsoft.Json.Linq;
 using Post.Core.Dto.File;
 using Post.Core.Http;
@@ -17,9 +18,15 @@ public class FileService : IFileService
         _fileHttpService = fileHttpService;
     }
 
-    public async Task<Guid?> Send(FileSendingDto fileSendingDto)
+    public async Task<Guid?> Send(IFormFile file, Guid postId)
     {
-        var content = await _fileHttpService.SendRequest(data, fileSendingDto.UploadedFile.FileName);
+        var fileSendingDto = new FileSendingDto()
+        {
+            SourceId = postId,
+            UploadedFile = file
+        };
+        
+        var content = await _fileHttpService.SendRequest(fileSendingDto);
 
         var json = JObject.Parse(content);
 

@@ -48,7 +48,7 @@ public class PostService : IPostService
 
         var postId = Guid.NewGuid();
         
-        var fileId = await _fileService.Send(postCreateRequestDto.File, postId, FileSource.Post);
+        var fileId = await _fileService.Send(postCreateRequestDto.File, postId);
 
         if (fileId == null)
         {
@@ -86,7 +86,7 @@ public class PostService : IPostService
             return result;
         }
 
-        post.FileId = await _fileService.Send(postUpdateRequestDto.NewFile);
+        post.FileId = await _fileService.Send(postUpdateRequestDto.NewFile, post.Id);
         post.Description = postUpdateRequestDto.NewDescription;
 
         result = _mapper.Map<ResultContainer<PostUpdateResponseDto>>(await _postRepository.Update(post));
