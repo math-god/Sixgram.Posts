@@ -34,9 +34,9 @@ namespace Post.Core.Services
 
             var multiContent = new MultipartFormDataContent();
 
-            multiContent.Add(bytes, "file", "uploadedFile");
-            multiContent.Add(postId);
-            multiContent.Add(fileSource);
+            multiContent.Add(bytes, "UploadedFile", fileSendingDto.UploadedFile.FileName);
+            multiContent.Add(postId, "SourceId");
+            multiContent.Add(fileSource, "FileSource");
 
             _httpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", await _httpContext.GetTokenAsync("access_token"));

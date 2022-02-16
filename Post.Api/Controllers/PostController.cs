@@ -29,7 +29,7 @@ public class PostController : BaseController
     /// <summary>
     ///  Creates the post
     /// </summary>
-    /// <param name="postCreateRequestDto"></param>
+    /// <param name="uploadedFile"></param>
     /// <response code="200">Success</response>
     /// <response code="400">There is no file in the request</response>
     [HttpPost("[action]")]
@@ -37,9 +37,9 @@ public class PostController : BaseController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [RequestSizeLimit(MaxFileSize)]
     [RequestFormLimits(MultipartBodyLengthLimit = MaxFileSize)]
-    public async Task<ActionResult<PostResponseDto>> Create([FromForm] PostCreateRequestDto postCreateRequestDto)
+    public async Task<ActionResult<PostResponseDto>> Create([FromForm] PostCreateRequestDto uploadedFile)
         => await ReturnResult<ResultContainer<PostResponseDto>, PostResponseDto>
-            (_postService.Create(postCreateRequestDto));
+            (_postService.Create(uploadedFile));
 
     /// <summary>
     ///  Edits the post
