@@ -1,7 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
-using Post.Common.Types;
 using Post.Core.Dto.File;
 using Post.Core.Http;
 
@@ -21,20 +20,21 @@ namespace Post.Core.Services
             _httpClient = httpClientFactory.CreateClient("file_storage");
             _httpContext = httpContextAccessor.HttpContext;
         }
+/*/api/v1/subscribe POST - create
+/api/v1/subscribe GET - получение записей по фильтру
+a/v/subscribe/{id} GET - получение записи по ID
+a/v/subscribe/{id}  delete - delete записи по ID
+a/v/subscribe/{id}  put - update записи по ID*/
 
         public async Task<string> SendRequest(FileSendingDto fileSendingDto)
         {
-            byte[] data;
-            using (var binaryReader = new BinaryReader(fileSendingDto.UploadedFile.OpenReadStream()))
-                data = binaryReader.ReadBytes((int) fileSendingDto.UploadedFile.OpenReadStream().Length);
-            
-            var bytes = new ByteArrayContent(data);
+            var bytes = new ByteArrayContent(fileSendingDto.UploadedFile);
             var postId = new StringContent(fileSendingDto.SourceId.ToString());
-            var fileSource = new StringContent(FileSource.Post.ToString());
+            var fileSource = new StringContent(fileSendingDto.FileSource.ToString());
 
             var multiContent = new MultipartFormDataContent();
 
-            multiContent.Add(bytes, "UploadedFile", fileSendingDto.UploadedFile.FileName);
+            multiContent.Add(bytes, "UploadedFile", fileSendingDto.UploadedFileName);
             multiContent.Add(postId, "SourceId");
             multiContent.Add(fileSource, "FileSource");
 

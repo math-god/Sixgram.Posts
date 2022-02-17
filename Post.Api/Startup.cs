@@ -2,6 +2,8 @@ using System.Reflection;
 using System.Text;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -35,7 +37,7 @@ namespace Post
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors(options =>
-            { 
+            {
                 options.AddDefaultPolicy(
                     builder =>
                     {
@@ -45,7 +47,7 @@ namespace Post
                             .AllowCredentials();
                     });
             });
-            
+
             services.AddControllers();
 
             services.AddScoped<IFileHttpService, FileHttpService>();
@@ -66,11 +68,7 @@ namespace Post
 
             //Configure AutoMapper Profile
             var mapperConfig = new MapperConfiguration
-                (mc =>
-                {
-                    mc.AddProfile(new AppProfile()); 
-                    
-                });
+                (mc => { mc.AddProfile(new AppProfile()); });
             var mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
 
@@ -78,15 +76,14 @@ namespace Post
 
             ConfigureSwagger(services);
 
+            services.AddRouting(options => options.LowercaseUrls = true);
+
             services.AddHttpContextAccessor();
 
             //Configure HttpClient
             services.AddHttpClient("auth", p => { p.BaseAddress = new Uri("http://localhost:5000"); });
             services.AddHttpClient("file_storage",
-                c =>
-                {
-                    c.BaseAddress = new Uri("http://localhost:5000");
-                });
+                c => { c.BaseAddress = new Uri("http://localhost:5000"); });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -96,7 +93,6 @@ namespace Post
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Test v1"));
-               
             }
 
             app.UseHttpsRedirection();
@@ -131,7 +127,7 @@ namespace Post
 
         private static void ConfigureSwagger(IServiceCollection services)
         {
-            /*services.AddApiVersioning(options =>
+             services.AddApiVersioning(options =>
             {
                 options.DefaultApiVersion = new ApiVersion(1, 0);
                 options.AssumeDefaultVersionWhenUnspecified = true;
@@ -143,7 +139,7 @@ namespace Post
             {
                 options.GroupNameFormat = "'v'VVV";
                 options.SubstituteApiVersionInUrl = true;
-            });*/
+            });
 
             services.AddSwaggerGen(options =>
             {

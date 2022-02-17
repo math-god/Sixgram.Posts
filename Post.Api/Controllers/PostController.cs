@@ -7,9 +7,10 @@ using Post.Core.Post;
 
 namespace Post.Controllers;
 
-[Authorize]
-[Route("api/[controller]")]
+[ApiVersion("1.0")]
 [ApiController]
+[Authorize]
+[Route("api/v{version:apiVersion}/[controller]")]
 public class PostController : BaseController
 {
     private const long MaxFileSize = 10L * 1024L * 1024L * 1024L;

@@ -8,9 +8,10 @@ using Post.Core.Token;
 
 namespace Post.Controllers
 {
-    [Authorize]
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
     [ApiController]
+    [Authorize]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class MembershipController : BaseController
     {
         private readonly IFileHttpService _fileHttpService;
