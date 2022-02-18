@@ -4,9 +4,9 @@ using Post.Database.EntityModels;
 
 namespace Post.Database.TablesConfigurations;
 
-public class SubscriberModelConfiguration : IEntityTypeConfiguration<SubscriberModel>
+public class SubscriptionModelConfiguration : IEntityTypeConfiguration<SubscriptionModel>
 {
-    public void Configure(EntityTypeBuilder<SubscriberModel> builder)
+    public void Configure(EntityTypeBuilder<SubscriptionModel> builder)
     {
         builder.Property(p => p.DateCreated)
             .HasColumnType("timestamp without time zone");

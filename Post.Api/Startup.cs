@@ -11,16 +11,14 @@ using Post.Core.Commentary;
 using Post.Core.ControllerServices;
 using Post.Core.File;
 using Post.Core.Http;
-using Post.Core.Membership;
 using Post.Core.Post;
 using Post.Core.Profiles;
 using Post.Core.Services;
+using Post.Core.Subscription;
 using Post.Core.Token;
 using Post.Database;
 using Post.Database.Repository.Commentary;
-using Post.Database.Repository.Membership;
 using Post.Database.Repository.Post;
-using Post.Database.Repository.Respondent;
 using Post.Database.Repository.Subscriber;
 
 namespace Post
@@ -51,12 +49,10 @@ namespace Post
             services.AddControllers();
 
             services.AddScoped<IFileHttpService, FileHttpService>();
-            services.AddScoped<ISubscriberRepository, SubscriberRepository>();
-            services.AddScoped<IRespondentRepository, RespondentRepository>();
-            services.AddScoped<IMembershipRepository, MembershipRepository>();
+            services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<ICommentaryRepository, CommentaryRepository>();
-            services.AddScoped<IMembershipService, MembershipService>();
+            services.AddScoped<ISubscriptionService, SubscriptionService>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<ICommentaryService, CommentaryService>();
             services.AddScoped<ITokenService, TokenService>();
@@ -81,7 +77,8 @@ namespace Post
             services.AddHttpContextAccessor();
 
             //Configure HttpClient
-            services.AddHttpClient("auth", p => { p.BaseAddress = new Uri("http://localhost:5000"); });
+            services.AddHttpClient("auth", 
+                p => { p.BaseAddress = new Uri("http://localhost:5176"); });
             services.AddHttpClient("file_storage",
                 c => { c.BaseAddress = new Uri("http://localhost:5000"); });
         }

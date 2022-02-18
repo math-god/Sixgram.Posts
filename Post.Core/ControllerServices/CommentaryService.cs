@@ -47,7 +47,7 @@ public class CommentaryService : ICommentaryService
         var comment = new CommentaryModel
         {
             PostId = post.Id,
-            MemberId = _tokenService.GetCurrentUserId(),
+            UserId = _tokenService.GetCurrentUserId(),
             Commentary = commentCreateRequestDto.Commentary
         };
 
@@ -72,7 +72,7 @@ public class CommentaryService : ICommentaryService
             return result;
         }
 
-        if (commentary.MemberId != _tokenService.GetCurrentUserId())
+        if (commentary.UserId != _tokenService.GetCurrentUserId())
         {
             result.ErrorType = ErrorType.BadRequest;
             return result;

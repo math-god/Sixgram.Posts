@@ -9,9 +9,8 @@ public class PostModel : BaseModel
     [Column("post_id")]
     public override Guid Id { get; set; } = Guid.NewGuid();
     
-    [Column("member_id")]
-    [ForeignKey("MembershipModel")]
-    public Guid MemberId { get; set; }
+    [Column("user_id")]
+    public Guid UserId { get; set; }
     
     [Column("file_id")]
     public Guid? FileId { get; set; } 
@@ -20,5 +19,4 @@ public class PostModel : BaseModel
     public string Description { get; set; } = string.Empty;
     
     public ICollection<CommentaryModel> CommentaryModels { get; set; }
-    public MembershipModel MembershipModel { get; set; }
 }

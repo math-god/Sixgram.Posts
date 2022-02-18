@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Post.Common.Result;
-using Post.Core.Dto.Membership;
 using Post.Core.Dto.Post;
+using Post.Core.Dto.Subscription;
 using Post.Database.EntityModels;
 
 namespace Post.Core.Profiles;
@@ -10,7 +10,7 @@ public class AppProfile : Profile
 {
     public AppProfile()
     {
-        CreateMap<MembershipRequestDto, ResultContainer<MembershipResponseDto>>()
+        CreateMap<SubscribeRequestDto, ResultContainer<MembershipResponseDto>>()
             .ForMember("Data", opt
                 => opt.MapFrom(m => m));
 
@@ -35,6 +35,6 @@ public class AppProfile : Profile
                 => opt.MapFrom(p => p));
 
         CreateMap<PostModel, PostUpdateResponseDto>();
-        CreateMap<MembershipRequestDto, MembershipResponseDto>();
+        CreateMap<SubscribeRequestDto, MembershipResponseDto>();
     }
 }

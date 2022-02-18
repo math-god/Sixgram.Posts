@@ -58,7 +58,7 @@ public class PostService : IPostService
         var post = new PostModel
         {
             Id = postId,
-            MemberId = _tokenService.GetCurrentUserId(),
+            UserId = _tokenService.GetCurrentUserId(),
             FileId = (Guid)fileId,
             Description = postCreateRequestDto.Description
         };
@@ -80,7 +80,7 @@ public class PostService : IPostService
             return result;
         }
 
-        if (post.MemberId != _tokenService.GetCurrentUserId())
+        if (post.UserId != _tokenService.GetCurrentUserId())
         {
             result.ErrorType = ErrorType.BadRequest;
             return result;
@@ -106,7 +106,7 @@ public class PostService : IPostService
             return result;
         }
 
-        if (post.MemberId != _tokenService.GetCurrentUserId())
+        if (post.UserId != _tokenService.GetCurrentUserId())
         {
             result.ErrorType = ErrorType.BadRequest;
             return result;
