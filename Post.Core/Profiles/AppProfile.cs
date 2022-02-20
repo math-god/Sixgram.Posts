@@ -33,7 +33,15 @@ public class AppProfile : Profile
         CreateMap<PostModel, ResultContainer<PostUpdateResponseDto>>()
             .ForMember("Data", opt
                 => opt.MapFrom(p => p));
+        
+        CreateMap<PostModel, ResultContainer<PostModelResponseDto>>()
+            .ForMember("Data", opt
+                => opt.MapFrom(p => p));
 
+        CreateMap<PostModel, PostModelResponseDto>()
+            .ForMember("PostId", opt
+                => opt.MapFrom(p => p.Id));
+        
         CreateMap<PostModel, PostUpdateResponseDto>();
         CreateMap<SubscribeRequestDto, MembershipResponseDto>();
     }

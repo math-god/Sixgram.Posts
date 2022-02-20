@@ -68,11 +68,11 @@ public class PostService : IPostService
         return result;
     }
 
-    public async Task<ResultContainer<PostUpdateResponseDto>> Edit(PostUpdateRequestDto postUpdateRequestDto)
+    public async Task<ResultContainer<PostUpdateResponseDto>> Edit(PostUpdateRequestDto postUpdateRequestDto, Guid postId)
     {
         var result = new ResultContainer<PostUpdateResponseDto>();
 
-        var post = await _postRepository.GetById(postUpdateRequestDto.PostId);
+        var post = await _postRepository.GetById(postId);
 
         if (post == null)
         {
@@ -94,11 +94,11 @@ public class PostService : IPostService
         return result;
     }
 
-    public async Task<ResultContainer<PostResponseDto>> Delete(PostDeleteRequestDto postDeleteRequestDto)
+    public async Task<ResultContainer<PostResponseDto>> Delete(Guid postId)
     {
         var result = new ResultContainer<PostResponseDto>();
 
-        var post = await _postRepository.GetById(postDeleteRequestDto.PostId);
+        var post = await _postRepository.GetById(postId);
 
         if (post == null)
         {
@@ -114,6 +114,22 @@ public class PostService : IPostService
 
         result = _mapper.Map<ResultContainer<PostResponseDto>>(await _postRepository.Delete(post));
 
+        return result;
+    }
+
+    public async Task<ResultContainer<PostModelResponseDto>> GetById(Guid postId)
+    {
+        var result = new ResultContainer<PostModelResponseDto>();
+        var post = await _postRepository.GetById(postId);
+
+        if (post == null)
+        {
+            result.ErrorType = ErrorType.NotFound;
+            return result;
+        }
+
+        result = _mapper.Map<ResultContainer<PostModelResponseDto>>(post);
+        
         return result;
     }
 }

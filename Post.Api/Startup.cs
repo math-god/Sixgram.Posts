@@ -49,6 +49,7 @@ namespace Post
             services.AddControllers();
 
             services.AddScoped<IFileHttpService, FileHttpService>();
+            services.AddScoped<ISubscriptionHttpService, SubscriptionHttpService>();
             services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<ICommentaryRepository, CommentaryRepository>();

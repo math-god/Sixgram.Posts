@@ -10,5 +10,20 @@ public class SubscriptionModelConfiguration : IEntityTypeConfiguration<Subscript
     {
         builder.Property(p => p.DateCreated)
             .HasColumnType("timestamp without time zone");
+
+        builder.HasData
+        (
+            new SubscriptionModel()
+            {
+                RespondentId = Guid.NewGuid(),
+                SubscriberId = Guid.NewGuid()
+            },
+            new SubscriptionModel()
+            {
+                RespondentId = Guid.NewGuid(),
+                SubscriberId = Guid.NewGuid()
+            }
+        );
+
     }
 }

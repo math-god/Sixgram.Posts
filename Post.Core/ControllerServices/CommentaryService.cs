@@ -32,11 +32,11 @@ public class CommentaryService : ICommentaryService
     }
 
     public async Task<ResultContainer<CommentResponseDto>> Create(
-        CommentCreateRequestDto commentCreateRequestDto)
+        CommentCreateRequestDto commentCreateRequestDto, Guid postId)
     {
         var result = new ResultContainer<CommentResponseDto>();
 
-        var post = await _postRepository.GetById(commentCreateRequestDto.PostId);
+        var post = await _postRepository.GetById(postId);
 
         if (post == null)
         {
@@ -58,13 +58,12 @@ public class CommentaryService : ICommentaryService
         return result;
     }
 
-    public async Task<ResultContainer<CommentResponseDto>> Delete(
-        CommentDeleteRequestDto commentDeleteRequestDto)
+    public async Task<ResultContainer<CommentResponseDto>> Delete(Guid postId, Guid commentId)
     {
         var result = new ResultContainer<CommentResponseDto>();
 
-        var post = await _postRepository.GetById(commentDeleteRequestDto.PostId);
-        var commentary = await _commentaryRepository.GetById(commentDeleteRequestDto.CommentId);
+        var post = await _postRepository.GetById(postId);
+        var commentary = await _commentaryRepository.GetById(commentId);
 
         if (post == null || commentary == null)
         {

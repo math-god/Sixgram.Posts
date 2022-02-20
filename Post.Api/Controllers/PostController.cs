@@ -4,13 +4,14 @@ using Post.Common.Result;
 using Post.Core.Commentary;
 using Post.Core.Dto.Post;
 using Post.Core.Post;
+using Post.Database.EntityModels;
 
 namespace Post.Controllers;
 
 [ApiVersion("1.0")]
 [ApiController]
 [Authorize]
-[Route("api/v{version:apiVersion}/[controller]")]
+[Route("api/v{version:apiVersion}/posts")]
 public class PostController : BaseController
 {
     private const long MaxFileSize = 10L * 1024L * 1024L * 1024L;
@@ -33,7 +34,7 @@ public class PostController : BaseController
     /// <param name="uploadedFile"></param>
     /// <response code="200">Success</response>
     /// <response code="400">There is no file in the request</response>
-    [HttpPost("[action]")]
+    [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [RequestSizeLimit(MaxFileSize)]
@@ -46,61 +47,78 @@ public class PostController : BaseController
     ///  Edits the post
     /// </summary>
     /// <param name="postUpdateRequestDto"></param>
+    /// <param name="id"></param>
     /// <response code="200">Success</response>
     /// <response code="400">Post not found</response>
     /// <response code="404">The post doesn't belong to the current user</response>
-    [HttpPut("[action]")]
+    [HttpPut("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<PostUpdateResponseDto>> Edit([FromForm] PostUpdateRequestDto postUpdateRequestDto)
+    public async Task<ActionResult<PostUpdateResponseDto>> Edit([FromForm] PostUpdateRequestDto postUpdateRequestDto,
+        Guid id)
         => await ReturnResult<ResultContainer<PostUpdateResponseDto>, PostUpdateResponseDto>
-            (_postService.Edit(postUpdateRequestDto));
+            (_postService.Edit(postUpdateRequestDto, id));
 
     /// <summary>
     ///  Deletes the post
     /// </summary>
-    /// <param name="postDeleteRequestDto"></param>
+    /// <param name="id"></param>
     /// <response code="200">Success</response>
     /// <response code="400">The post doesn't belong to the current user</response>
-    /// <response code="404">File not found</response>
-    [HttpDelete("[action]")]
+    /// <response code="404">the post not found</response>
+    [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<PostResponseDto>> Delete([FromForm] PostDeleteRequestDto postDeleteRequestDto)
+    public async Task<ActionResult<PostResponseDto>> Delete(Guid id)
         => await ReturnResult<ResultContainer<PostResponseDto>, PostResponseDto>
-            (_postService.Delete(postDeleteRequestDto));
+            (_postService.Delete(id));
+
+    /// <summary>
+    ///  Get the post by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <response code="200">Success</response>
+    /// <response code="404">The post not found</response>
+    [HttpGet("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<PostModelResponseDto>> GetById(Guid id)
+        => await ReturnResult<ResultContainer<PostModelResponseDto>, PostModelResponseDto>
+            (_postService.GetById(id));
 
     /// <summary>
     ///  Comments the post
     /// </summary>
     /// <param name="commentCreateRequestDto"></param>
+    /// <param name="id"></param>
     /// <response code="200">Success</response>
     /// <response code="400">There is no post Id or commentary in the request</response>
     /// <response code="404">Post not found</response>
-    [HttpPost("[action]")]
+    [HttpPost("{id:guid}/comments")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<CommentResponseDto>> CreateComment(
-        [FromForm] CommentCreateRequestDto commentCreateRequestDto)
+        [FromForm] CommentCreateRequestDto commentCreateRequestDto, Guid id)
         => await ReturnResult<ResultContainer<CommentResponseDto>, CommentResponseDto>
-            (_commentaryService.Create(commentCreateRequestDto));
+            (_commentaryService.Create(commentCreateRequestDto, id));
 
     /// <summary>
     ///  Deletes the comment
     /// </summary>
     /// <param name="commentDeleteRequestDto"></param>
+    /// <param name="postId"></param>
+    /// <param name="commentId"></param>
     /// <response code="200">Success</response>
     /// <response code="400">There is no post Id or commentary Id in the request</response>
     /// <response code="404">Post or commentary not found</response>
-    [HttpDelete("[action]")]
+    [HttpDelete("{postId:guid}/comments/{commentId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<CommentResponseDto>> DeleteComment(
-        [FromForm] CommentDeleteRequestDto commentDeleteRequestDto)
+    public async Task<ActionResult<CommentResponseDto>> DeleteComment(Guid postId, Guid commentId)
         => await ReturnResult<ResultContainer<CommentResponseDto>, CommentResponseDto>
-            (_commentaryService.Delete(commentDeleteRequestDto));
+            (_commentaryService.Delete(postId, commentId));
 }

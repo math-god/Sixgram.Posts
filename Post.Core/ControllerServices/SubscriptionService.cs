@@ -31,13 +31,48 @@ namespace Post.Core.ControllerServices
             _subscriptionHttpService = subscriptionHttpService;
         }
 
-        public async Task<ResultContainer<MembershipResponseDto>> Subscribe(SubscribeRequestDto subscribe)
+        public async Task<ResultContainer<MembershipResponseDto>> Subscribe(SubscribeRequestDto subscribeRequestDto)
         {
             var result = new ResultContainer<MembershipResponseDto>();
             var currentUserId = _tokenService.GetCurrentUserId();
 
-            var respondent = await _subscriptionHttpService.GetUser(subscribe.RespondentId);
-            
+            if (_subscriptionRepository.GetAllObjects().Any(item =>
+                    item.RespondentId == subscribeRequestDto.RespondentId && item.SubscriberId == currentUserId))
+            {
+                result.ErrorType = ErrorType.BadRequest;
+                return result;
+            }
+
+            if (subscribeRequestDto.RespondentId == currentUserId)
+            {
+                result.ErrorType = ErrorType.BadRequest;
+                return result;
+            }
+
+            if (!await _subscriptionHttpService.DoesUserExist(subscribeRequestDto.RespondentId))
+            {
+                result.ErrorType = ErrorType.NotFound;
+                return result;
+            }
+
+            var subscriptionModel = new SubscriptionModel()
+            {
+                RespondentId = subscribeRequestDto.RespondentId,
+                SubscriberId = currentUserId
+            };
+
+            await _subscriptionRepository.Create(subscriptionModel);
+
+            return result;
+        }
+
+        public async Task<ResultContainer<MembershipResponseDto>> Unsubscribe(SubscribeRequestDto subscribe)
+        {
+            var result = new ResultContainer<MembershipResponseDto>();
+            var currentUserId = _tokenService.GetCurrentUserId();
+
+            var respondent = await _subscriptionHttpService.DoesUserExist(subscribe.RespondentId);
+
             if (respondent == null)
             {
                 result.ErrorType = ErrorType.NotFound;
@@ -50,39 +85,7 @@ namespace Post.Core.ControllerServices
                 return result;
             }
 
-            var subscriptionModel = new SubscriptionModel()
-            {
-                RespondentId = res
-            }
-
-            await _subscriptionRepository.Create(newSubscriber);
-            await _respondentRepository.Create(newRespondent);
-
-            return result;
-        }
-
-        public async Task<ResultContainer<MembershipResponseDto>> Unsubscribe(SubscribeRequestDto subscribe)
-        {
-            var result = new ResultContainer<MembershipResponseDto>();
-            var currentUserId = _tokenService.GetCurrentUserId();
-
-            var respondent = await _respondentRepository.GetById(subscribe.RespondentId);
-            var subscriber = await _subscriptionRepository.GetById(currentUserId);
-
-            if (respondent == null)
-            {
-                result.ErrorType = ErrorType.NotFound;
-                return result;
-            }
-
-            if (respondent.Id == subscriber.Id)
-            {
-                result.ErrorType = ErrorType.BadRequest;
-                return result;
-            }
-
-            await _subscriptionRepository.Delete(subscriber);
-            await _respondentRepository.Delete(respondent);
+            /*await _subscriptionRepository.Delete(subscriber);*/
 
             return result;
         }

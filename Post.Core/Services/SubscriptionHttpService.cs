@@ -24,18 +24,13 @@ public class SubscriptionHttpService : ISubscriptionHttpService
         _httpContext = httpContextAccessor.HttpContext;
     }
     
-    public async Task<ResultContainer<GetUsersResponseDto>> GetUser(Guid userId)
+    public async Task<bool> DoesUserExist(Guid userId)
     {
         _httpClient.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue("Bearer", await _httpContext.GetTokenAsync("access_token"));
 
-        var responseMessage = await _httpClient.GetAsync($"$/api/v1/user/{userId}");
-
-        var content = await responseMessage.Content.ReadAsStringAsync();
-
-        var result = await JsonSerializer.DeserializeAsync<GetUsersResponseDto>(content);
-
-
-        return result;
+        var responseMessage = await _httpClient.GetAsync($"/api/v1/user/{userId}");
+        
+        return responseMessage.IsSuccessStatusCode;
     }
 }
