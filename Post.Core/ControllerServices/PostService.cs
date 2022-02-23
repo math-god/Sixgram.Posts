@@ -42,7 +42,7 @@ public class PostService : IPostService
 
         if (postCreateRequestDto.File == null)
         {
-            result.ErrorType = ErrorType.BadRequest;
+            result.HttpStatusCode = HttpStatusCode.BadRequest;
             return result;
         }
 
@@ -76,13 +76,13 @@ public class PostService : IPostService
 
         if (post == null)
         {
-            result.ErrorType = ErrorType.NotFound;
+            result.HttpStatusCode = HttpStatusCode.NotFound;
             return result;
         }
 
         if (post.UserId != _tokenService.GetCurrentUserId())
         {
-            result.ErrorType = ErrorType.BadRequest;
+            result.HttpStatusCode = HttpStatusCode.BadRequest;
             return result;
         }
 
@@ -102,13 +102,13 @@ public class PostService : IPostService
 
         if (post == null)
         {
-            result.ErrorType = ErrorType.NotFound;
+            result.HttpStatusCode = HttpStatusCode.NotFound;
             return result;
         }
 
         if (post.UserId != _tokenService.GetCurrentUserId())
         {
-            result.ErrorType = ErrorType.BadRequest;
+            result.HttpStatusCode = HttpStatusCode.BadRequest;
             return result;
         }
 
@@ -124,7 +124,7 @@ public class PostService : IPostService
 
         if (post == null)
         {
-            result.ErrorType = ErrorType.NotFound;
+            result.HttpStatusCode = HttpStatusCode.NotFound;
             return result;
         }
 

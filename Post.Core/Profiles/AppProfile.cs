@@ -10,10 +10,6 @@ public class AppProfile : Profile
 {
     public AppProfile()
     {
-        CreateMap<SubscribeRequestDto, ResultContainer<MembershipResponseDto>>()
-            .ForMember("Data", opt
-                => opt.MapFrom(m => m));
-
         CreateMap<PostModel, ResultContainer<CommentResponseDto>>()
             .ForMember("Data", opt
                 => opt.MapFrom(c => c));
@@ -43,6 +39,5 @@ public class AppProfile : Profile
                 => opt.MapFrom(p => p.Id));
         
         CreateMap<PostModel, PostUpdateResponseDto>();
-        CreateMap<SubscribeRequestDto, MembershipResponseDto>();
     }
 }

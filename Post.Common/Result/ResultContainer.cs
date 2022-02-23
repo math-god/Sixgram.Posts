@@ -1,10 +1,8 @@
 ﻿using Post.Common.Response;
 
-namespace Post.Common.Result
+namespace Post.Common.Result;
+
+public class ResultContainer
 {
-    public class ResultContainer<T>
-    {
-        public T Data { get; set; }
-        public ErrorType? ErrorType { get; set; }
-    }
+    public HttpStatusCode HttpStatusCode { get; set; }
 }

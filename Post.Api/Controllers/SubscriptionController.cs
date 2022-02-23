@@ -11,23 +11,17 @@ namespace Post.Controllers
     [ApiVersion("1.0")]
     [ApiController]
     [Authorize]
-    [Route("api/v{version:apiVersion}/[controller]")]
+    [Route("api/v{version:apiVersion}/subscriptions")]
     public class SubscriptionController : BaseController
     {
-        private readonly IFileHttpService _fileHttpService;
         private readonly ISubscriptionService _subscriptionService;
-        private readonly ITokenService _tokenService;
 
         public SubscriptionController
         (
-            IFileHttpService fileHttpService,
-            ISubscriptionService subscriptionService,
-            ITokenService tokenService
+            ISubscriptionService subscriptionService
         )
         {
-            _fileHttpService = fileHttpService;
             _subscriptionService = subscriptionService;
-            _tokenService = tokenService;
         }
 
         /// <summary>
@@ -41,25 +35,20 @@ namespace Post.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<MembershipResponseDto>> Subscribe(
-            [FromForm] SubscribeRequestDto subscribeRequestDto)
-            => await ReturnResult<ResultContainer<MembershipResponseDto>, MembershipResponseDto>
-                (_subscriptionService.Subscribe(subscribeRequestDto));
-        
+        public async Task<ActionResult> Subscribe([FromForm] SubscribeRequestDto subscribeRequestDto)
+            => await ReturnResult(_subscriptionService.Subscribe(subscribeRequestDto));
+
         /// <summary>
         ///  Unsubscribes one user from another one
         /// </summary>
-        /// <param name="subscribeRequestDto">Respondent Id</param>
         /// <response code="204">Success</response>
         /// <response code="400">One user is not subscribed to another one</response>
         /// <response code="404">User Id doesn't exist</response>
-        [HttpDelete]
+        [HttpDelete("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<MembershipResponseDto>> Unsubscribe(
-            [FromForm] SubscribeRequestDto subscribeRequestDto)
-            => await ReturnResult<ResultContainer<MembershipResponseDto>, MembershipResponseDto>
-                (_subscriptionService.Unsubscribe(subscribeRequestDto));
+        public async Task<ActionResult> Unsubscribe(Guid id)
+            => await ReturnResult(_subscriptionService.Unsubscribe(id));
     }
 }

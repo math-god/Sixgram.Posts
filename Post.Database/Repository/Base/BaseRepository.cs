@@ -18,6 +18,9 @@ namespace Post.Database.Repository.Base
         public async Task<TModel> GetById(Guid id)
             => await AppDbContext.Set<TModel>().FindAsync(id);
 
+        public IEnumerable<TModel> GetByFilter(Func<TModel, bool> predicate)
+            => AppDbContext.Set<TModel>().Where(predicate);
+
         public virtual async Task<TModel> Create(TModel item)
         {
             /*item.DateCreated = DateTime.Now;*/

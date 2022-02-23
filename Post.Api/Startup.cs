@@ -19,7 +19,7 @@ using Post.Core.Token;
 using Post.Database;
 using Post.Database.Repository.Commentary;
 using Post.Database.Repository.Post;
-using Post.Database.Repository.Subscriber;
+using Post.Database.Repository.Subscription;
 
 namespace Post
 {
@@ -61,7 +61,7 @@ namespace Post
 
             var connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connection,
-                x => x.MigrationsAssembly("Post.Database")));
+                x => x.MigrationsAssembly("Post.Da  tabase")));
 
             //Configure AutoMapper Profile
             var mapperConfig = new MapperConfiguration
@@ -78,7 +78,7 @@ namespace Post
             services.AddHttpContextAccessor();
 
             //Configure HttpClient
-            services.AddHttpClient("auth", 
+            services.AddHttpClient("auth",
                 p => { p.BaseAddress = new Uri("http://localhost:5176"); });
             services.AddHttpClient("file_storage",
                 c => { c.BaseAddress = new Uri("http://localhost:5000"); });
@@ -125,7 +125,7 @@ namespace Post
 
         private static void ConfigureSwagger(IServiceCollection services)
         {
-             services.AddApiVersioning(options =>
+            services.AddApiVersioning(options =>
             {
                 options.DefaultApiVersion = new ApiVersion(1, 0);
                 options.AssumeDefaultVersionWhenUnspecified = true;

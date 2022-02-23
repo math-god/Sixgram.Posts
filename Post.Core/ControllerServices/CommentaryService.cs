@@ -40,7 +40,7 @@ public class CommentaryService : ICommentaryService
 
         if (post == null)
         {
-            result.ErrorType = ErrorType.NotFound;
+            result.HttpStatusCode = HttpStatusCode.NotFound;
             return result;
         }
 
@@ -58,28 +58,25 @@ public class CommentaryService : ICommentaryService
         return result;
     }
 
-    public async Task<ResultContainer<CommentResponseDto>> Delete(Guid postId, Guid commentId)
+    public async Task<ResultContainer<CommentResponseDto>> Delete(Guid commentId)
     {
         var result = new ResultContainer<CommentResponseDto>();
-
-        var post = await _postRepository.GetById(postId);
+        
         var commentary = await _commentaryRepository.GetById(commentId);
 
-        if (post == null || commentary == null)
+        if (commentary == null)
         {
-            result.ErrorType = ErrorType.NotFound;
+            result.HttpStatusCode = HttpStatusCode.NotFound;
             return result;
         }
 
         if (commentary.UserId != _tokenService.GetCurrentUserId())
         {
-            result.ErrorType = ErrorType.BadRequest;
+            result.HttpStatusCode = HttpStatusCode.BadRequest;
             return result;
         }
 
         await _commentaryRepository.Delete(commentary);
-
-        result = _mapper.Map<ResultContainer<CommentResponseDto>>(await _postRepository.Update(post));
 
         return result;
     }

@@ -108,17 +108,15 @@ public class PostController : BaseController
     /// <summary>
     ///  Deletes the comment
     /// </summary>
-    /// <param name="commentDeleteRequestDto"></param>
-    /// <param name="postId"></param>
-    /// <param name="commentId"></param>
+    /// <param name="id"></param>
     /// <response code="200">Success</response>
-    /// <response code="400">There is no post Id or commentary Id in the request</response>
-    /// <response code="404">Post or commentary not found</response>
-    [HttpDelete("{postId:guid}/comments/{commentId:guid}")]
+    /// <response code="400">There is no commentary Id in the request</response>
+    /// <response code="404">Commentary not found</response>
+    [HttpDelete("comments/{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<CommentResponseDto>> DeleteComment(Guid postId, Guid commentId)
+    public async Task<ActionResult<CommentResponseDto>> DeleteComment(Guid id)
         => await ReturnResult<ResultContainer<CommentResponseDto>, CommentResponseDto>
-            (_commentaryService.Delete(postId, commentId));
+            (_commentaryService.Delete(id));
 }
