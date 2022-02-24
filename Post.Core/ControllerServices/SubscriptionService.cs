@@ -49,11 +49,17 @@ namespace Post.Core.ControllerServices
                 return result;
             }
 
-            /*if (!await _subscriptionHttpService.DoesUserExist(subscribeRequestDto.RespondentId))
+            var userExists = await _subscriptionHttpService.DoesUserExist(subscribeRequestDto.RespondentId);
+
+            switch (userExists)
             {
-                result.HttpStatusCode = HttpStatusCode.NotFound;
-                return result;
-            }*/
+                case null:
+                    result.HttpStatusCode = HttpStatusCode.ServiceUnavailable;
+                    return result;
+                case true:
+                    result.HttpStatusCode = HttpStatusCode.NotFound;
+                    return result;
+            }
 
             var subscriptionModel = new SubscriptionModel()
             {

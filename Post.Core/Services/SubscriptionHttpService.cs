@@ -1,10 +1,6 @@
 ﻿using System.Net.Http.Headers;
-using System.Text.Json;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json.Linq;
-using Post.Common.Result;
-using Post.Core.Dto.Subscription.User;
 using Post.Core.Http;
 
 namespace Post.Core.Services;
@@ -24,13 +20,19 @@ public class SubscriptionHttpService : ISubscriptionHttpService
         _httpContext = httpContextAccessor.HttpContext;
     }
     
-    public async Task<bool> DoesUserExist(Guid userId)
+    public async Task<bool?> DoesUserExist(Guid userId)
     {
         _httpClient.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue("Bearer", await _httpContext.GetTokenAsync("access_token"));
 
-        var responseMessage = await _httpClient.GetAsync($"/api/v1/user/{userId}");
-        
-        return responseMessage.IsSuccessStatusCode;
+        try
+        {
+            var responseMessage = await _httpClient.GetAsync($"/api/v1/user/{userId}");
+            return responseMessage.IsSuccessStatusCode;
+        }
+        catch (HttpRequestException e)
+        {
+            return null;
+        }
     }
 }

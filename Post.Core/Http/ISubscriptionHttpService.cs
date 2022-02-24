@@ -2,5 +2,5 @@
 
 public interface ISubscriptionHttpService
 {
-    Task<bool> DoesUserExist(Guid userId);
+    Task<bool?> DoesUserExist(Guid userId);
 }

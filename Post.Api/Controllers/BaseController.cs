@@ -16,7 +16,7 @@ public class BaseController : ControllerBase
             HttpStatusCode.NotFound => NotFound(),
             HttpStatusCode.BadRequest => BadRequest(),
             HttpStatusCode.Unauthorized => Unauthorized(),
-            HttpStatusCode.NoContent => NoContent(),
+            HttpStatusCode.ServiceUnavailable => StatusCode(503),
             _ => throw new ArgumentOutOfRangeException()
         };
     }
@@ -27,10 +27,11 @@ public class BaseController : ControllerBase
 
         return result.HttpStatusCode switch
         {
+            HttpStatusCode.NoContent => NoContent(),
             HttpStatusCode.NotFound => NotFound(),
             HttpStatusCode.BadRequest => BadRequest(),
             HttpStatusCode.Unauthorized => Unauthorized(),
-            HttpStatusCode.NoContent => NoContent(),
+            HttpStatusCode.ServiceUnavailable => StatusCode(503),
             _ => throw new ArgumentOutOfRangeException()
         };
     }
