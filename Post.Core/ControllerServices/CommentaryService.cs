@@ -31,10 +31,9 @@ public class CommentaryService : ICommentaryService
         _tokenService = tokenService;
     }
 
-    public async Task<ResultContainer<CommentResponseDto>> Create(
-        CommentCreateRequestDto commentCreateRequestDto, Guid postId)
+    public async Task<ResultContainer> Create(CommentCreateRequestDto commentCreateRequestDto, Guid postId)
     {
-        var result = new ResultContainer<CommentResponseDto>();
+        var result = new ResultContainer();
 
         var post = await _postRepository.GetById(postId);
 
@@ -53,14 +52,16 @@ public class CommentaryService : ICommentaryService
 
         await _commentaryRepository.Create(comment);
 
-        result = _mapper.Map<ResultContainer<CommentResponseDto>>(await _postRepository.Update(post));
+        await _postRepository.Update(post);
+
+        result.HttpStatusCode = HttpStatusCode.NoContent;
 
         return result;
     }
 
-    public async Task<ResultContainer<CommentResponseDto>> Delete(Guid commentId)
+    public async Task<ResultContainer> Delete(Guid commentId)
     {
-        var result = new ResultContainer<CommentResponseDto>();
+        var result = new ResultContainer();
         
         var commentary = await _commentaryRepository.GetById(commentId);
 
@@ -77,6 +78,8 @@ public class CommentaryService : ICommentaryService
         }
 
         await _commentaryRepository.Delete(commentary);
+
+        result.HttpStatusCode = HttpStatusCode.NoContent;
 
         return result;
     }

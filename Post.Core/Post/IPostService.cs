@@ -6,9 +6,9 @@ namespace Post.Core.Post;
 
 public interface IPostService
 {
-    Task<ResultContainer<PostResponseDto>> Create(PostCreateRequestDto postCreateRequestDto);
+    Task<ResultContainer> Create(PostCreateRequestDto postCreateRequestDto);
     Task<ResultContainer<PostUpdateResponseDto>> Edit(PostUpdateRequestDto postUpdateRequestDto, Guid postId);
-    Task<ResultContainer<PostResponseDto>> Delete(Guid postId);
+    Task<ResultContainer> Delete(Guid postId);
     Task<ResultContainer<PostModelResponseDto>> GetById(Guid postId);
 
 }

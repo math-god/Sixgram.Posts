@@ -56,7 +56,7 @@ namespace Post.Core.ControllerServices
                 case null:
                     result.HttpStatusCode = HttpStatusCode.ServiceUnavailable;
                     return result;
-                case true:
+                case false:
                     result.HttpStatusCode = HttpStatusCode.NotFound;
                     return result;
             }

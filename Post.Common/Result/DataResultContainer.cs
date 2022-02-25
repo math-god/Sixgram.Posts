@@ -1,7 +1,6 @@
-﻿namespace Post.Common.Result
+﻿namespace Post.Common.Result;
+
+public class ResultContainer<T> : ResultContainer
 {
-    public class ResultContainer<T> : ResultContainer
-    {
-        public T Data { get; set; }
-    }
+    public T Data { get; set; }
 }

@@ -5,6 +5,6 @@ namespace Post.Core.Commentary;
 
 public interface ICommentaryService
 {
-    Task<ResultContainer<CommentResponseDto>> Create(CommentCreateRequestDto commentCreateRequestDto, Guid postId);
-    Task<ResultContainer<CommentResponseDto>> Delete(Guid commentId);
+    Task<ResultContainer> Create(CommentCreateRequestDto commentCreateRequestDto, Guid postId);
+    Task<ResultContainer> Delete(Guid commentId);
 }

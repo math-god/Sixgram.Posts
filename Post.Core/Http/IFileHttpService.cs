@@ -1,5 +1,4 @@
 ﻿using Post.Core.Dto.File;
-using Post.Core.Dto.Request;
 
 namespace Post.Core.Http
 {

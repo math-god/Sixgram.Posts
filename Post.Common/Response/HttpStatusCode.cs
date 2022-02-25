@@ -1,12 +1,11 @@
-﻿namespace Post.Common.Response
+﻿namespace Post.Common.Response;
+
+public enum HttpStatusCode
 {
-    public enum HttpStatusCode
-    {
-        NotFound = 1,
-        BadRequest = 2,
-        Unauthorized = 3,
-        NoContent = 4,
-        Ok = 5,
-        ServiceUnavailable = 6
-    }
+    Ok = 200,
+    NoContent = 204,
+    BadRequest = 400,
+    Unauthorized = 401,
+    NotFound = 404,
+    ServiceUnavailable = 503
 }

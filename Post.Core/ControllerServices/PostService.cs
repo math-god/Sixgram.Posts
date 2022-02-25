@@ -36,9 +36,9 @@ public class PostService : IPostService
         _fileService = fileService;
     }
 
-    public async Task<ResultContainer<PostResponseDto>> Create(PostCreateRequestDto postCreateRequestDto)
+    public async Task<ResultContainer> Create(PostCreateRequestDto postCreateRequestDto)
     {
-        var result = new ResultContainer<PostResponseDto>();
+        var result = new ResultContainer();
 
         if (postCreateRequestDto.File == null)
         {
@@ -47,7 +47,7 @@ public class PostService : IPostService
         }
 
         var postId = Guid.NewGuid();
-        
+
         var fileId = await _fileService.Send(postCreateRequestDto.File, postId);
 
         if (fileId == null)
@@ -59,16 +59,19 @@ public class PostService : IPostService
         {
             Id = postId,
             UserId = _tokenService.GetCurrentUserId(),
-            FileId = (Guid)fileId,
+            FileId = (Guid) fileId,
             Description = postCreateRequestDto.Description
         };
 
-        result = _mapper.Map<ResultContainer<PostResponseDto>>(await _postRepository.Create(post));
+        await _postRepository.Create(post);
+
+        result.HttpStatusCode = HttpStatusCode.NoContent;
 
         return result;
     }
 
-    public async Task<ResultContainer<PostUpdateResponseDto>> Edit(PostUpdateRequestDto postUpdateRequestDto, Guid postId)
+    public async Task<ResultContainer<PostUpdateResponseDto>> Edit(PostUpdateRequestDto postUpdateRequestDto,
+        Guid postId)
     {
         var result = new ResultContainer<PostUpdateResponseDto>();
 
@@ -94,9 +97,9 @@ public class PostService : IPostService
         return result;
     }
 
-    public async Task<ResultContainer<PostResponseDto>> Delete(Guid postId)
+    public async Task<ResultContainer> Delete(Guid postId)
     {
-        var result = new ResultContainer<PostResponseDto>();
+        var result = new ResultContainer();
 
         var post = await _postRepository.GetById(postId);
 
@@ -112,7 +115,9 @@ public class PostService : IPostService
             return result;
         }
 
-        result = _mapper.Map<ResultContainer<PostResponseDto>>(await _postRepository.Delete(post));
+        await _postRepository.Delete(post);
+        
+        result.HttpStatusCode = HttpStatusCode.NoContent;
 
         return result;
     }
@@ -129,7 +134,7 @@ public class PostService : IPostService
         }
 
         result = _mapper.Map<ResultContainer<PostModelResponseDto>>(post);
-        
+
         return result;
     }
 }
