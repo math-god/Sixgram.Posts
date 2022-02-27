@@ -42,7 +42,7 @@ public class PostService : IPostService
 
         if (postCreateRequestDto.File == null)
         {
-            result.HttpStatusCode = HttpStatusCode.BadRequest;
+            result.ResponseStatusCode = ResponseStatusCode.BadRequest;
             return result;
         }
 
@@ -65,7 +65,7 @@ public class PostService : IPostService
 
         await _postRepository.Create(post);
 
-        result.HttpStatusCode = HttpStatusCode.NoContent;
+        result.ResponseStatusCode = ResponseStatusCode.NoContent;
 
         return result;
     }
@@ -79,13 +79,13 @@ public class PostService : IPostService
 
         if (post == null)
         {
-            result.HttpStatusCode = HttpStatusCode.NotFound;
+            result.ResponseStatusCode = ResponseStatusCode.NotFound;
             return result;
         }
 
         if (post.UserId != _tokenService.GetCurrentUserId())
         {
-            result.HttpStatusCode = HttpStatusCode.BadRequest;
+            result.ResponseStatusCode = ResponseStatusCode.BadRequest;
             return result;
         }
 
@@ -105,19 +105,19 @@ public class PostService : IPostService
 
         if (post == null)
         {
-            result.HttpStatusCode = HttpStatusCode.NotFound;
+            result.ResponseStatusCode = ResponseStatusCode.NotFound;
             return result;
         }
 
         if (post.UserId != _tokenService.GetCurrentUserId())
         {
-            result.HttpStatusCode = HttpStatusCode.BadRequest;
+            result.ResponseStatusCode = ResponseStatusCode.BadRequest;
             return result;
         }
 
         await _postRepository.Delete(post);
         
-        result.HttpStatusCode = HttpStatusCode.NoContent;
+        result.ResponseStatusCode = ResponseStatusCode.NoContent;
 
         return result;
     }
@@ -129,7 +129,7 @@ public class PostService : IPostService
 
         if (post == null)
         {
-            result.HttpStatusCode = HttpStatusCode.NotFound;
+            result.ResponseStatusCode = ResponseStatusCode.NotFound;
             return result;
         }
 

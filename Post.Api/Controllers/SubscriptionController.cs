@@ -36,7 +36,7 @@ namespace Post.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Subscribe([FromForm] SubscribeRequestDto subscribeRequestDto)
-            => await ReturnNoContentResult(_subscriptionService.Subscribe(subscribeRequestDto));
+            => await ReturnResult(_subscriptionService.Subscribe(subscribeRequestDto));
 
         /// <summary>
         ///  Unsubscribes one user from another one
@@ -49,6 +49,6 @@ namespace Post.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Unsubscribe(Guid id)
-            => await ReturnNoContentResult(_subscriptionService.Unsubscribe(id));
+            => await ReturnResult(_subscriptionService.Unsubscribe(id));
     }
 }

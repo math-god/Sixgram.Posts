@@ -61,7 +61,7 @@ namespace Post
 
             var connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connection,
-                x => x.MigrationsAssembly("Post.Da  tabase")));
+                x => x.MigrationsAssembly("Post.Database")));
 
             //Configure AutoMapper Profile
             var mapperConfig = new MapperConfiguration

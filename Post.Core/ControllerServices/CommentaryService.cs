@@ -39,7 +39,7 @@ public class CommentaryService : ICommentaryService
 
         if (post == null)
         {
-            result.HttpStatusCode = HttpStatusCode.NotFound;
+            result.ResponseStatusCode = ResponseStatusCode.NotFound;
             return result;
         }
 
@@ -54,7 +54,7 @@ public class CommentaryService : ICommentaryService
 
         await _postRepository.Update(post);
 
-        result.HttpStatusCode = HttpStatusCode.NoContent;
+        result.ResponseStatusCode = ResponseStatusCode.NoContent;
 
         return result;
     }
@@ -67,19 +67,19 @@ public class CommentaryService : ICommentaryService
 
         if (commentary == null)
         {
-            result.HttpStatusCode = HttpStatusCode.NotFound;
+            result.ResponseStatusCode = ResponseStatusCode.NotFound;
             return result;
         }
 
         if (commentary.UserId != _tokenService.GetCurrentUserId())
         {
-            result.HttpStatusCode = HttpStatusCode.BadRequest;
+            result.ResponseStatusCode = ResponseStatusCode.BadRequest;
             return result;
         }
 
         await _commentaryRepository.Delete(commentary);
 
-        result.HttpStatusCode = HttpStatusCode.NoContent;
+        result.ResponseStatusCode = ResponseStatusCode.NoContent;
 
         return result;
     }

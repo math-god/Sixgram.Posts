@@ -1,6 +1,6 @@
 ﻿namespace Post.Common.Response;
 
-public enum HttpStatusCode
+public enum ResponseStatusCode
 {
     Ok = 200,
     NoContent = 204,

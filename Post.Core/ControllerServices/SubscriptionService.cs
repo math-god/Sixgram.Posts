@@ -39,13 +39,13 @@ namespace Post.Core.ControllerServices
             if (_subscriptionRepository.GetByFilter(p =>
                     p.RespondentId == subscribeRequestDto.RespondentId && p.SubscriberId == currentUserId).Count() == 1)
             {
-                result.HttpStatusCode = HttpStatusCode.BadRequest;
+                result.ResponseStatusCode = ResponseStatusCode.BadRequest;
                 return result;
             }
     
             if (subscribeRequestDto.RespondentId == currentUserId)
             {
-                result.HttpStatusCode = HttpStatusCode.BadRequest;
+                result.ResponseStatusCode = ResponseStatusCode.BadRequest;
                 return result;
             }
 
@@ -54,10 +54,10 @@ namespace Post.Core.ControllerServices
             switch (userExists)
             {
                 case null:
-                    result.HttpStatusCode = HttpStatusCode.ServiceUnavailable;
+                    result.ResponseStatusCode = ResponseStatusCode.ServiceUnavailable;
                     return result;
                 case false:
-                    result.HttpStatusCode = HttpStatusCode.NotFound;
+                    result.ResponseStatusCode = ResponseStatusCode.NotFound;
                     return result;
             }
 
@@ -69,7 +69,7 @@ namespace Post.Core.ControllerServices
 
             await _subscriptionRepository.Create(subscriptionModel);
 
-            result.HttpStatusCode = HttpStatusCode.NoContent;
+            result.ResponseStatusCode = ResponseStatusCode.NoContent;
 
             return result;
         }
@@ -83,13 +83,13 @@ namespace Post.Core.ControllerServices
 
             if (subscription == null)
             {
-                result.HttpStatusCode = HttpStatusCode.NotFound;
+                result.ResponseStatusCode = ResponseStatusCode.NotFound;
                 return result;
             }
 
             await _subscriptionRepository.Delete(subscription);
             
-            result.HttpStatusCode = HttpStatusCode.NoContent;
+            result.ResponseStatusCode = ResponseStatusCode.NoContent;
 
             return result;
         }

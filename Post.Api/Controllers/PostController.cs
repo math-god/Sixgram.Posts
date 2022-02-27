@@ -39,7 +39,7 @@ public class PostController : BaseController
     [RequestSizeLimit(MaxFileSize)]
     [RequestFormLimits(MultipartBodyLengthLimit = MaxFileSize)]
     public async Task<ActionResult> Create([FromForm] PostCreateRequestDto uploadedFile)
-        => await ReturnNoContentResult(_postService.Create(uploadedFile));
+        => await ReturnResult(_postService.Create(uploadedFile));
 
     /// <summary>
     ///  Edits the post
@@ -55,7 +55,7 @@ public class PostController : BaseController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<PostUpdateResponseDto>> Edit([FromForm] PostUpdateRequestDto postUpdateRequestDto,
         Guid id)
-        => await ReturnContentResult<ResultContainer<PostUpdateResponseDto>, PostUpdateResponseDto>
+        => await ResturnResult<ResultContainer<PostUpdateResponseDto>, PostUpdateResponseDto>
             (_postService.Edit(postUpdateRequestDto, id));
 
     /// <summary>
@@ -70,7 +70,7 @@ public class PostController : BaseController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> Delete(Guid id)
-        => await ReturnNoContentResult(_postService.Delete(id));
+        => await ReturnResult(_postService.Delete(id));
 
     /// <summary>
     ///  Get the post by id
@@ -82,7 +82,7 @@ public class PostController : BaseController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<PostModelResponseDto>> GetById(Guid id)
-        => await ReturnContentResult<ResultContainer<PostModelResponseDto>, PostModelResponseDto>
+        => await ResturnResult<ResultContainer<PostModelResponseDto>, PostModelResponseDto>
             (_postService.GetById(id));
 
     /// <summary>
@@ -98,7 +98,7 @@ public class PostController : BaseController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> CreateComment([FromForm] CommentCreateRequestDto commentCreateRequestDto, Guid id)
-        => await ReturnNoContentResult(_commentaryService.Create(commentCreateRequestDto, id));
+        => await ReturnResult(_commentaryService.Create(commentCreateRequestDto, id));
 
     /// <summary>
     ///  Deletes the comment
@@ -112,5 +112,5 @@ public class PostController : BaseController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> DeleteComment(Guid id)
-        => await ReturnNoContentResult(_commentaryService.Delete(id));
+        => await ReturnResult(_commentaryService.Delete(id));
 }
