@@ -6,7 +6,7 @@ namespace Post.Controllers;
 
 public class BaseController : ControllerBase
 {
-    protected async Task<ActionResult> ResturnResult<T, TM>(Task<T> task) where T : ResultContainer<TM>
+    protected async Task<ActionResult> ReturnResult<T, TM>(Task<T> task) where T : ResultContainer<TM>
     {
         var result = await task;
 

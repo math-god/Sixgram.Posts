@@ -55,7 +55,7 @@ public class PostController : BaseController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<PostUpdateResponseDto>> Edit([FromForm] PostUpdateRequestDto postUpdateRequestDto,
         Guid id)
-        => await ResturnResult<ResultContainer<PostUpdateResponseDto>, PostUpdateResponseDto>
+        => await ReturnResult<ResultContainer<PostUpdateResponseDto>, PostUpdateResponseDto>
             (_postService.Edit(postUpdateRequestDto, id));
 
     /// <summary>
@@ -82,7 +82,7 @@ public class PostController : BaseController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<PostModelResponseDto>> GetById(Guid id)
-        => await ResturnResult<ResultContainer<PostModelResponseDto>, PostModelResponseDto>
+        => await ReturnResult<ResultContainer<PostModelResponseDto>, PostModelResponseDto>
             (_postService.GetById(id));
 
     /// <summary>
