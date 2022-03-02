@@ -29,7 +29,7 @@ public class AppProfile : Profile
         CreateMap<PostModel, ResultContainer<PostUpdateResponseDto>>()
             .ForMember("Data", opt
                 => opt.MapFrom(p => p));
-        
+
         CreateMap<PostModel, ResultContainer<PostModelResponseDto>>()
             .ForMember("Data", opt
                 => opt.MapFrom(p => p));
@@ -37,7 +37,17 @@ public class AppProfile : Profile
         CreateMap<PostModel, PostModelResponseDto>()
             .ForMember("PostId", opt
                 => opt.MapFrom(p => p.Id));
-        
+
+        CreateMap<SubscriptionModel, ResultContainer<SubscriptionModelResponseDto>>()
+            .ForMember("Data", opt
+                => opt.MapFrom(p => p));
+
+        CreateMap<CommentaryModel, ResultContainer<CommentModelResponseDto>>()
+            .ForMember("Data", opt
+                => opt.MapFrom(p => p));
+
+        CreateMap<CommentaryModel, CommentModelResponseDto>();
+        CreateMap<SubscriptionModel, SubscriptionModelResponseDto>();
         CreateMap<PostModel, PostUpdateResponseDto>();
     }
 }
