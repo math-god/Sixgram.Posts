@@ -2,9 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Post.Common.Result;
 using Post.Core.Dto.Subscription;
-using Post.Core.Http;
 using Post.Core.Subscription;
-using Post.Core.Token;
 
 namespace Post.Controllers
 {
@@ -23,6 +21,18 @@ namespace Post.Controllers
         {
             _subscriptionService = subscriptionService;
         }
+        
+        /// <summary>
+        ///  Gets the subscription by id
+        /// </summary>
+        /// <response code="200">Success</response>
+        /// <response code="404">Subscription doesn't exist</response>
+        [HttpGet("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<SubscriptionModelResponseDto>> GetById(Guid id)
+            => await ReturnResult<ResultContainer<SubscriptionModelResponseDto>, SubscriptionModelResponseDto>(
+                _subscriptionService.GetById(id));
 
         /// <summary>
         ///  Subscribes one user to another one
