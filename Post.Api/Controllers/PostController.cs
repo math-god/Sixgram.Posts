@@ -15,17 +15,28 @@ public class PostController : BaseController
 {
     private const long MaxFileSize = 2L * 1024L * 1024L * 1024L;
     private readonly IPostService _postService;
-    private readonly ICommentaryService _commentaryService;
+
 
     public PostController
     (
-        IPostService postService,
-        ICommentaryService commentaryService
+        IPostService postService
     )
     {
         _postService = postService;
-        _commentaryService = commentaryService;
     }
+
+    /// <summary>
+    ///  Get the post by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <response code="200">Success</response>
+    /// <response code="404">The post not found</response>
+    [HttpGet("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<PostModelResponseDto>> GetById(Guid id)
+        => await ReturnResult<ResultContainer<PostModelResponseDto>, PostModelResponseDto>
+            (_postService.GetById(id));
 
     /// <summary>
     ///  Creates the post
@@ -71,46 +82,4 @@ public class PostController : BaseController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> Delete(Guid id)
         => await ReturnResult(_postService.Delete(id));
-
-    /// <summary>
-    ///  Get the post by id
-    /// </summary>
-    /// <param name="id"></param>
-    /// <response code="200">Success</response>
-    /// <response code="404">The post not found</response>
-    [HttpGet("{id:guid}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<PostModelResponseDto>> GetById(Guid id)
-        => await ReturnResult<ResultContainer<PostModelResponseDto>, PostModelResponseDto>
-            (_postService.GetById(id));
-
-    /// <summary>
-    ///  Comments the post
-    /// </summary>
-    /// <param name="commentCreateRequestDto"></param>
-    /// <param name="id"></param>
-    /// <response code="204">Success</response>
-    /// <response code="400">There is no post Id or commentary in the request</response>
-    /// <response code="404">Post not found</response>
-    [HttpPost("{id:guid}/comments")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult> CreateComment([FromForm] CommentCreateRequestDto commentCreateRequestDto, Guid id)
-        => await ReturnResult(_commentaryService.Create(commentCreateRequestDto, id));
-
-    /// <summary>
-    ///  Deletes the comment
-    /// </summary>
-    /// <param name="id"></param>
-    /// <response code="204">Success</response>
-    /// <response code="400">There is no commentary Id in the request</response>
-    /// <response code="404">Commentary not found</response>
-    [HttpDelete("comments/{id:guid}")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult> DeleteComment(Guid id)
-        => await ReturnResult(_commentaryService.Delete(id));
 }
