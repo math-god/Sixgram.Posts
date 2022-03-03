@@ -15,20 +15,20 @@ namespace Post.Core.ControllerServices
         private readonly ISubscriptionRepository _subscriptionRepository;
         private readonly IMapper _mapper;
         private readonly ITokenService _tokenService;
-        private readonly ISubscriptionHttpService _subscriptionHttpService;
+        private readonly IUserHttpService _userHttpService;
 
         public SubscriptionService
         (
             IMapper mapper,
             ISubscriptionRepository subscriptionRepository,
             ITokenService tokenService,
-            ISubscriptionHttpService subscriptionHttpService
+            IUserHttpService userHttpService
         )
         {
             _subscriptionRepository = subscriptionRepository;
             _mapper = mapper;
             _tokenService = tokenService;
-            _subscriptionHttpService = subscriptionHttpService;
+            _userHttpService = userHttpService;
         }
 
         public async Task<ResultContainer> Subscribe(SubscribeRequestDto subscribeRequestDto)
@@ -49,7 +49,7 @@ namespace Post.Core.ControllerServices
                 return result;
             }
 
-            var userExists = await _subscriptionHttpService.DoesUserExist(subscribeRequestDto.RespondentId);
+            var userExists = await _userHttpService.DoesUserExist(subscribeRequestDto.RespondentId);
 
             switch (userExists)
             {
@@ -77,7 +77,6 @@ namespace Post.Core.ControllerServices
         public async Task<ResultContainer> Unsubscribe(Guid subscriptionId)
         {
             var result = new ResultContainer();
-            var currentUserId = _tokenService.GetCurrentUserId();
 
             var subscription = await _subscriptionRepository.GetById(subscriptionId);
 

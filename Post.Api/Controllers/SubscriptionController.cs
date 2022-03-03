@@ -30,6 +30,7 @@ namespace Post.Controllers
         [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [AllowAnonymous]
         public async Task<ActionResult<SubscriptionModelResponseDto>> GetById(Guid id)
             => await ReturnResult<ResultContainer<SubscriptionModelResponseDto>, SubscriptionModelResponseDto>(
                 _subscriptionService.GetById(id));

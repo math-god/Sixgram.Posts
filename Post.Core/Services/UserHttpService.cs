@@ -5,12 +5,12 @@ using Post.Core.Http;
 
 namespace Post.Core.Services;
 
-public class SubscriptionHttpService : ISubscriptionHttpService
+public class UserHttpService : IUserHttpService
 {
     private readonly HttpClient _httpClient;
     private readonly HttpContext _httpContext;
     
-    public SubscriptionHttpService
+    public UserHttpService
     (
         IHttpClientFactory httpClientFactory,
         IHttpContextAccessor httpContextAccessor

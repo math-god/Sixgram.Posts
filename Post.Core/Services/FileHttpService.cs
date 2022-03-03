@@ -20,6 +20,7 @@ namespace Post.Core.Services
             _httpClient = httpClientFactory.CreateClient("file_storage");
             _httpContext = httpContextAccessor.HttpContext;
         }
+        
 /*/api/v1/subscribe POST - create
 /api/v1/subscribe GET - получение записей по фильтру
 a/v/subscribe/{id} GET - получение записи по ID

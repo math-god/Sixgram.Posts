@@ -10,5 +10,6 @@ public interface IPostService
     Task<ResultContainer<PostUpdateResponseDto>> Edit(PostUpdateRequestDto postUpdateRequestDto, Guid postId);
     Task<ResultContainer> Delete(Guid postId);
     Task<ResultContainer<PostModelResponseDto>> GetById(Guid postId);
+    Task<ResultContainer<PostModelsResponseDto>> GetAllPostsOfCurrentUser(Guid userId);
 
 }

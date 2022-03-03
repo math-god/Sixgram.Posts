@@ -32,6 +32,14 @@ public class AppProfile : Profile
 
         CreateMap<PostModel, ResultContainer<PostModelResponseDto>>()
             .ForMember("Data", opt
+                => opt.MapFrom(p => p)); 
+        
+        CreateMap<IEnumerable<PostModel>, ResultContainer<PostModelsResponseDto>>()
+            .ForMember("Data", opt
+                => opt.MapFrom(p => p)); 
+        
+        CreateMap<IEnumerable<PostModel>, PostModelsResponseDto>()
+            .ForMember("_posts", opt
                 => opt.MapFrom(p => p));
 
         CreateMap<PostModel, PostModelResponseDto>()

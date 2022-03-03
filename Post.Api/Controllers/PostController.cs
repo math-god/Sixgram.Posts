@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Post.Common.Result;
-using Post.Core.Commentary;
 using Post.Core.Dto.Post;
 using Post.Core.Post;
 
@@ -37,6 +36,20 @@ public class PostController : BaseController
     public async Task<ActionResult<PostModelResponseDto>> GetById(Guid id)
         => await ReturnResult<ResultContainer<PostModelResponseDto>, PostModelResponseDto>
             (_postService.GetById(id));
+
+    /// <summary>
+    ///  Get all user's posts
+    /// </summary>
+    /// <param name="id"></param>
+    /// <response code="200">Success</response>
+    /// <response code="404">The user not found</response>
+    [HttpGet("user/{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [AllowAnonymous]
+    public async Task<ActionResult<PostModelsResponseDto>> GetAllPostsOfCurrentUser(Guid id)
+        => await ReturnResult<ResultContainer<PostModelsResponseDto>, PostModelsResponseDto>
+            (_postService.GetAllPostsOfCurrentUser(id));
 
     /// <summary>
     ///  Creates the post
