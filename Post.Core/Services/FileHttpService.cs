@@ -21,11 +21,6 @@ namespace Post.Core.Services
             _httpContext = httpContextAccessor.HttpContext;
         }
         
-/*/api/v1/subscribe POST - create
-/api/v1/subscribe GET - получение записей по фильтру
-a/v/subscribe/{id} GET - получение записи по ID
-a/v/subscribe/{id}  delete - delete записи по ID
-a/v/subscribe/{id}  put - update записи по ID*/
 
         public async Task<string> SendRequest(FileSendingDto fileSendingDto)
         {

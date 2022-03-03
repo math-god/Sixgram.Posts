@@ -1,4 +1,4 @@
-﻿namespace Post.Core.Dto.Post;
+﻿namespace Post.Core.Dto.Comment;
 
 public class CommentResponseDto
 {

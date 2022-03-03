@@ -2,6 +2,7 @@
 using Post.Common.Response;
 using Post.Common.Result;
 using Post.Core.Commentary;
+using Post.Core.Dto.Comment;
 using Post.Core.Dto.Post;
 using Post.Core.Token;
 using Post.Database.EntityModels;

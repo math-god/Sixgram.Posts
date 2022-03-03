@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Post.Common.Result;
+using Post.Core.Dto.Comment;
 using Post.Core.Dto.Post;
 using Post.Core.Dto.Subscription;
 using Post.Database.EntityModels;

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Post.Common.Result;
 using Post.Core.Commentary;
+using Post.Core.Dto.Comment;
 using Post.Core.Dto.Post;
 
 namespace Post.Controllers;
