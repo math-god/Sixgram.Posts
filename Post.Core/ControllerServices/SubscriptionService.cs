@@ -93,5 +93,24 @@ namespace Post.Core.ControllerServices
 
             return result;
         }
+
+        public async Task<ResultContainer<SubscriptionModelResponseDto>> GetById(Guid subscriptionId)
+        {
+            var result = new ResultContainer<SubscriptionModelResponseDto>();
+
+            var subscription = await _subscriptionRepository.GetById(subscriptionId);
+
+            if (subscription == null)
+            {
+                result.ResponseStatusCode = ResponseStatusCode.NotFound;
+                return result;
+            }
+
+            result = _mapper.Map<ResultContainer<SubscriptionModelResponseDto>>(subscription);
+
+            result.ResponseStatusCode = ResponseStatusCode.Ok;
+
+            return result;
+        }
     }
 }

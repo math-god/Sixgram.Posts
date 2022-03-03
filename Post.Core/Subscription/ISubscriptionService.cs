@@ -7,5 +7,6 @@ namespace Post.Core.Subscription
     {
         Task<ResultContainer> Subscribe(SubscribeRequestDto subscribeRequestDto);
         Task<ResultContainer> Unsubscribe(Guid subscriptionId);
+        Task<ResultContainer<SubscriptionModelResponseDto>> GetById(Guid subscriptionId);
     }
 }
