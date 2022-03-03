@@ -83,4 +83,23 @@ public class CommentaryService : ICommentaryService
 
         return result;
     }
+
+    public async Task<ResultContainer<CommentModelResponseDto>> GetById(Guid commentId)
+    {
+        var result = new ResultContainer<CommentModelResponseDto>();
+
+        var commentary = await _commentaryRepository.GetById(commentId);
+
+        if (commentary == null)
+        {
+            result.ResponseStatusCode = ResponseStatusCode.NotFound;
+            return result;
+        }
+
+        result = _mapper.Map<ResultContainer<CommentModelResponseDto>>(commentary);
+
+        result.ResponseStatusCode = ResponseStatusCode.Ok;
+
+        return result;
+    }
 }
