@@ -21,7 +21,7 @@ namespace Post.Controllers
         {
             _subscriptionService = subscriptionService;
         }
-        
+
         /// <summary>
         ///  Gets the subscription by id
         /// </summary>
