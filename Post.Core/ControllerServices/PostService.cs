@@ -60,7 +60,7 @@ public class PostService : IPostService
         {
             Id = postId,
             UserId = _tokenService.GetCurrentUserId(),
-            FileId = (Guid) fileId,
+            FileId = (Guid)fileId,
             Description = postCreateRequestDto.Description
         };
 
@@ -117,7 +117,7 @@ public class PostService : IPostService
         }
 
         await _postRepository.Delete(post);
-        
+
         result.ResponseStatusCode = ResponseStatusCode.NoContent;
 
         return result;
@@ -156,7 +156,7 @@ public class PostService : IPostService
         }*/
 
         result = _mapper.Map<ResultContainer<PostModelsResponseDto>>(
-            _postRepository.GetByFilter(u => u.UserId == userId));
+            await _postRepository.GetByFilter(u => u.UserId == userId));
 
         result.ResponseStatusCode = ResponseStatusCode.Ok;
         return result;

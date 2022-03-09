@@ -12,16 +12,17 @@ namespace Post.Database.Repository.Base
             AppDbContext = appDbContext;
         }
 
-        public IEnumerable<TModel> GetAllObjects()
-            => AppDbContext.Set<TModel>().AsNoTracking().ToList();
-
         public async Task<TModel> GetById(Guid id)
-            => await AppDbContext.Set<TModel>().FindAsync(id);
+            => await AppDbContext.Set<TModel>().AsNoTracking().FirstAsync(p => p.Id == id);
 
-        public IEnumerable<TModel> GetByFilter(Func<TModel, bool> predicate)
-            => AppDbContext.Set<TModel>().Where(predicate);
+        public async Task<IEnumerable<TModel>> GetByFilter(Func<TModel, bool> predicate)
+        {
+            var result = await AppDbContext.Set<TModel>().AsNoTracking().
+                Where(predicate).AsQueryable().ToListAsync();
+            return result;
+        }
 
-        public virtual async Task<TModel> Create(TModel item)
+        public async Task<TModel> Create(TModel item)
         {
             await AppDbContext.Set<TModel>().AddAsync(item);
             await AppDbContext.SaveChangesAsync();
@@ -35,7 +36,7 @@ namespace Post.Database.Repository.Base
             return item;
         }
 
-        public async Task<List<TModel>> UpdateRange(List<TModel> item)
+        public async Task<IEnumerable<TModel>> UpdateRange(List<TModel> item)
         {
             AppDbContext.Set<TModel>().UpdateRange(item);
             await AppDbContext.SaveChangesAsync();
