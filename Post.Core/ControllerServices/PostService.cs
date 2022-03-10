@@ -1,14 +1,12 @@
 ﻿using AutoMapper;
 using Post.Common.Response;
 using Post.Common.Result;
-using Post.Common.Types;
 using Post.Core.Dto.Post;
 using Post.Core.File;
 using Post.Core.Http;
 using Post.Core.Post;
-using Post.Core.Token;
+using Post.Core.User;
 using Post.Database.EntityModels;
-using Post.Database.Repository.Commentary;
 using Post.Database.Repository.Post;
 
 namespace Post.Core.ControllerServices;
@@ -17,7 +15,7 @@ public class PostService : IPostService
 {
     private readonly IPostRepository _postRepository;
     private readonly IMapper _mapper;
-    private readonly ITokenService _tokenService;
+    private readonly IUserIdentityService _itUserIdentityService;
     private readonly IFileService _fileService;
     private readonly IUserHttpService _userHttpService;
 
@@ -25,23 +23,23 @@ public class PostService : IPostService
     (
         IPostRepository postRepository,
         IMapper mapper,
-        ITokenService tokenService,
+        IUserIdentityService itUserIdentityService,
         IFileService fileService,
         IUserHttpService userHttpService
     )
     {
         _postRepository = postRepository;
         _mapper = mapper;
-        _tokenService = tokenService;
+        _itUserIdentityService = itUserIdentityService;
         _fileService = fileService;
         _userHttpService = userHttpService;
     }
 
-    public async Task<ResultContainer> Create(PostCreateRequestDto postCreateRequestDto)
+    public async Task<ResultContainer> Create(PostCreateRequestDto data)
     {
         var result = new ResultContainer();
 
-        if (postCreateRequestDto.File == null)
+        if (data.File == null)
         {
             result.ResponseStatusCode = ResponseStatusCode.BadRequest;
             return result;
@@ -49,19 +47,20 @@ public class PostService : IPostService
 
         var postId = Guid.NewGuid();
 
-        var fileId = await _fileService.Send(postCreateRequestDto.File, postId);
+        var fileId = await _fileService.Send(data.File, postId);
 
         if (fileId == null)
         {
+            result.ResponseStatusCode = ResponseStatusCode.BadRequest;
             return result;
         }
 
         var post = new PostModel
         {
             Id = postId,
-            UserId = _tokenService.GetCurrentUserId(),
-            FileId = (Guid)fileId,
-            Description = postCreateRequestDto.Description
+            UserId = _itUserIdentityService.GetCurrentUserId(),
+            FileId = (Guid) fileId,
+            Description = data.Description
         };
 
         await _postRepository.Create(post);
@@ -71,8 +70,7 @@ public class PostService : IPostService
         return result;
     }
 
-    public async Task<ResultContainer<PostUpdateResponseDto>> Edit(PostUpdateRequestDto postUpdateRequestDto,
-        Guid postId)
+    public async Task<ResultContainer<PostUpdateResponseDto>> Edit(PostUpdateRequestDto data, Guid postId)
     {
         var result = new ResultContainer<PostUpdateResponseDto>();
 
@@ -84,14 +82,14 @@ public class PostService : IPostService
             return result;
         }
 
-        if (post.UserId != _tokenService.GetCurrentUserId())
+        if (post.UserId != _itUserIdentityService.GetCurrentUserId())
         {
             result.ResponseStatusCode = ResponseStatusCode.BadRequest;
             return result;
         }
 
-        post.FileId = await _fileService.Send(postUpdateRequestDto.NewFile, post.Id);
-        post.Description = postUpdateRequestDto.NewDescription;
+        post.FileId = await _fileService.Send(data.NewFile, post.Id);
+        post.Description = data.NewDescription;
 
         result = _mapper.Map<ResultContainer<PostUpdateResponseDto>>(await _postRepository.Update(post));
 
@@ -110,7 +108,7 @@ public class PostService : IPostService
             return result;
         }
 
-        if (post.UserId != _tokenService.GetCurrentUserId())
+        if (post.UserId != _itUserIdentityService.GetCurrentUserId())
         {
             result.ResponseStatusCode = ResponseStatusCode.BadRequest;
             return result;

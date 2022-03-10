@@ -39,7 +39,7 @@ public class CommentaryController : BaseController
     /// <summary>
     ///  Comments the post
     /// </summary>
-    /// <param name="commentCreateRequestDto"></param>
+    /// <param name="data"></param>
     /// <param name="id"></param>
     /// <response code="204">Success</response>
     /// <response code="400">There is no post Id or commentary in the request</response>
@@ -48,8 +48,8 @@ public class CommentaryController : BaseController
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult> CreateComment([FromForm] CommentCreateRequestDto commentCreateRequestDto, Guid id)
-        => await ReturnResult(_commentaryService.Create(commentCreateRequestDto, id));
+    public async Task<ActionResult> CreateComment([FromForm] CommentCreateRequestDto data, Guid id)
+        => await ReturnResult(_commentaryService.Create(data, id));
 
     /// <summary>
     ///  Deletes the comment

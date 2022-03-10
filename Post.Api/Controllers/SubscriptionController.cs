@@ -38,7 +38,7 @@ namespace Post.Controllers
         /// <summary>
         ///  Subscribes one user to another one
         /// </summary>
-        /// <param name="subscribeRequestDto">Respondent Id</param>
+        /// <param name="data">Respondent Id</param>
         /// <response code="204">Success</response>
         /// <response code="400">Subscription has been already done or you are trying to subscribe to yourself</response>
         /// <response code="404">Respondent Id doesn't exist</response>
@@ -46,8 +46,8 @@ namespace Post.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> Subscribe([FromForm] SubscribeRequestDto subscribeRequestDto)
-            => await ReturnResult(_subscriptionService.Subscribe(subscribeRequestDto));
+        public async Task<ActionResult> Subscribe([FromForm] SubscribeRequestDto data)
+            => await ReturnResult(_subscriptionService.Subscribe(data));
 
         /// <summary>
         ///  Unsubscribes one user from another one

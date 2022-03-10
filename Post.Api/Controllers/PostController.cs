@@ -54,7 +54,7 @@ public class PostController : BaseController
     /// <summary>
     ///  Creates the post
     /// </summary>
-    /// <param name="uploadedFile"></param>
+    /// <param name="data"></param>
     /// <response code="204">Success</response>
     /// <response code="400">There is no file in the request</response>
     [HttpPost]
@@ -62,13 +62,13 @@ public class PostController : BaseController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [RequestSizeLimit(MaxFileSize)]
     [RequestFormLimits(MultipartBodyLengthLimit = MaxFileSize)]
-    public async Task<ActionResult> Create([FromForm] PostCreateRequestDto uploadedFile)
-        => await ReturnResult(_postService.Create(uploadedFile));
+    public async Task<ActionResult> Create([FromForm] PostCreateRequestDto data)
+        => await ReturnResult(_postService.Create(data));
 
     /// <summary>
     ///  Edits the post
     /// </summary>
-    /// <param name="postUpdateRequestDto"></param>
+    /// <param name="data"></param>
     /// <param name="id"></param>
     /// <response code="200">Success</response>
     /// <response code="400">Post not found</response>
@@ -77,10 +77,10 @@ public class PostController : BaseController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<PostUpdateResponseDto>> Edit([FromForm] PostUpdateRequestDto postUpdateRequestDto,
+    public async Task<ActionResult<PostUpdateResponseDto>> Edit([FromForm] PostUpdateRequestDto data,
         Guid id)
         => await ReturnResult<ResultContainer<PostUpdateResponseDto>, PostUpdateResponseDto>
-            (_postService.Edit(postUpdateRequestDto, id));
+            (_postService.Edit(data, id));
 
     /// <summary>
     ///  Deletes the post

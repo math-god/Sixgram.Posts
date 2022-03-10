@@ -22,22 +22,22 @@ namespace Post.Core.Services
         }
         
 
-        public async Task<string> SendRequest(FileSendingDto fileSendingDto)
+        public async Task<string> SendRequest(FileSendingDto data)
         {
-            var bytes = new ByteArrayContent(fileSendingDto.UploadedFile);
-            var postId = new StringContent(fileSendingDto.SourceId.ToString());
-            var fileSource = new StringContent(fileSendingDto.FileSource.ToString());
+            var bytes = new ByteArrayContent(data.UploadedFile);
+            var postId = new StringContent(data.SourceId.ToString());
+            var fileSource = new StringContent(data.FileSource.ToString());
 
             var multiContent = new MultipartFormDataContent();
 
-            multiContent.Add(bytes, "UploadedFile", fileSendingDto.UploadedFileName);
+            multiContent.Add(bytes, "UploadedFile", data.UploadedFileName);
             multiContent.Add(postId, "SourceId");
             multiContent.Add(fileSource, "FileSource");
 
             _httpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", await _httpContext.GetTokenAsync("access_token"));
 
-            var responseMessage = await _httpClient.PostAsync("/api/v1/task/downloadfile", multiContent);
+            var responseMessage = await _httpClient.PostAsync("/api/v1/task/uploadfile", multiContent);
 
             var result = await responseMessage.Content.ReadAsStringAsync();
 

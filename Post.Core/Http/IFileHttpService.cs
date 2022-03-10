@@ -4,6 +4,6 @@ namespace Post.Core.Http
 {
     public interface IFileHttpService
     {
-        public Task<string> SendRequest(FileSendingDto fileSendingDto);
+        public Task<string> SendRequest(FileSendingDto data);
     }
 }

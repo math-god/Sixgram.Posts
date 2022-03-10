@@ -4,7 +4,7 @@ using Post.Common.Result;
 using Post.Core.Commentary;
 using Post.Core.Dto.Comment;
 using Post.Core.Dto.Post;
-using Post.Core.Token;
+using Post.Core.User;
 using Post.Database.EntityModels;
 using Post.Database.Repository.Commentary;
 using Post.Database.Repository.Post;
@@ -16,23 +16,23 @@ public class CommentaryService : ICommentaryService
     private readonly IPostRepository _postRepository;
     private readonly ICommentaryRepository _commentaryRepository;
     private readonly IMapper _mapper;
-    private readonly ITokenService _tokenService;
+    private readonly IUserIdentityService _itUserIdentityService;
 
     public CommentaryService
     (
         IPostRepository postRepository,
         ICommentaryRepository commentaryRepository,
         IMapper mapper,
-        ITokenService tokenService
+        IUserIdentityService itUserIdentityService
     )
     {
         _postRepository = postRepository;
         _commentaryRepository = commentaryRepository;
         _mapper = mapper;
-        _tokenService = tokenService;
+        _itUserIdentityService = itUserIdentityService;
     }
 
-    public async Task<ResultContainer> Create(CommentCreateRequestDto commentCreateRequestDto, Guid postId)
+    public async Task<ResultContainer> Create(CommentCreateRequestDto data, Guid postId)
     {
         var result = new ResultContainer();
 
@@ -47,8 +47,8 @@ public class CommentaryService : ICommentaryService
         var comment = new CommentaryModel
         {
             PostId = post.Id,
-            UserId = _tokenService.GetCurrentUserId(),
-            Commentary = commentCreateRequestDto.Commentary
+            UserId = _itUserIdentityService.GetCurrentUserId(),
+            Commentary = data.Commentary
         };
 
         await _commentaryRepository.Create(comment);
@@ -72,7 +72,7 @@ public class CommentaryService : ICommentaryService
             return result;
         }
 
-        if (commentary.UserId != _tokenService.GetCurrentUserId())
+        if (commentary.UserId != _itUserIdentityService.GetCurrentUserId())
         {
             result.ResponseStatusCode = ResponseStatusCode.BadRequest;
             return result;

@@ -1,15 +1,15 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
-using Post.Core.Token;
+using Post.Core.User;
 
 namespace Post.Core.Services;
 
-public class TokenService : ITokenService
+public class UserIdentityService : IUserIdentityService
 {
     private readonly HttpContext _httpContext;
 
-    public TokenService
+    public UserIdentityService
     (
         IHttpContextAccessor httpContextAccessor
     )

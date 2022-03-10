@@ -15,7 +15,7 @@ using Post.Core.Post;
 using Post.Core.Profiles;
 using Post.Core.Services;
 using Post.Core.Subscription;
-using Post.Core.Token;
+using Post.Core.User;
 using Post.Database;
 using Post.Database.Repository.Commentary;
 using Post.Database.Repository.Post;
@@ -56,7 +56,7 @@ namespace Post
             services.AddScoped<ISubscriptionService, SubscriptionService>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<ICommentaryService, CommentaryService>();
-            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<Core.User.IUserIdentityService, UserIdentityService>();
             services.AddScoped<IFileService, FileService>();
 
             var connection = Configuration.GetConnectionString("DefaultConnection");

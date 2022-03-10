@@ -4,7 +4,7 @@ using Post.Common.Result;
 using Post.Core.Dto.Subscription;
 using Post.Core.Http;
 using Post.Core.Subscription;
-using Post.Core.Token;
+using Post.Core.User;
 using Post.Database.EntityModels;
 using Post.Database.Repository.Subscription;
 
@@ -14,38 +14,38 @@ public class SubscriptionService : ISubscriptionService
 {
     private readonly ISubscriptionRepository _subscriptionRepository;
     private readonly IMapper _mapper;
-    private readonly ITokenService _tokenService;
+    private readonly IUserIdentityService _itUserIdentityService;
     private readonly IUserHttpService _userHttpService;
 
     public SubscriptionService
     (
         IMapper mapper,
         ISubscriptionRepository subscriptionRepository,
-        ITokenService tokenService,
+        IUserIdentityService itUserIdentityService,
         IUserHttpService userHttpService
     )
     {
         _subscriptionRepository = subscriptionRepository;
         _mapper = mapper;
-        _tokenService = tokenService;
+        _itUserIdentityService = itUserIdentityService;
         _userHttpService = userHttpService;
     }
 
-    public async Task<ResultContainer> Subscribe(SubscribeRequestDto subscribeRequestDto)
+    public async Task<ResultContainer> Subscribe(SubscribeRequestDto data)
     {
         var result = new ResultContainer();
-        var currentUserId = _tokenService.GetCurrentUserId();
+        var currentUserId = _itUserIdentityService.GetCurrentUserId();
 
         /*var subscriptionsAmount = await _subscriptionRepository.GetByFilter(p =>
             p.RespondentId == subscribeRequestDto.RespondentId && p.SubscriberId == currentUserId);*/
 
-        if (subscribeRequestDto.RespondentId == currentUserId /*|| subscriptionsAmount.Any()*/)
+        if (data.RespondentId == currentUserId /*|| subscriptionsAmount.Any()*/)
         {
             result.ResponseStatusCode = ResponseStatusCode.BadRequest;
             return result;
         }
 
-        var userExists = await _userHttpService.DoesUserExist(subscribeRequestDto.RespondentId);
+        var userExists = await _userHttpService.DoesUserExist(data.RespondentId);
 
         switch (userExists)
         {
@@ -59,7 +59,7 @@ public class SubscriptionService : ISubscriptionService
 
         var subscriptionModel = new SubscriptionModel()
         {
-            RespondentId = subscribeRequestDto.RespondentId,
+            RespondentId = data.RespondentId,
             SubscriberId = currentUserId
         };
 
