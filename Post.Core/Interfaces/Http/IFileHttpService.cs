@@ -1,6 +1,6 @@
 ﻿using Post.Core.Dto.File;
 
-namespace Post.Core.Http
+namespace Post.Core.Interfaces.Http
 {
     public interface IFileHttpService
     {

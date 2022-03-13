@@ -1,8 +1,7 @@
 ﻿using Post.Common.Result;
 using Post.Core.Dto.Post;
-using Post.Database.EntityModels;
 
-namespace Post.Core.Post;
+namespace Post.Core.Interfaces.Post;
 
 public interface IPostService
 {

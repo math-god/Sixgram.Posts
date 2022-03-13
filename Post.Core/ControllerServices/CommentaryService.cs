@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Post.Common.Response;
 using Post.Common.Result;
-using Post.Core.Commentary;
 using Post.Core.Dto.Comment;
 using Post.Core.Dto.Post;
-using Post.Core.User;
+using Post.Core.Interfaces.Commentary;
+using Post.Core.Interfaces.User;
 using Post.Database.EntityModels;
 using Post.Database.Repository.Commentary;
 using Post.Database.Repository.Post;

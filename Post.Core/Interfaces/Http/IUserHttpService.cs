@@ -1,4 +1,4 @@
-﻿namespace Post.Core.Http;
+﻿namespace Post.Core.Interfaces.Http;
 
 public interface IUserHttpService
 {

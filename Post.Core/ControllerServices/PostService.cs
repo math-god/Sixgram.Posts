@@ -2,10 +2,10 @@
 using Post.Common.Response;
 using Post.Common.Result;
 using Post.Core.Dto.Post;
-using Post.Core.File;
-using Post.Core.Http;
-using Post.Core.Post;
-using Post.Core.User;
+using Post.Core.Interfaces.File;
+using Post.Core.Interfaces.Http;
+using Post.Core.Interfaces.Post;
+using Post.Core.Interfaces.User;
 using Post.Database.EntityModels;
 using Post.Database.Repository.Post;
 
@@ -133,7 +133,8 @@ public class PostService : IPostService
         }
 
         result = _mapper.Map<ResultContainer<PostModelResponseDto>>(post);
-
+        
+        result.ResponseStatusCode = ResponseStatusCode.Ok;
         return result;
     }
 
@@ -148,7 +149,7 @@ public class PostService : IPostService
             case null:
                 result.ResponseStatusCode = ResponseStatusCode.ServiceUnavailable;
                 return result;
-            case false:
+            case false: 
                 result.ResponseStatusCode = ResponseStatusCode.NotFound;
                 return result;
         }*/

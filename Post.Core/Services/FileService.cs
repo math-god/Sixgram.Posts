@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Post.Core.File;
 using Newtonsoft.Json.Linq;
 using Post.Common.Types;
 using Post.Core.Dto.File;
-using Post.Core.Http;
+using Post.Core.Interfaces.File;
+using Post.Core.Interfaces.Http;
 
 namespace Post.Core.Services;
 

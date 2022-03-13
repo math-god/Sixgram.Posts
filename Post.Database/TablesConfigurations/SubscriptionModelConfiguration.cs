@@ -24,6 +24,5 @@ public class SubscriptionModelConfiguration : IEntityTypeConfiguration<Subscript
                 SubscriberId = Guid.NewGuid()
             }
         );
-
     }
 }

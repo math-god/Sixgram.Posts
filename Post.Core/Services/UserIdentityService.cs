@@ -1,7 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
-using Post.Core.User;
+using Post.Core.Interfaces.User;
 
 namespace Post.Core.Services;
 

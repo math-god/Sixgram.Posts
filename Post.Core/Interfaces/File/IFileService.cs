@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Post.Core.Dto.File;
 
-namespace Post.Core.File;
+namespace Post.Core.Interfaces.File;
 
 public interface IFileService
 {

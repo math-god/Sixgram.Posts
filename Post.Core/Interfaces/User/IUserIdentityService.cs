@@ -1,4 +1,4 @@
-﻿namespace Post.Core.User
+﻿namespace Post.Core.Interfaces.User
 {
     public interface IUserIdentityService
     {

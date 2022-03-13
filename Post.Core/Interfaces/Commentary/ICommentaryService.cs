@@ -1,8 +1,7 @@
 ﻿using Post.Common.Result;
 using Post.Core.Dto.Comment;
-using Post.Core.Dto.Post;
 
-namespace Post.Core.Commentary;
+namespace Post.Core.Interfaces.Commentary;
 
 public interface ICommentaryService
 {

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Post.Core.Dto.File;
-using Post.Core.Http;
+using Post.Core.Interfaces.Http;
 
 namespace Post.Core.Services
 {
@@ -20,7 +20,7 @@ namespace Post.Core.Services
             _httpClient = httpClientFactory.CreateClient("file_storage");
             _httpContext = httpContextAccessor.HttpContext;
         }
-        
+
 
         public async Task<string> SendRequest(FileSendingDto data)
         {
@@ -37,11 +37,16 @@ namespace Post.Core.Services
             _httpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", await _httpContext.GetTokenAsync("access_token"));
 
-            var responseMessage = await _httpClient.PostAsync("/api/v1/task/uploadfile", multiContent);
-
-            var result = await responseMessage.Content.ReadAsStringAsync();
-
-            return result;
+            try
+            {
+                var responseMessage = await _httpClient.PostAsync("/api/v1/task/uploadfile", multiContent);
+                var result = await responseMessage.Content.ReadAsStringAsync();
+                return result;
+            }
+            catch (HttpRequestException e)
+            {
+                return null;
+            }
         }
     }
 }

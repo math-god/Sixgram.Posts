@@ -7,15 +7,16 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Post.Core.Commentary;
 using Post.Core.ControllerServices;
-using Post.Core.File;
-using Post.Core.Http;
-using Post.Core.Post;
+using Post.Core.Interfaces.Commentary;
+using Post.Core.Interfaces.Connection;
+using Post.Core.Interfaces.File;
+using Post.Core.Interfaces.Http;
+using Post.Core.Interfaces.Post;
+using Post.Core.Interfaces.Subscription;
+using Post.Core.Interfaces.User;
 using Post.Core.Profiles;
 using Post.Core.Services;
-using Post.Core.Subscription;
-using Post.Core.User;
 using Post.Database;
 using Post.Database.Repository.Commentary;
 using Post.Database.Repository.Post;
@@ -56,8 +57,9 @@ namespace Post
             services.AddScoped<ISubscriptionService, SubscriptionService>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<ICommentaryService, CommentaryService>();
-            services.AddScoped<Core.User.IUserIdentityService, UserIdentityService>();
+            services.AddScoped<IUserIdentityService, UserIdentityService>();
             services.AddScoped<IFileService, FileService>();
+            services.AddScoped<IConnectionService, ConnectionService>();
 
             var connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connection,
@@ -90,7 +92,8 @@ namespace Post
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Test v1"));
+                app.UseSwaggerUI(c =>
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sixgram.Post API v1"));
             }
 
             app.UseHttpsRedirection();

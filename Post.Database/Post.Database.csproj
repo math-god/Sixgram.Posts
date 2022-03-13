@@ -30,6 +30,8 @@
 
     <ItemGroup>
       <Compile Remove="EntityModels\Types\**" />
+      <Compile Remove="Migrations\20220219090324_NewMigration.cs" />
+      <Compile Remove="Migrations\20220219090324_NewMigration.Designer.cs" />
     </ItemGroup>
 
     <ItemGroup>

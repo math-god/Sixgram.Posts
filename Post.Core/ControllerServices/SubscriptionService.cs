@@ -2,9 +2,9 @@
 using Post.Common.Response;
 using Post.Common.Result;
 using Post.Core.Dto.Subscription;
-using Post.Core.Http;
-using Post.Core.Subscription;
-using Post.Core.User;
+using Post.Core.Interfaces.Http;
+using Post.Core.Interfaces.Subscription;
+using Post.Core.Interfaces.User;
 using Post.Database.EntityModels;
 using Post.Database.Repository.Subscription;
 

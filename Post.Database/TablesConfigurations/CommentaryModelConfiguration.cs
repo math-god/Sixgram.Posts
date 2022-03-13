@@ -8,7 +8,11 @@ public class CommentaryModelConfiguration : IEntityTypeConfiguration<CommentaryM
 {
     public void Configure(EntityTypeBuilder<CommentaryModel> builder)
     {
+        builder.Property(p => p.Commentary)
+            .HasMaxLength(800);
         builder.Property(p => p.DateCreated)
             .HasColumnType("timestamp without time zone");
+        
+        
     }
 }
