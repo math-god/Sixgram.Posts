@@ -2,7 +2,7 @@
 
 namespace Post.Core.Interfaces.Http
 {
-    public interface IFileHttpService
+    public interface IFileStorageHttpService
     {
         public Task<string> SendRequest(FileSendingDto data);
     }

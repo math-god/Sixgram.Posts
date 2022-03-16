@@ -16,7 +16,7 @@ public class PostService : IPostService
     private readonly IPostRepository _postRepository;
     private readonly IMapper _mapper;
     private readonly IUserIdentityService _itUserIdentityService;
-    private readonly IFileService _fileService;
+    private readonly IFileStorageService _fileStorageService;
     private readonly IUserHttpService _userHttpService;
 
     public PostService
@@ -24,14 +24,14 @@ public class PostService : IPostService
         IPostRepository postRepository,
         IMapper mapper,
         IUserIdentityService itUserIdentityService,
-        IFileService fileService,
+        IFileStorageService fileStorageService,
         IUserHttpService userHttpService
     )
     {
         _postRepository = postRepository;
         _mapper = mapper;
         _itUserIdentityService = itUserIdentityService;
-        _fileService = fileService;
+        _fileStorageService = fileStorageService;
         _userHttpService = userHttpService;
     }
 
@@ -47,7 +47,7 @@ public class PostService : IPostService
 
         var postId = Guid.NewGuid();
 
-        var fileId = await _fileService.Send(data.File, postId);
+        var fileId = await _fileStorageService.Send(data.File, postId);
 
         if (fileId == null)
         {
@@ -88,7 +88,7 @@ public class PostService : IPostService
             return result;
         }
 
-        post.FileId = await _fileService.Send(data.NewFile, post.Id);
+        post.FileId = await _fileStorageService.Send(data.NewFile, post.Id);
         post.Description = data.NewDescription;
 
         result = _mapper.Map<ResultContainer<PostUpdateResponseDto>>(await _postRepository.Update(post));

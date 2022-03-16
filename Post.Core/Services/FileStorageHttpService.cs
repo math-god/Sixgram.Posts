@@ -3,27 +3,33 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Post.Core.Dto.File;
 using Post.Core.Interfaces.Http;
+using Post.Core.Options;
 
 namespace Post.Core.Services
 {
-    public class FileHttpService : IFileHttpService
+    public class FileStorageHttpService : IFileStorageHttpService
     {
-        private readonly HttpClient _httpClient;
+        private readonly IHttpClientFactory _httpClientFactory;
         private readonly HttpContext _httpContext;
+        private readonly Uri _fileStorageBaseAddress;
 
-        public FileHttpService
+        public FileStorageHttpService
         (
             IHttpClientFactory httpClientFactory,
-            IHttpContextAccessor httpContextAccessor
+            IHttpContextAccessor httpContextAccessor,
+            BaseAddresses addresses
         )
         {
-            _httpClient = httpClientFactory.CreateClient("file_storage");
+            _httpClientFactory = httpClientFactory;
             _httpContext = httpContextAccessor.HttpContext;
+            _fileStorageBaseAddress = new Uri(addresses.FileStorage);
         }
 
 
         public async Task<string> SendRequest(FileSendingDto data)
         {
+            using  var client = _httpClientFactory.CreateClient("FileStorage");
+
             var bytes = new ByteArrayContent(data.UploadedFile);
             var postId = new StringContent(data.SourceId.ToString());
             var fileSource = new StringContent(data.FileSource.ToString());
@@ -34,16 +40,16 @@ namespace Post.Core.Services
             multiContent.Add(postId, "SourceId");
             multiContent.Add(fileSource, "FileSource");
 
-            _httpClient.DefaultRequestHeaders.Authorization =
+            client.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", await _httpContext.GetTokenAsync("access_token"));
 
             try
             {
-                var responseMessage = await _httpClient.PostAsync("/api/v1/task/uploadfile", multiContent);
+                var responseMessage = await client.PostAsync("uploadfile", multiContent);
                 var result = await responseMessage.Content.ReadAsStringAsync();
                 return result;
             }
-            catch (HttpRequestException e)
+            catch (HttpRequestException)
             {
                 return null;
             }

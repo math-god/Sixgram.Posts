@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Post.Core.Interfaces.Connection;
 using Post.Core.Interfaces.Http;
+using Post.Core.Options;
 
 namespace Post.Core.Services;
 
 public class UserHttpService : IUserHttpService
 {
-    private readonly HttpClient _httpClient;
+    private readonly IHttpClientFactory _httpClientFactory;
     private readonly HttpContext _httpContext;
     private readonly IConnectionService _connectionService;
 
@@ -16,22 +17,24 @@ public class UserHttpService : IUserHttpService
     (
         IHttpClientFactory httpClientFactory,
         IHttpContextAccessor httpContextAccessor,
-        IConnectionService connectionService
+        IConnectionService connectionService,
+        BaseAddresses addresses
     )
     {
-        _httpClient = httpClientFactory.CreateClient("auth");
+        _httpClientFactory = httpClientFactory;
         _httpContext = httpContextAccessor.HttpContext;
         _connectionService = connectionService;
     }
 
     public async Task<bool?> DoesUserExist(Guid userId)
     {
-        _httpClient.DefaultRequestHeaders.Authorization =
+        using var client = _httpClientFactory.CreateClient("AuthService");
+
+        client.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue("Bearer", await _httpContext.GetTokenAsync("access_token"));
 
-
-        if (!_connectionService.IsConnected("localhost", 5176)) return null;
-        var responseMessage = await _httpClient.GetAsync($"/api/v1/user/{userId}");
+        /*if (!_connectionService.IsConnected("localhost", 5176)) return null;*/
+        var responseMessage = await client.GetAsync($"{userId}");
         return responseMessage.IsSuccessStatusCode;
     }
 }

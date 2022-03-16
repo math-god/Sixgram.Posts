@@ -2,7 +2,7 @@
 
 namespace Post.Core.Interfaces.File;
 
-public interface IFileService
+public interface IFileStorageService
 {
     Task<Guid?> Send(IFormFile file, Guid sourceId);
 }

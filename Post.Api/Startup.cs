@@ -15,6 +15,7 @@ using Post.Core.Interfaces.Http;
 using Post.Core.Interfaces.Post;
 using Post.Core.Interfaces.Subscription;
 using Post.Core.Interfaces.User;
+using Post.Core.Options;
 using Post.Core.Profiles;
 using Post.Core.Services;
 using Post.Database;
@@ -49,7 +50,7 @@ namespace Post
 
             services.AddControllers();
 
-            services.AddScoped<IFileHttpService, FileHttpService>();
+            services.AddScoped<IFileStorageHttpService, FileStorageHttpService>();
             services.AddScoped<IUserHttpService, UserHttpService>();
             services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
@@ -58,12 +59,16 @@ namespace Post
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<ICommentaryService, CommentaryService>();
             services.AddScoped<IUserIdentityService, UserIdentityService>();
-            services.AddScoped<IFileService, FileService>();
+            services.AddScoped<IFileStorageService, FileStorageService>();
             services.AddScoped<IConnectionService, ConnectionService>();
 
             var connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connection,
                 x => x.MigrationsAssembly("Post.Database")));
+            
+            services.Configure<BaseAddresses>(Configuration.GetSection(BaseAddresses.BaseAddress));
+            var addressesOptions = Configuration.GetSection(BaseAddresses.BaseAddress).Get<BaseAddresses>();
+            services.AddSingleton(addressesOptions);
 
             //Configure AutoMapper Profile
             var mapperConfig = new MapperConfiguration
@@ -80,8 +85,11 @@ namespace Post
             services.AddHttpContextAccessor();
 
             //Configure HttpClient
-            services.AddHttpClient("auth",
-                p => { p.BaseAddress = new Uri("http://localhost:5176"); });
+            services.AddHttpClient("FileStorage", client =>
+            {
+                client.BaseAddress = new Uri(Configuration["BaseAddress:FileStorage"]);
+            });
+            
             services.AddHttpClient("file_storage",
                 c => { c.BaseAddress = new Uri("http://localhost:5000"); });
         }
