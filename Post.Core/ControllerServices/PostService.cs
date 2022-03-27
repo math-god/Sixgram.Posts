@@ -47,7 +47,7 @@ public class PostService : IPostService
 
         var postId = Guid.NewGuid();
 
-        var fileId = await _fileStorageService.Send(data.File, postId);
+        var fileId = await _fileStorageService.CreateFile(data.File, postId);
 
         if (fileId == null)
         {
@@ -88,7 +88,7 @@ public class PostService : IPostService
             return result;
         }
 
-        post.FileId = await _fileStorageService.Send(data.NewFile, post.Id);
+        post.FileId = await _fileStorageService.CreateFile(data.NewFile, post.Id);
         post.Description = data.NewDescription;
 
         result = _mapper.Map<ResultContainer<PostUpdateResponseDto>>(await _postRepository.Update(post));
@@ -113,8 +113,10 @@ public class PostService : IPostService
             result.ResponseStatusCode = ResponseStatusCode.BadRequest;
             return result;
         }
-
+        
         await _postRepository.Delete(post);
+
+        await _fileStorageService.DeleteFile((Guid)post.FileId);
 
         result.ResponseStatusCode = ResponseStatusCode.NoContent;
 

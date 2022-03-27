@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Net;
+using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
 using Post.Common.Types;
@@ -20,7 +21,7 @@ public class FileStorageService : IFileStorageService
         _fileStorageHttpService = fileStorageHttpService;
     }
 
-    public async Task<Guid?> Send(IFormFile file, Guid postId)
+    public async Task<Guid?> CreateFile(IFormFile file, Guid postId)
     {
         var data = await CreateContent(file);
 
@@ -32,13 +33,20 @@ public class FileStorageService : IFileStorageService
             FileSource = FileSource.Post
         };
 
-        var content = await _fileStorageHttpService.SendRequest(fileSendingDto);
+        var content = await _fileStorageHttpService.SendCreateRequest(fileSendingDto);
 
         var json = JObject.Parse(content);
 
         var result = new Guid(json["id"].ToString());
 
         return result;
+    }
+
+    public async Task<bool?> DeleteFile(Guid fileId)
+    {
+        var content = await _fileStorageHttpService.SendDeleteRequest(fileId);
+
+        return content == HttpStatusCode.NoContent;
     }
 
     private static async Task<byte[]> CreateContent(IFormFile file)

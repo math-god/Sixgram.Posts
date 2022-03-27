@@ -4,5 +4,7 @@ namespace Post.Core.Interfaces.File;
 
 public interface IFileStorageService
 {
-    Task<Guid?> Send(IFormFile file, Guid sourceId);
+    Task<Guid?> CreateFile(IFormFile file, Guid sourceId);
+
+    Task<bool?> DeleteFile(Guid fileId);
 }

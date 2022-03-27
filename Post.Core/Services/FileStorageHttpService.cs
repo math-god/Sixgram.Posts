@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Net;
+using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Post.Core.Dto.File;
@@ -26,9 +27,9 @@ namespace Post.Core.Services
         }
 
 
-        public async Task<string> SendRequest(FileSendingDto data)
+        public async Task<string> SendCreateRequest(FileSendingDto data)
         {
-            using  var client = _httpClientFactory.CreateClient("FileStorage");
+            using var client = _httpClientFactory.CreateClient("FileStorage");
 
             var bytes = new ByteArrayContent(data.UploadedFile);
             var postId = new StringContent(data.SourceId.ToString());
@@ -47,6 +48,25 @@ namespace Post.Core.Services
             {
                 var responseMessage = await client.PostAsync("uploadfile", multiContent);
                 var result = await responseMessage.Content.ReadAsStringAsync();
+                return result;
+            }
+            catch (HttpRequestException)
+            {
+                return null;
+            }
+        }
+
+        public async Task<HttpStatusCode?> SendDeleteRequest(Guid fileId)
+        {
+            using var client = _httpClientFactory.CreateClient("FileStorage");
+
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", await _httpContext.GetTokenAsync("access_token"));
+
+            try
+            {
+                var responseMessage = await client.DeleteAsync($"{fileId}");
+                var result = responseMessage.StatusCode;
                 return result;
             }
             catch (HttpRequestException)

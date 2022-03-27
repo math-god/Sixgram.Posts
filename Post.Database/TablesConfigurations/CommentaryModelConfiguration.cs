@@ -12,7 +12,5 @@ public class CommentaryModelConfiguration : IEntityTypeConfiguration<CommentaryM
             .HasMaxLength(800);
         builder.Property(p => p.DateCreated)
             .HasColumnType("timestamp without time zone");
-        
-        
     }
 }
