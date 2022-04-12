@@ -7,7 +7,7 @@ namespace Post.Database.EntityModels;
 public class PostModel : BaseModel
 {
     [Column("post_id")]
-    public override Guid Id { get; set; } = Guid.NewGuid();
+    public override Guid Id { get; set; }
     
     [Column("user_id")]
     public Guid UserId { get; set; }
@@ -16,7 +16,7 @@ public class PostModel : BaseModel
     public Guid? FileId { get; set; } 
 
     [Column("description")]
-    public string Description { get; set; } = string.Empty;
+    public string Description { get; set; } 
     
     public ICollection<CommentaryModel> CommentaryModels { get; set; }
 }

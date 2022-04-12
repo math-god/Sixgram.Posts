@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Post.Database.EntityModels;
 
-namespace Post.Database.TablesConfigurations;
+namespace Post.Database.EntityConfigurations;
 
-public class CommentaryModelConfiguration : IEntityTypeConfiguration<CommentaryModel>
+public class CommentaryEntityConfiguration : IEntityTypeConfiguration<CommentaryModel>
 {
     public void Configure(EntityTypeBuilder<CommentaryModel> builder)
     {

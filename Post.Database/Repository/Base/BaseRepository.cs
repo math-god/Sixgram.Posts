@@ -24,6 +24,7 @@ namespace Post.Database.Repository.Base
 
         public async Task<TModel> Create(TModel item)
         {
+            item.DateCreated = DateTime.Now;
             await AppDbContext.Set<TModel>().AddAsync(item);
             await AppDbContext.SaveChangesAsync();
             return item;

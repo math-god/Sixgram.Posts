@@ -3,11 +3,11 @@ using Post.Common.Base;
 
 namespace Post.Database.EntityModels;
 
-[Table("subscription")]
+[Table("subscriptions")]
 public class SubscriptionModel : BaseModel
 {
-    [Column("id")]
-    public override Guid Id { get; set; } = Guid.NewGuid();
+    [Column("subscription_id")]
+    public override Guid Id { get; set; } 
     
     [Column("respondent_id")]
     public Guid RespondentId { get; set; }

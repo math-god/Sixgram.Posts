@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Post.Database.EntityModels;
 
-namespace Post.Database.TablesConfigurations;
+namespace Post.Database.EntityConfigurations;
 
-public class PostModelConfiguration : IEntityTypeConfiguration<PostModel>
+public class PostEntityConfiguration : IEntityTypeConfiguration<PostModel>
 {
     public void Configure(EntityTypeBuilder<PostModel> builder)
     {
@@ -17,15 +17,19 @@ public class PostModelConfiguration : IEntityTypeConfiguration<PostModel>
         (
             new PostModel()
             {
+                Id = Guid.NewGuid(),
                 UserId = Guid.NewGuid(),
                 FileId = Guid.NewGuid(),
-                Description = "Eu cum iuvaret debitis voluptatibus, esse perfecto reformidans id has."
+                Description = "Eu cum iuvaret debitis voluptatibus, esse perfecto reformidans id has.",
+                DateCreated = DateTime.Now
             },
             new PostModel()
             {
+                Id = Guid.NewGuid(),
                 UserId = Guid.NewGuid(),
                 FileId = Guid.NewGuid(),
-                Description = "Tation delenit percipitur at vix. Tation delenit percipitur at vix"
+                Description = "Tation delenit percipitur at vix. Tation delenit percipitur at vix",
+                DateCreated = DateTime.Now
             }
         );
     }

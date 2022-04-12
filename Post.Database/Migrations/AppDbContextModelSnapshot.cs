@@ -54,6 +54,32 @@ namespace Post.Database.Migrations
                     b.ToTable("commentaries");
                 });
 
+            modelBuilder.Entity("Post.Database.EntityModels.LikeModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("like_id");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("day_created");
+
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("post_id");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("likes");
+                });
+
             modelBuilder.Entity("Post.Database.EntityModels.PostModel", b =>
                 {
                     b.Property<Guid>("Id")
@@ -86,19 +112,19 @@ namespace Post.Database.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("45ed469e-7471-4662-b2f0-576bd969e818"),
-                            DateCreated = new DateTime(2022, 3, 12, 11, 17, 7, 360, DateTimeKind.Local).AddTicks(9191),
+                            Id = new Guid("31ead996-0fb5-4b13-b1a8-6f2c6287c211"),
+                            DateCreated = new DateTime(2022, 4, 12, 15, 25, 0, 672, DateTimeKind.Local).AddTicks(8165),
                             Description = "Eu cum iuvaret debitis voluptatibus, esse perfecto reformidans id has.",
-                            FileId = new Guid("81889ddf-aa61-4fdc-b9ef-037b56677353"),
-                            UserId = new Guid("07587c3f-dd72-4bfc-ac08-ff374de1cf25")
+                            FileId = new Guid("f3c2d704-7f31-4530-8899-4ab54addb09d"),
+                            UserId = new Guid("8d8da77a-6fc3-4245-9d15-23bbd363843b")
                         },
                         new
                         {
-                            Id = new Guid("9b1ef0bc-6f56-4ee0-a3dd-a186bc952def"),
-                            DateCreated = new DateTime(2022, 3, 12, 11, 17, 7, 360, DateTimeKind.Local).AddTicks(9196),
+                            Id = new Guid("b07f377f-a9ce-4ee6-a78e-f328561ff3e6"),
+                            DateCreated = new DateTime(2022, 4, 12, 15, 25, 0, 672, DateTimeKind.Local).AddTicks(8172),
                             Description = "Tation delenit percipitur at vix. Tation delenit percipitur at vix",
-                            FileId = new Guid("2167ca73-7e25-41f7-bfc5-9c85a0efb884"),
-                            UserId = new Guid("e8756f2b-b509-4a19-a8d8-ffc90b92c378")
+                            FileId = new Guid("825c557c-75b9-41b4-94a1-87d22d560cef"),
+                            UserId = new Guid("f955a266-254a-4626-91b1-a2b1415a86f6")
                         });
                 });
 
@@ -107,7 +133,7 @@ namespace Post.Database.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("id");
+                        .HasColumnName("subscription_id");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("timestamp without time zone")
@@ -123,22 +149,22 @@ namespace Post.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("subscription");
+                    b.ToTable("subscriptions");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("02106d1d-c80b-43f8-acd3-97c584fc2137"),
-                            DateCreated = new DateTime(2022, 3, 12, 11, 17, 7, 360, DateTimeKind.Local).AddTicks(8479),
-                            RespondentId = new Guid("1dc0ca07-0686-4a8d-a223-1a8bf11b2c4d"),
-                            SubscriberId = new Guid("4fb90a9a-4b5c-4794-8cbc-c58e9dad4b93")
+                            Id = new Guid("6b9f3fe5-cae9-436d-bca0-a12b4bc21bf5"),
+                            DateCreated = new DateTime(2022, 4, 12, 15, 25, 0, 672, DateTimeKind.Local).AddTicks(7365),
+                            RespondentId = new Guid("534f619f-ff1b-4f3a-bea6-41cd6dc47c85"),
+                            SubscriberId = new Guid("af93b103-d20d-4a4d-8ed4-3e33eeefb0c0")
                         },
                         new
                         {
-                            Id = new Guid("f243908e-cba3-467e-bbfc-9ca80baa6519"),
-                            DateCreated = new DateTime(2022, 3, 12, 11, 17, 7, 360, DateTimeKind.Local).AddTicks(8510),
-                            RespondentId = new Guid("02a1387d-4ff9-4e7c-800a-60291d3a1906"),
-                            SubscriberId = new Guid("4b2cf11d-c2ee-4b2a-885b-c84abde13509")
+                            Id = new Guid("261b9381-f497-49dd-aaec-f7393e778b35"),
+                            DateCreated = new DateTime(2022, 4, 12, 15, 25, 0, 672, DateTimeKind.Local).AddTicks(7394),
+                            RespondentId = new Guid("5bbe4c43-12c2-4a46-af60-afbfae516465"),
+                            SubscriberId = new Guid("5a3c51ab-c100-4f45-b559-6919b2144214")
                         });
                 });
 
@@ -146,6 +172,17 @@ namespace Post.Database.Migrations
                 {
                     b.HasOne("Post.Database.EntityModels.PostModel", "PostModel")
                         .WithMany("CommentaryModels")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PostModel");
+                });
+
+            modelBuilder.Entity("Post.Database.EntityModels.LikeModel", b =>
+                {
+                    b.HasOne("Post.Database.EntityModels.PostModel", "PostModel")
+                        .WithMany()
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

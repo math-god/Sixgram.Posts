@@ -15,7 +15,7 @@ public class PostService : IPostService
 {
     private readonly IPostRepository _postRepository;
     private readonly IMapper _mapper;
-    private readonly IUserIdentityService _itUserIdentityService;
+    private readonly IUserIdentityService _userIdentityService;
     private readonly IFileStorageService _fileStorageService;
     private readonly IUserHttpService _userHttpService;
 
@@ -23,14 +23,14 @@ public class PostService : IPostService
     (
         IPostRepository postRepository,
         IMapper mapper,
-        IUserIdentityService itUserIdentityService,
+        IUserIdentityService userIdentityService,
         IFileStorageService fileStorageService,
         IUserHttpService userHttpService
     )
     {
         _postRepository = postRepository;
         _mapper = mapper;
-        _itUserIdentityService = itUserIdentityService;
+        _userIdentityService = userIdentityService;
         _fileStorageService = fileStorageService;
         _userHttpService = userHttpService;
     }
@@ -39,7 +39,7 @@ public class PostService : IPostService
     {
         var result = new ResultContainer();
 
-        if (data.File == null)
+        if (data?.File == null)
         {
             result.ResponseStatusCode = ResponseStatusCode.BadRequest;
             return result;
@@ -58,7 +58,7 @@ public class PostService : IPostService
         var post = new PostModel
         {
             Id = postId,
-            UserId = _itUserIdentityService.GetCurrentUserId(),
+            UserId = _userIdentityService.GetCurrentUserId(),
             FileId = (Guid) fileId,
             Description = data.Description
         };
@@ -82,7 +82,7 @@ public class PostService : IPostService
             return result;
         }
 
-        if (post.UserId != _itUserIdentityService.GetCurrentUserId())
+        if (post.UserId != _userIdentityService.GetCurrentUserId())
         {
             result.ResponseStatusCode = ResponseStatusCode.BadRequest;
             return result;
@@ -108,7 +108,7 @@ public class PostService : IPostService
             return result;
         }
 
-        if (post.UserId != _itUserIdentityService.GetCurrentUserId())
+        if (post.UserId != _userIdentityService.GetCurrentUserId())
         {
             result.ResponseStatusCode = ResponseStatusCode.BadRequest;
             return result;

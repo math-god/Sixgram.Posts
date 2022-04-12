@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Post.Database.EntityModels;
 
-namespace Post.Database.TablesConfigurations;
+namespace Post.Database.EntityConfigurations;
 
-public class SubscriptionModelConfiguration : IEntityTypeConfiguration<SubscriptionModel>
+public class SubscriptionEntityConfiguration : IEntityTypeConfiguration<SubscriptionModel>
 {
     public void Configure(EntityTypeBuilder<SubscriptionModel> builder)
     {
@@ -15,13 +15,17 @@ public class SubscriptionModelConfiguration : IEntityTypeConfiguration<Subscript
         (
             new SubscriptionModel()
             {
+                Id = Guid.NewGuid(),
                 RespondentId = Guid.NewGuid(),
-                SubscriberId = Guid.NewGuid()
+                SubscriberId = Guid.NewGuid(),
+                DateCreated = DateTime.Now
             },
             new SubscriptionModel()
             {
+                Id = Guid.NewGuid(),
                 RespondentId = Guid.NewGuid(),
-                SubscriberId = Guid.NewGuid()
+                SubscriberId = Guid.NewGuid(),
+                DateCreated = DateTime.Now
             }
         );
     }
