@@ -46,14 +46,12 @@ public class CommentaryService : ICommentaryService
 
         var comment = new CommentaryModel
         {
-            PostId = post.Id,
+            PostId = postId,
             UserId = _itUserIdentityService.GetCurrentUserId(),
             Commentary = data.Commentary
         };
 
         await _commentaryRepository.Create(comment);
-
-        await _postRepository.Update(post);
 
         result.ResponseStatusCode = ResponseStatusCode.NoContent;
 

@@ -12,6 +12,7 @@ using Post.Core.Interfaces.Commentary;
 using Post.Core.Interfaces.Connection;
 using Post.Core.Interfaces.File;
 using Post.Core.Interfaces.Http;
+using Post.Core.Interfaces.Like;
 using Post.Core.Interfaces.Post;
 using Post.Core.Interfaces.Subscription;
 using Post.Core.Interfaces.User;
@@ -20,6 +21,7 @@ using Post.Core.Profiles;
 using Post.Core.Services;
 using Post.Database;
 using Post.Database.Repository.Commentary;
+using Post.Database.Repository.Like;
 using Post.Database.Repository.Post;
 using Post.Database.Repository.Subscription;
 
@@ -61,6 +63,8 @@ namespace Post
             services.AddScoped<IUserIdentityService, UserIdentityService>();
             services.AddScoped<IFileStorageService, FileStorageService>();
             services.AddScoped<IConnectionService, ConnectionService>();
+            services.AddScoped<ILikeRepository, LikeRepository>();
+            services.AddScoped<ILikeService, LikeService>();
 
             var connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connection,

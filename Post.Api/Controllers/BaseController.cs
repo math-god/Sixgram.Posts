@@ -21,6 +21,7 @@ public class BaseController : ControllerBase
             ResponseStatusCode.Ok => Ok(result.Data),
             _ => StatusCode((int)result.ResponseStatusCode)
         };
+        
     }
 
     protected async Task<ActionResult> ReturnResult(Task<ResultContainer> task)

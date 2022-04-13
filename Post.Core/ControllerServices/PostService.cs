@@ -66,7 +66,6 @@ public class PostService : IPostService
         await _postRepository.Create(post);
 
         result.ResponseStatusCode = ResponseStatusCode.NoContent;
-
         return result;
     }
 
@@ -93,6 +92,7 @@ public class PostService : IPostService
 
         result = _mapper.Map<ResultContainer<PostUpdateResponseDto>>(await _postRepository.Update(post));
 
+        result.ResponseStatusCode = ResponseStatusCode.Ok;
         return result;
     }
 
@@ -119,7 +119,6 @@ public class PostService : IPostService
         await _fileStorageService.DeleteFile((Guid)post.FileId);
 
         result.ResponseStatusCode = ResponseStatusCode.NoContent;
-
         return result;
     }
 

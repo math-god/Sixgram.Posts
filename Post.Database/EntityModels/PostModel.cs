@@ -18,5 +18,6 @@ public class PostModel : BaseModel
     [Column("description")]
     public string Description { get; set; } 
     
-    public ICollection<CommentaryModel> CommentaryModels { get; set; }
+    public ICollection<CommentaryModel> Commentaries { get; set; }
+    public ICollection<LikeModel> Likes { get; set; }
 }

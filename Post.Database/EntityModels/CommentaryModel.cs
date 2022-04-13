@@ -19,5 +19,5 @@ public class CommentaryModel : BaseModel
     [Column("commentary")]
     public string Commentary { get; set; }
     
-    public PostModel PostModel { get; set; }
+    public PostModel Post { get; set; }
 }
