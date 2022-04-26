@@ -24,7 +24,7 @@ public class CommentaryController : BaseController
     }
 
     /// <summary>
-    ///  Gets the comment by id
+    ///  Gets a comment by id
     /// </summary>
     /// <param name="id"></param>
     /// <response code="200">Success</response>
@@ -37,7 +37,7 @@ public class CommentaryController : BaseController
             _commentaryService.GetById(id));
 
     /// <summary>
-    ///  Comments the post
+    ///  Comments a post
     /// </summary>
     /// <param name="data"></param>
     /// <param name="id"></param>
@@ -52,7 +52,7 @@ public class CommentaryController : BaseController
         => await ReturnResult(_commentaryService.Create(data, id));
 
     /// <summary>
-    ///  Deletes the comment
+    ///  Deletes a comment
     /// </summary>
     /// <param name="id"></param>
     /// <response code="204">Success</response>

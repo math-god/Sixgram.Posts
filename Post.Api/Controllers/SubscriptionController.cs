@@ -23,7 +23,7 @@ namespace Post.Controllers
         }
 
         /// <summary>
-        ///  Gets the subscription by id
+        ///  Gets a subscription by id
         /// </summary>
         /// <response code="200">Success</response>
         /// <response code="404">Subscription doesn't exist</response>
