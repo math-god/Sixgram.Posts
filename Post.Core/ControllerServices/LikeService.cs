@@ -38,6 +38,15 @@ public class LikeService : ILikeService
             return result;
         }
 
+        var checkLike = await _likeRepository.GetByFilter(l =>
+            l.PostId == postId && l.UserId == _userIdentityService.GetCurrentUserId());
+
+        if (checkLike.Any())
+        {
+            result.ResponseStatusCode = ResponseStatusCode.BadRequest;
+            return result;
+        }
+
         var like = new LikeModel()
         {
             PostId = postId,
@@ -51,8 +60,28 @@ public class LikeService : ILikeService
         return result;
     }
 
-    public Task<ResultContainer> Dislike(Guid postId)
+    public async Task<ResultContainer> Dislike(Guid likeId)
     {
-        throw new NotImplementedException();
+        var result = new ResultContainer();
+
+        var like = await _likeRepository.GetById(likeId);
+
+        if (like == null)
+        {
+            result.ResponseStatusCode = ResponseStatusCode.NotFound;
+            return result;
+        }
+
+        if (like.UserId != _userIdentityService.GetCurrentUserId())
+        {
+            result.ResponseStatusCode = ResponseStatusCode.Forbidden;
+            return result;
+        }
+
+        await _likeRepository.Delete(like);
+
+        result.ResponseStatusCode = ResponseStatusCode.NoContent;
+
+        return result;
     }
 }

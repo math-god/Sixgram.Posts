@@ -25,7 +25,7 @@ public class PostController : BaseController
     }
 
     /// <summary>
-    ///  Get the post by id
+    ///  Get a post by id
     /// </summary>
     /// <param name="id"></param>
     /// <response code="200">Success</response>
@@ -53,7 +53,7 @@ public class PostController : BaseController
             (_postService.GetAllPostsOfCurrentUser(id));
 
     /// <summary>
-    ///  Creates the post
+    ///  Creates a post
     /// </summary>
     /// <param name="data"></param>
     /// <response code="200">Success</response>
@@ -67,7 +67,7 @@ public class PostController : BaseController
         => await ReturnResult<ResultContainer<PostResponseDto>, PostResponseDto>(_postService.Create(data));
 
     /// <summary>
-    ///  Edits the post
+    ///  Edits a post
     /// </summary>
     /// <param name="data"></param>
     /// <param name="id"></param>
@@ -84,7 +84,7 @@ public class PostController : BaseController
             (_postService.Edit(data, id));
 
     /// <summary>
-    ///  Deletes the post
+    ///  Deletes a post
     /// </summary>
     /// <param name="id"></param>
     /// <response code="204">Success</response>
