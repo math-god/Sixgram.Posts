@@ -30,7 +30,7 @@ public class PostController : BaseController
     /// <param name="id"></param>
     /// <response code="200">Success</response>
     /// <response code="404">The post not found</response>
-    [HttpGet("posts/{id:guid}")]
+    [HttpGet("post/{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [AllowAnonymous]
@@ -44,7 +44,7 @@ public class PostController : BaseController
     /// <param name="id"></param>
     /// <response code="200">Success</response>
     /// <response code="404">The user not found</response>
-    [HttpGet("users/{id:guid}/posts")]
+    [HttpGet("user/{id:guid}/post")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [AllowAnonymous]
@@ -56,15 +56,15 @@ public class PostController : BaseController
     ///  Creates the post
     /// </summary>
     /// <param name="data"></param>
-    /// <response code="204">Success</response>
+    /// <response code="200">Success</response>
     /// <response code="400">There is no file in the request</response>
-    [HttpPost("posts")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [HttpPost("post")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [RequestSizeLimit(MaxFileSize)]
     [RequestFormLimits(MultipartBodyLengthLimit = MaxFileSize)]
-    public async Task<ActionResult> Create([FromForm] PostCreateRequestDto data)
-        => await ReturnResult(_postService.Create(data));
+    public async Task<ActionResult<PostResponseDto>> Create([FromForm] PostCreateRequestDto data)
+        => await ReturnResult<ResultContainer<PostResponseDto>, PostResponseDto>(_postService.Create(data));
 
     /// <summary>
     ///  Edits the post
@@ -74,7 +74,7 @@ public class PostController : BaseController
     /// <response code="200">Success</response>
     /// <response code="400">Post not found</response>
     /// <response code="404">The post doesn't belong to the current user</response>
-    [HttpPut("posts/{id:guid}")]
+    [HttpPut("post/{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -90,7 +90,7 @@ public class PostController : BaseController
     /// <response code="204">Success</response>
     /// <response code="400">The post doesn't belong to the current user</response>
     /// <response code="404">The post not found</response>
-    [HttpDelete("posts/{id:guid}")]
+    [HttpDelete("post/{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

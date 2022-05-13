@@ -9,7 +9,7 @@ namespace Post.Controllers
     [ApiVersion("1.0")]
     [ApiController]
     [Authorize]
-    [Route("api/v{version:apiVersion}/")]
+    [Route("api/v{version:apiVersion}/subscription")]
     public class SubscriptionController : BaseController
     {
         private readonly ISubscriptionService _subscriptionService;
@@ -27,7 +27,7 @@ namespace Post.Controllers
         /// </summary>
         /// <response code="200">Success</response>
         /// <response code="404">Subscription doesn't exist</response>
-        [HttpGet("subscriptions/{id:guid}")]
+        [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [AllowAnonymous]
@@ -42,7 +42,7 @@ namespace Post.Controllers
         /// <response code="204">Success</response>
         /// <response code="400">Subscription has been already done or you are trying to subscribe to yourself</response>
         /// <response code="404">Respondent Id doesn't exist</response>
-        [HttpPost("subscriptions")]
+        [HttpPost]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -55,7 +55,7 @@ namespace Post.Controllers
         /// <response code="204">Success</response>
         /// <response code="400">One user is not subscribed to another one</response>
         /// <response code="404">Subscription Id doesn't exist</response>
-        [HttpDelete("subscriptions/{id:guid}")]
+        [HttpDelete("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

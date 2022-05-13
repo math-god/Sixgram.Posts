@@ -27,7 +27,7 @@ public class LikeController : BaseController
     /// <response code="204">Success</response>
     /// <response code="400">There is no post Id in the request</response>
     /// <response code="404">Post not found</response>
-    [HttpPost("posts/{id:guid}/likes")]
+    [HttpPost("post/{id:guid}/like")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

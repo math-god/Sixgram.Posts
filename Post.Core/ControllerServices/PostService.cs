@@ -35,9 +35,9 @@ public class PostService : IPostService
         _userHttpService = userHttpService;
     }
 
-    public async Task<ResultContainer> Create(PostCreateRequestDto data)
+    public async Task<ResultContainer<PostResponseDto>> Create(PostCreateRequestDto data)
     {
-        var result = new ResultContainer();
+        var result = new ResultContainer<PostResponseDto>();
 
         if (data?.File == null)
         {
@@ -65,7 +65,9 @@ public class PostService : IPostService
 
         await _postRepository.Create(post);
 
-        result.ResponseStatusCode = ResponseStatusCode.NoContent;
+        result = _mapper.Map<ResultContainer<PostResponseDto>>(post);
+
+        result.ResponseStatusCode = ResponseStatusCode.Ok;
         return result;
     }
 
