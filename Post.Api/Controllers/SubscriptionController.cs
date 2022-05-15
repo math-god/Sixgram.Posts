@@ -42,7 +42,7 @@ namespace Post.Controllers
         /// <response code="204">Success</response>
         /// <response code="400">Subscription has been already done or you are trying to subscribe to yourself</response>
         /// <response code="404">Respondent Id doesn't exist</response>
-        [HttpPost]
+        [HttpPost("")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
