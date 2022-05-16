@@ -72,11 +72,11 @@ public class PostController : BaseController
     /// <param name="data"></param>
     /// <param name="id"></param>
     /// <response code="200">Success</response>
-    /// <response code="400">Post not found</response>
-    /// <response code="404">The post doesn't belong to the current user</response>
+    /// <response code="403">The post doesn't belong to the current user</response>
+    /// <response code="404">Post not found</response>
     [HttpPut("post/{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<PostUpdateResponseDto>> Edit([FromForm] PostUpdateRequestDto data,
         Guid id)
@@ -88,11 +88,11 @@ public class PostController : BaseController
     /// </summary>
     /// <param name="id"></param>
     /// <response code="204">Success</response>
-    /// <response code="400">The post doesn't belong to the current user</response>
+    /// <response code="403">The post doesn't belong to the current user</response>
     /// <response code="404">The post not found</response>
     [HttpDelete("post/{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> Delete(Guid id)
         => await ReturnResult(_postService.Delete(id));

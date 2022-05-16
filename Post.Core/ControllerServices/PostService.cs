@@ -85,7 +85,7 @@ public class PostService : IPostService
 
         if (post.UserId != _userIdentityService.GetCurrentUserId())
         {
-            result.ResponseStatusCode = ResponseStatusCode.BadRequest;
+            result.ResponseStatusCode = ResponseStatusCode.Forbidden;
             return result;
         }
 
@@ -112,7 +112,7 @@ public class PostService : IPostService
 
         if (post.UserId != _userIdentityService.GetCurrentUserId())
         {
-            result.ResponseStatusCode = ResponseStatusCode.BadRequest;
+            result.ResponseStatusCode = ResponseStatusCode.Forbidden;
             return result;
         }
         
