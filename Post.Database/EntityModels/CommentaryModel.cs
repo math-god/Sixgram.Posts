@@ -11,7 +11,7 @@ public class CommentaryModel : BaseModel
 
     [Column("post_id")]
     [ForeignKey("PostModel")]
-    public Guid PostId { get; set; }
+    public Guid PostId { get; set; }    
 
     [Column("user_id")]
     public Guid UserId { get; set; }

@@ -1,5 +1,7 @@
-﻿using Post.Common.Response;
+﻿using AutoMapper;
+using Post.Common.Response;
 using Post.Common.Result;
+using Post.Core.Dto.Like;
 using Post.Core.Interfaces.Like;
 using Post.Core.Interfaces.User;
 using Post.Database.EntityModels;
@@ -13,22 +15,25 @@ public class LikeService : ILikeService
     private readonly IPostRepository _postRepository;
     private readonly ILikeRepository _likeRepository;
     private readonly IUserIdentityService _userIdentityService;
+    private readonly IMapper _mapper;
 
     public LikeService
     (
         IPostRepository postRepository,
         ILikeRepository likeRepository,
-        IUserIdentityService userIdentityService
+        IUserIdentityService userIdentityService,
+        IMapper mapper
     )
     {
         _postRepository = postRepository;
         _likeRepository = likeRepository;
         _userIdentityService = userIdentityService;
+        _mapper = mapper;
     }
 
-    public async Task<ResultContainer> Like(Guid postId)
+    public async Task<ResultContainer<LikeResponseDto>> Like(Guid postId)
     {
-        var result = new ResultContainer();
+        var result = new ResultContainer<LikeResponseDto>();
 
         var post = await _postRepository.GetById(postId);
 
@@ -55,7 +60,9 @@ public class LikeService : ILikeService
 
         await _likeRepository.Create(like);
 
-        result.ResponseStatusCode = ResponseStatusCode.NoContent;
+        result = _mapper.Map<ResultContainer<LikeResponseDto>>(like);
+        
+        result.ResponseStatusCode = ResponseStatusCode.Ok;
 
         return result;
     }

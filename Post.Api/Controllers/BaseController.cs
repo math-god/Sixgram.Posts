@@ -19,9 +19,8 @@ public class BaseController : ControllerBase
         return result.ResponseStatusCode switch
         {
             ResponseStatusCode.Ok => Ok(result.Data),
-            _ => StatusCode((int)result.ResponseStatusCode)
+            _ => StatusCode((int) result.ResponseStatusCode)
         };
-        
     }
 
     protected async Task<ActionResult> ReturnResult(Task<ResultContainer> task)
@@ -34,6 +33,8 @@ public class BaseController : ControllerBase
                 $"Property {nameof(result.ResponseStatusCode)} can not be null");
         }
 
-        return StatusCode((int)result.ResponseStatusCode);
+        return StatusCode((int) result.ResponseStatusCode);
     }
+    
+    
 }

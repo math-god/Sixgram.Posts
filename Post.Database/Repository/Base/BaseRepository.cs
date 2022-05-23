@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using Post.Common.Base;
 
 namespace Post.Database.Repository.Base
@@ -15,10 +16,9 @@ namespace Post.Database.Repository.Base
         public async Task<TModel?> GetById(Guid id)
             => await _appDbContext.Set<TModel>().AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
 
-        public async Task<IEnumerable<TModel>> GetByFilter(Func<TModel, bool> predicate)
+        public async Task<List<TModel>> GetByFilter(Expression<Func<TModel, bool>> predicate)
         {
-            var result = await _appDbContext.Set<TModel>().AsNoTracking().
-                Where(predicate).AsQueryable().ToListAsync();
+            var result = await GetAll().AsNoTracking().Where(predicate).AsQueryable().ToListAsync();
             return result;
         }
 
@@ -49,6 +49,11 @@ namespace Post.Database.Repository.Base
             _appDbContext.Set<TModel>().Remove(item);
             await _appDbContext.SaveChangesAsync();
             return item;
+        }
+
+        private IQueryable<TModel> GetAll()
+        {
+            return _appDbContext.Set<TModel>().AsQueryable();
         }
     }
 }

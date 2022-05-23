@@ -69,7 +69,7 @@ namespace Post
             var connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connection,
                 x => x.MigrationsAssembly("Post.Database")));
-            
+
             services.Configure<BaseAddresses>(Configuration.GetSection(BaseAddresses.BaseAddress));
             var addressesOptions = Configuration.GetSection(BaseAddresses.BaseAddress).Get<BaseAddresses>();
             services.AddSingleton(addressesOptions);
@@ -89,13 +89,11 @@ namespace Post
             services.AddHttpContextAccessor();
 
             //Configure HttpClient
-            services.AddHttpClient("FileStorage", client =>
-            {
-                client.BaseAddress = new Uri(Configuration["BaseAddress:FileStorage"]);
-            });
-            
-            services.AddHttpClient("file_storage",
-                c => { c.BaseAddress = new Uri("http://localhost:5000"); });
+            services.AddHttpClient("FileStorage",
+                client => { client.BaseAddress = new Uri(Configuration["BaseAddress:FileStorage"]); });
+
+            services.AddHttpClient("AuthService",
+                client => { client.BaseAddress = new Uri(Configuration["BaseAddress:AuthService"]); });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

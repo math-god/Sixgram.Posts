@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Post.Common.Result;
 using Post.Core.Dto.Comment;
+using Post.Core.Dto.Like;
 using Post.Core.Dto.Post;
 using Post.Core.Dto.Subscription;
 using Post.Database.EntityModels;
@@ -11,19 +12,11 @@ public class AppProfile : Profile
 {
     public AppProfile()
     {
-        CreateMap<PostModel, ResultContainer<CommentResponseDto>>()
-            .ForMember("Data", opt
-                => opt.MapFrom(c => c));
-
-        CreateMap<PostModel, CommentResponseDto>()
+        CreateMap<PostModel, PostCreateResponseDto>()
             .ForMember("PostId", opt
                 => opt.MapFrom(p => p.Id));
 
-        CreateMap<PostModel, PostResponseDto>()
-            .ForMember("PostId", opt
-                => opt.MapFrom(p => p.Id));
-
-        CreateMap<PostModel, ResultContainer<PostResponseDto>>()
+        CreateMap<PostModel, ResultContainer<PostCreateResponseDto>>()
             .ForMember("Data", opt
                 => opt.MapFrom(p => p));
 
@@ -40,7 +33,7 @@ public class AppProfile : Profile
                 => opt.MapFrom(p => p)); 
         
         CreateMap<IEnumerable<PostModel>, PostModelsResponseDto>()
-            .ForMember("_posts", opt
+            .ForMember("Posts", opt
                 => opt.MapFrom(p => p));
 
         CreateMap<PostModel, PostModelResponseDto>()
@@ -50,11 +43,35 @@ public class AppProfile : Profile
         CreateMap<SubscriptionModel, ResultContainer<SubscriptionModelResponseDto>>()
             .ForMember("Data", opt
                 => opt.MapFrom(p => p));
+        
+        CreateMap<SubscriptionModel, ResultContainer<SubscribeResponseDto>>()
+            .ForMember("Data", opt
+                => opt.MapFrom(p => p));
+        
+        CreateMap<SubscriptionModel, SubscribeResponseDto>()
+            .ForMember("SubscriptionId", opt
+                => opt.MapFrom(p => p.Id));
+        
+        CreateMap<LikeModel, ResultContainer<LikeResponseDto>>()
+            .ForMember("Data", opt
+                => opt.MapFrom(p => p));
+        
+        CreateMap<LikeModel, LikeResponseDto>()
+            .ForMember("LikeId", opt
+                => opt.MapFrom(p => p.Id));
+        
+        CreateMap<CommentaryModel, ResultContainer<CommentCreateResponseDto>>()
+            .ForMember("Data", opt
+                => opt.MapFrom(p => p));
+        
+        CreateMap<CommentaryModel, CommentCreateResponseDto>()
+            .ForMember("CommentId", opt
+                => opt.MapFrom(p => p.Id));
 
         CreateMap<CommentaryModel, ResultContainer<CommentModelResponseDto>>()
             .ForMember("Data", opt
-                => opt.MapFrom(p => p));
-
+                => opt.MapFrom(p => p.Id));
+        
         CreateMap<CommentaryModel, CommentModelResponseDto>();
         CreateMap<SubscriptionModel, SubscriptionModelResponseDto>();
         CreateMap<PostModel, PostUpdateResponseDto>();

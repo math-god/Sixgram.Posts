@@ -16,25 +16,25 @@ public class CommentaryService : ICommentaryService
     private readonly IPostRepository _postRepository;
     private readonly ICommentaryRepository _commentaryRepository;
     private readonly IMapper _mapper;
-    private readonly IUserIdentityService _itUserIdentityService;
+    private readonly IUserIdentityService _userIdentityService;
 
     public CommentaryService
     (
         IPostRepository postRepository,
         ICommentaryRepository commentaryRepository,
         IMapper mapper,
-        IUserIdentityService itUserIdentityService
+        IUserIdentityService userIdentityService
     )
     {
         _postRepository = postRepository;
         _commentaryRepository = commentaryRepository;
         _mapper = mapper;
-        _itUserIdentityService = itUserIdentityService;
+        _userIdentityService = userIdentityService;
     }
 
-    public async Task<ResultContainer> Create(CommentCreateRequestDto data, Guid postId)
+    public async Task<ResultContainer<CommentCreateResponseDto>> Create(CommentCreateRequestDto data, Guid postId)
     {
-        var result = new ResultContainer();
+        var result = new ResultContainer<CommentCreateResponseDto>();
 
         var post = await _postRepository.GetById(postId);
 
@@ -47,13 +47,15 @@ public class CommentaryService : ICommentaryService
         var comment = new CommentaryModel
         {
             PostId = postId,
-            UserId = _itUserIdentityService.GetCurrentUserId(),
+            UserId = _userIdentityService.GetCurrentUserId(),
             Commentary = data.Commentary
         };
 
         await _commentaryRepository.Create(comment);
 
-        result.ResponseStatusCode = ResponseStatusCode.NoContent;
+        result = _mapper.Map<ResultContainer<CommentCreateResponseDto>>(comment);
+
+        result.ResponseStatusCode = ResponseStatusCode.Ok;
 
         return result;
     }
@@ -70,7 +72,7 @@ public class CommentaryService : ICommentaryService
             return result;
         }
 
-        if (commentary.UserId != _itUserIdentityService.GetCurrentUserId())
+        if (commentary.UserId != _userIdentityService.GetCurrentUserId())
         {
             result.ResponseStatusCode = ResponseStatusCode.BadRequest;
             return result;

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Post.Common.Result;
+using Post.Core.Dto.Like;
 using Post.Core.Interfaces.Like;
 
 namespace Post.Controllers;
@@ -24,15 +26,15 @@ public class LikeController : BaseController
     ///  Likes a post
     /// </summary>
     /// <param name="id"></param>
-    /// <response code="204">Success</response>
+    /// <response code="200">Success</response>
     /// <response code="400">There is no post Id in the request or like already exists</response>
     /// <response code="404">Post not found</response>
     [HttpPost("{id:guid}/like")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult> LikePost(Guid id)
-        => await ReturnResult(_likeService.Like(id));
+    public async Task<ActionResult<LikeResponseDto>> LikePost(Guid id)
+        => await ReturnResult<ResultContainer<LikeResponseDto>, LikeResponseDto>(_likeService.Like(id));
 
     /// <summary>
     ///  Dislikes a post

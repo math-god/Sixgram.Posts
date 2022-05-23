@@ -2,5 +2,5 @@
 
 public class PostModelsResponseDto
 {
-    public List<PostModelResponseDto> _posts { get; set; }
+    public List<PostModelResponseDto> Posts { get; set; }
 }

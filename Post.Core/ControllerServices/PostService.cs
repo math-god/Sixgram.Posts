@@ -35,9 +35,9 @@ public class PostService : IPostService
         _userHttpService = userHttpService;
     }
 
-    public async Task<ResultContainer<PostResponseDto>> Create(PostCreateRequestDto data)
+    public async Task<ResultContainer<PostCreateResponseDto>> Create(PostCreateRequestDto data)
     {
-        var result = new ResultContainer<PostResponseDto>();
+        var result = new ResultContainer<PostCreateResponseDto>();
 
         if (data?.File == null)
         {
@@ -65,7 +65,7 @@ public class PostService : IPostService
 
         await _postRepository.Create(post);
 
-        result = _mapper.Map<ResultContainer<PostResponseDto>>(post);
+        result = _mapper.Map<ResultContainer<PostCreateResponseDto>>(post);
 
         result.ResponseStatusCode = ResponseStatusCode.Ok;
         return result;
@@ -145,7 +145,7 @@ public class PostService : IPostService
     {
         var result = new ResultContainer<PostModelsResponseDto>();
 
-        /*var userExists = await _userHttpService.DoesUserExist(userId);
+        var userExists = await _userHttpService.DoesUserExist(userId);
         
         switch (userExists)
         {
@@ -155,7 +155,7 @@ public class PostService : IPostService
             case false: 
                 result.ResponseStatusCode = ResponseStatusCode.NotFound;
                 return result;
-        }*/
+        }
 
         result = _mapper.Map<ResultContainer<PostModelsResponseDto>>(
             await _postRepository.GetByFilter(u => u.UserId == userId));

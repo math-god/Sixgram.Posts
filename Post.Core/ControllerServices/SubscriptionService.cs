@@ -31,15 +31,15 @@ public class SubscriptionService : ISubscriptionService
         _userHttpService = userHttpService;
     }
 
-    public async Task<ResultContainer> Subscribe(SubscribeRequestDto data)
+    public async Task<ResultContainer<SubscribeResponseDto>> Subscribe(SubscribeRequestDto data)
     {
-        var result = new ResultContainer();
+        var result = new ResultContainer<SubscribeResponseDto>();
         var currentUserId = _itUserIdentityService.GetCurrentUserId();
 
-        /*var subscriptionsAmount = await _subscriptionRepository.GetByFilter(p =>
-            p.RespondentId == subscribeRequestDto.RespondentId && p.SubscriberId == currentUserId);*/
+        var subscriptionsAmount = await _subscriptionRepository.GetByFilter(p =>
+            p.RespondentId == data.RespondentId && p.SubscriberId == currentUserId);
 
-        if (data.RespondentId == currentUserId /*|| subscriptionsAmount.Any()*/)
+        if (data.RespondentId == currentUserId || subscriptionsAmount.Any())
         {
             result.ResponseStatusCode = ResponseStatusCode.BadRequest;
             return result;
@@ -57,15 +57,17 @@ public class SubscriptionService : ISubscriptionService
                 return result;
         }
 
-        var subscriptionModel = new SubscriptionModel()
+        var subscription = new SubscriptionModel()
         {
             RespondentId = data.RespondentId,
             SubscriberId = currentUserId
         };
 
-        await _subscriptionRepository.Create(subscriptionModel);
+        await _subscriptionRepository.Create(subscription);
 
-        result.ResponseStatusCode = ResponseStatusCode.NoContent;
+        result = _mapper.Map<ResultContainer<SubscribeResponseDto>>(subscription);
+
+        result.ResponseStatusCode = ResponseStatusCode.Ok;
 
         return result;
     }

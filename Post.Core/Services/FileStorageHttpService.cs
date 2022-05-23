@@ -12,20 +12,16 @@ namespace Post.Core.Services
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly HttpContext _httpContext;
-        private readonly Uri _fileStorageBaseAddress;
 
         public FileStorageHttpService
         (
             IHttpClientFactory httpClientFactory,
-            IHttpContextAccessor httpContextAccessor,
-            BaseAddresses addresses
+            IHttpContextAccessor httpContextAccessor
         )
         {
             _httpClientFactory = httpClientFactory;
             _httpContext = httpContextAccessor.HttpContext;
-            _fileStorageBaseAddress = new Uri(addresses.FileStorage);
         }
-
 
         public async Task<string> SendCreateRequest(FileSendingDto data)
         {

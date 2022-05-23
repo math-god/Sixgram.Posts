@@ -1,6 +1,6 @@
 ﻿namespace Post.Core.Dto.Post;
 
-public class PostResponseDto
+public class PostCreateResponseDto
 {
     public Guid PostId { get; set; }
 }

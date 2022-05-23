@@ -17,8 +17,7 @@ public class UserHttpService : IUserHttpService
     (
         IHttpClientFactory httpClientFactory,
         IHttpContextAccessor httpContextAccessor,
-        IConnectionService connectionService,
-        BaseAddresses addresses
+        IConnectionService connectionService
     )
     {
         _httpClientFactory = httpClientFactory;

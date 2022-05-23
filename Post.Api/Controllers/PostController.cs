@@ -14,8 +14,7 @@ public class PostController : BaseController
 {
     private const long MaxFileSize = 2L * 1024L * 1024L * 1024L;
     private readonly IPostService _postService;
-
-
+    
     public PostController
     (
         IPostService postService
@@ -25,7 +24,7 @@ public class PostController : BaseController
     }
 
     /// <summary>
-    ///  Get a post by id
+    ///  Gets a post by id
     /// </summary>
     /// <param name="id"></param>
     /// <response code="200">Success</response>
@@ -39,7 +38,7 @@ public class PostController : BaseController
             (_postService.GetById(id));
 
     /// <summary>
-    ///  Get all user's posts
+    ///  Gets all user's posts
     /// </summary>
     /// <param name="id"></param>
     /// <response code="200">Success</response>
@@ -63,8 +62,8 @@ public class PostController : BaseController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [RequestSizeLimit(MaxFileSize)]
     [RequestFormLimits(MultipartBodyLengthLimit = MaxFileSize)]
-    public async Task<ActionResult<PostResponseDto>> Create([FromForm] PostCreateRequestDto data)
-        => await ReturnResult<ResultContainer<PostResponseDto>, PostResponseDto>(_postService.Create(data));
+    public async Task<ActionResult<PostCreateResponseDto>> Create([FromForm] PostCreateRequestDto data)
+        => await ReturnResult<ResultContainer<PostCreateResponseDto>, PostCreateResponseDto>(_postService.Create(data));
 
     /// <summary>
     ///  Edits a post

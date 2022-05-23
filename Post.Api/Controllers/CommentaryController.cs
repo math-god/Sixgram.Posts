@@ -41,15 +41,16 @@ public class CommentaryController : BaseController
     /// </summary>
     /// <param name="data"></param>
     /// <param name="id"></param>
-    /// <response code="204">Success</response>
+    /// <response code="200">Success</response>
     /// <response code="400">There is no post Id or commentary in the request</response>
     /// <response code="404">Post not found</response>
     [HttpPost("{id:guid}/comment")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult> CreateComment([FromForm] CommentCreateRequestDto data, Guid id)
-        => await ReturnResult(_commentaryService.Create(data, id));
+    public async Task<ActionResult<CommentCreateResponseDto>> CreateComment([FromForm] CommentCreateRequestDto data, Guid id)
+        => await ReturnResult<ResultContainer<CommentCreateResponseDto>, CommentCreateResponseDto>(
+            _commentaryService.Create(data, id));
 
     /// <summary>
     ///  Deletes a comment
