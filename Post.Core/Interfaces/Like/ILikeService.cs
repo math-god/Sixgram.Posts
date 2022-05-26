@@ -7,4 +7,5 @@ public interface ILikeService
 {
     Task<ResultContainer<LikeResponseDto>> Like(Guid postId);
     Task<ResultContainer> Dislike(Guid likeId);
+    Task<ResultContainer<LikeModelsResponseDto>> GetAllPostLikes(Guid postId);
 }

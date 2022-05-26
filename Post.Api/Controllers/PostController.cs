@@ -14,7 +14,7 @@ public class PostController : BaseController
 {
     private const long MaxFileSize = 2L * 1024L * 1024L * 1024L;
     private readonly IPostService _postService;
-    
+
     public PostController
     (
         IPostService postService
@@ -43,9 +43,11 @@ public class PostController : BaseController
     /// <param name="id"></param>
     /// <response code="200">Success</response>
     /// <response code="404">The user not found</response>
+    /// <response code="503">Service unavailable</response>
     [HttpGet("user/{id:guid}/post")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
     [AllowAnonymous]
     public async Task<ActionResult<PostModelsResponseDto>> GetAllPostsOfCurrentUser(Guid id)
         => await ReturnResult<ResultContainer<PostModelsResponseDto>, PostModelsResponseDto>
@@ -57,9 +59,11 @@ public class PostController : BaseController
     /// <param name="data"></param>
     /// <response code="200">Success</response>
     /// <response code="400">There is no file in the request</response>
+    /// <response code="503">Service unavailable</response>
     [HttpPost("post")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
     [RequestSizeLimit(MaxFileSize)]
     [RequestFormLimits(MultipartBodyLengthLimit = MaxFileSize)]
     public async Task<ActionResult<PostCreateResponseDto>> Create([FromForm] PostCreateRequestDto data)

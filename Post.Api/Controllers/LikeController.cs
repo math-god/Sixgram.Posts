@@ -51,4 +51,18 @@ public class LikeController : BaseController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> DislikePost(Guid id)
         => await ReturnResult(_likeService.Dislike(id));
+
+    /// <summary>
+    ///  Gets all post likes
+    /// </summary>
+    /// <param name="id"></param>
+    /// <response code="200">Success</response>
+    /// <response code="404">Post not found</response>
+    [HttpGet("{id:guid}/like")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [AllowAnonymous]
+    public async Task<ActionResult<LikeModelsResponseDto>> GetAllPostLikes(Guid id)
+        => await ReturnResult<ResultContainer<LikeModelsResponseDto>, LikeModelsResponseDto>(
+            _likeService.GetAllPostLikes(id));
 }

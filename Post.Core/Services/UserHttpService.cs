@@ -32,8 +32,14 @@ public class UserHttpService : IUserHttpService
         client.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue("Bearer", await _httpContext.GetTokenAsync("access_token"));
 
-        /*if (!_connectionService.IsConnected("localhost", 5176)) return null;*/
-        var responseMessage = await client.GetAsync($"{userId}");
-        return responseMessage.IsSuccessStatusCode;
+        try
+        {
+            var responseMessage = await client.GetAsync($"{userId}");
+            return responseMessage.IsSuccessStatusCode;
+        }
+        catch (HttpRequestException)
+        {
+            return null;
+        }
     }
 }

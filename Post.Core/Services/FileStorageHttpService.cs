@@ -23,7 +23,7 @@ namespace Post.Core.Services
             _httpContext = httpContextAccessor.HttpContext;
         }
 
-        public async Task<string> SendCreateRequest(FileSendingDto data)
+        public async Task<string?> SendCreateRequest(FileSendingDto data)
         {
             using var client = _httpClientFactory.CreateClient("FileStorage");
 

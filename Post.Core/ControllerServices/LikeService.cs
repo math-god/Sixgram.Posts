@@ -91,4 +91,25 @@ public class LikeService : ILikeService
 
         return result;
     }
+
+    public async Task<ResultContainer<LikeModelsResponseDto>> GetAllPostLikes(Guid postId)
+    {
+        var result = new ResultContainer<LikeModelsResponseDto>();
+
+        var post = await _postRepository.GetById(postId);
+
+        if (post == null)
+        {
+            result.ResponseStatusCode = ResponseStatusCode.NotFound;
+            return result;
+        }
+
+        var likes = await _likeRepository.GetByFilter(l => l.PostId == postId);
+
+        result = _mapper.Map<ResultContainer<LikeModelsResponseDto>>(likes);
+
+        result.ResponseStatusCode = ResponseStatusCode.Ok;
+        
+        return result;
+    }
 }

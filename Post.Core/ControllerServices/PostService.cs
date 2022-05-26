@@ -51,7 +51,7 @@ public class PostService : IPostService
 
         if (fileId == null)
         {
-            result.ResponseStatusCode = ResponseStatusCode.BadRequest;
+            result.ResponseStatusCode = ResponseStatusCode.ServiceUnavailable;
             return result;
         }
 
@@ -88,8 +88,16 @@ public class PostService : IPostService
             result.ResponseStatusCode = ResponseStatusCode.Forbidden;
             return result;
         }
+        
+        var fileId = await _fileStorageService.CreateFile(data.NewFile, post.Id);
 
-        post.FileId = await _fileStorageService.CreateFile(data.NewFile, post.Id);
+        if (fileId == null)
+        {
+            result.ResponseStatusCode = ResponseStatusCode.ServiceUnavailable;
+            return result;
+        }
+        
+        post.FileId = fileId;
         post.Description = data.NewDescription;
 
         result = _mapper.Map<ResultContainer<PostUpdateResponseDto>>(await _postRepository.Update(post));
@@ -115,10 +123,10 @@ public class PostService : IPostService
             result.ResponseStatusCode = ResponseStatusCode.Forbidden;
             return result;
         }
-        
+
         await _postRepository.Delete(post);
 
-        await _fileStorageService.DeleteFile((Guid)post.FileId);
+        await _fileStorageService.DeleteFile((Guid) post.FileId);
 
         result.ResponseStatusCode = ResponseStatusCode.NoContent;
         return result;
@@ -136,7 +144,7 @@ public class PostService : IPostService
         }
 
         result = _mapper.Map<ResultContainer<PostModelResponseDto>>(post);
-        
+
         result.ResponseStatusCode = ResponseStatusCode.Ok;
         return result;
     }
@@ -146,19 +154,20 @@ public class PostService : IPostService
         var result = new ResultContainer<PostModelsResponseDto>();
 
         var userExists = await _userHttpService.DoesUserExist(userId);
-        
+
         switch (userExists)
         {
             case null:
                 result.ResponseStatusCode = ResponseStatusCode.ServiceUnavailable;
                 return result;
-            case false: 
+            case false:
                 result.ResponseStatusCode = ResponseStatusCode.NotFound;
                 return result;
         }
 
-        result = _mapper.Map<ResultContainer<PostModelsResponseDto>>(
-            await _postRepository.GetByFilter(u => u.UserId == userId));
+        var posts = await _postRepository.GetByFilter(u => u.UserId == userId);
+
+        result = _mapper.Map<ResultContainer<PostModelsResponseDto>>(posts);
 
         result.ResponseStatusCode = ResponseStatusCode.Ok;
         return result;

@@ -35,6 +35,4 @@ public class BaseController : ControllerBase
 
         return StatusCode((int) result.ResponseStatusCode);
     }
-    
-    
 }

@@ -35,6 +35,11 @@ public class FileStorageService : IFileStorageService
 
         var content = await _fileStorageHttpService.SendCreateRequest(fileSendingDto);
 
+        if (content == null)
+        {
+            return null;
+        }
+        
         var json = JObject.Parse(content);
 
         var result = new Guid(json["id"].ToString());
