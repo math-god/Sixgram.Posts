@@ -58,9 +58,8 @@ public class PostService : IPostService
         var post = new PostModel
         {
             Id = postId,
-            UserId = _userIdentityService.GetCurrentUserId(),
+            UserId = data.UserId,
             FileId = (Guid) fileId,
-            Description = data.Description
         };
 
         await _postRepository.Create(post);
@@ -98,7 +97,6 @@ public class PostService : IPostService
         }
         
         post.FileId = fileId;
-        post.Description = data.NewDescription;
 
         result = _mapper.Map<ResultContainer<PostUpdateResponseDto>>(await _postRepository.Update(post));
 

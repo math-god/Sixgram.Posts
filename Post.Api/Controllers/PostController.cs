@@ -66,7 +66,7 @@ public class PostController : BaseController
     [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
     [RequestSizeLimit(MaxFileSize)]
     [RequestFormLimits(MultipartBodyLengthLimit = MaxFileSize)]
-    public async Task<ActionResult<PostCreateResponseDto>> Create([FromForm] PostCreateRequestDto data)
+    public async Task<ActionResult<PostCreateResponseDto>> Create([FromForm]PostCreateRequestDto data)
         => await ReturnResult<ResultContainer<PostCreateResponseDto>, PostCreateResponseDto>(_postService.Create(data));
 
     /// <summary>
@@ -81,7 +81,7 @@ public class PostController : BaseController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<PostUpdateResponseDto>> Edit([FromForm] PostUpdateRequestDto data,
+    public async Task<ActionResult<PostUpdateResponseDto>> Edit(PostUpdateRequestDto data,
         Guid id)
         => await ReturnResult<ResultContainer<PostUpdateResponseDto>, PostUpdateResponseDto>
             (_postService.Edit(data, id));

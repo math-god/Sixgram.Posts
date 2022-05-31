@@ -38,17 +38,7 @@ namespace Post
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(
-                    builder =>
-                    {
-                        builder.WithOrigins("http://localhost:5000")
-                            .AllowAnyHeader()
-                            .AllowAnyMethod()
-                            .AllowCredentials();
-                    });
-            });
+            services.AddCors();
 
             services.AddControllers();
 
@@ -74,7 +64,7 @@ namespace Post
             var addressesOptions = Configuration.GetSection(BaseAddresses.BaseAddress).Get<BaseAddresses>();
             services.AddSingleton(addressesOptions);
 
-            //Configure AutoMapper Profile
+
             var mapperConfig = new MapperConfiguration
                 (mc => { mc.AddProfile(new AppProfile()); });
             var mapper = mapperConfig.CreateMapper();
@@ -88,7 +78,6 @@ namespace Post
 
             services.AddHttpContextAccessor();
 
-            //Configure HttpClient
             services.AddHttpClient("FileStorage",
                 client => { client.BaseAddress = new Uri(Configuration["BaseAddress:FileStorage"]); });
 
@@ -109,7 +98,11 @@ namespace Post
             app.UseHttpsRedirection();
             app.UseRouting();
 
-            app.UseCors();
+            app.UseCors(b 
+                => b.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+
             app.UseAuthentication();
             app.UseAuthorization();
 

@@ -8,8 +8,6 @@ public class PostEntityConfiguration : IEntityTypeConfiguration<PostModel>
 {
     public void Configure(EntityTypeBuilder<PostModel> builder)
     {
-        builder.Property(p => p.Description)
-            .HasMaxLength(2500);
         builder.Property(p => p.DateCreated)
             .HasColumnType("timestamp without time zone");
         
@@ -20,7 +18,6 @@ public class PostEntityConfiguration : IEntityTypeConfiguration<PostModel>
                 Id = Guid.NewGuid(),
                 UserId = Guid.NewGuid(),
                 FileId = Guid.NewGuid(),
-                Description = "Eu cum iuvaret debitis voluptatibus, esse perfecto reformidans id has.",
                 DateCreated = DateTime.Now
             },
             new PostModel()
@@ -28,7 +25,6 @@ public class PostEntityConfiguration : IEntityTypeConfiguration<PostModel>
                 Id = Guid.NewGuid(),
                 UserId = Guid.NewGuid(),
                 FileId = Guid.NewGuid(),
-                Description = "Tation delenit percipitur at vix. Tation delenit percipitur at vix",
                 DateCreated = DateTime.Now
             }
         );

@@ -13,11 +13,8 @@ public class PostModel : BaseModel
     public Guid UserId { get; set; }
     
     [Column("file_id")]
-    public Guid? FileId { get; set; } 
+    public Guid? FileId { get; set; }
 
-    [Column("description")]
-    public string Description { get; set; } 
-    
     public ICollection<CommentaryModel> Commentaries { get; set; }
     public ICollection<LikeModel> Likes { get; set; }
 }

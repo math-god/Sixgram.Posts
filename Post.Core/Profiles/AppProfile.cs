@@ -60,18 +60,6 @@ public class AppProfile : Profile
             .ForMember("LikeId", opt
                 => opt.MapFrom(p => p.Id));
         
-        CreateMap<CommentaryModel, ResultContainer<CommentCreateResponseDto>>()
-            .ForMember("Data", opt
-                => opt.MapFrom(p => p));
-        
-        CreateMap<CommentaryModel, CommentCreateResponseDto>()
-            .ForMember("CommentId", opt
-                => opt.MapFrom(p => p.Id));
-
-        CreateMap<CommentaryModel, ResultContainer<CommentModelResponseDto>>()
-            .ForMember("Data", opt
-                => opt.MapFrom(p => p.Id));
-        
         CreateMap<List<LikeModel>, ResultContainer<LikeModelsResponseDto>>()
             .ForMember("Data", opt
                 => opt.MapFrom(p => p));
@@ -84,6 +72,19 @@ public class AppProfile : Profile
             .ForMember("LikeId", opt
                 => opt.MapFrom(p => p.Id));
         
+        CreateMap<CommentaryModel, ResultContainer<CommentCreateResponseDto>>()
+            .ForMember("Data", opt
+                => opt.MapFrom(p => p));
+        
+        CreateMap<CommentaryModel, CommentCreateResponseDto>()
+            .ForMember("CommentId", opt
+                => opt.MapFrom(p => p.Id));
+
+        CreateMap<CommentaryModel, ResultContainer<CommentModelResponseDto>>()
+            .ForMember("Data", opt
+                => opt.MapFrom(p => p.Id));
+        
+
         CreateMap<CommentaryModel, CommentModelResponseDto>();
         CreateMap<SubscriptionModel, SubscriptionModelResponseDto>();
         CreateMap<PostModel, PostUpdateResponseDto>();

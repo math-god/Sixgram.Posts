@@ -48,7 +48,7 @@ public class CommentaryController : BaseController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<CommentCreateResponseDto>> CreateComment([FromForm] CommentCreateRequestDto data, Guid id)
+    public async Task<ActionResult<CommentCreateResponseDto>> CreateComment(CommentCreateRequestDto data, Guid id)
         => await ReturnResult<ResultContainer<CommentCreateResponseDto>, CommentCreateResponseDto>(
             _commentaryService.Create(data, id));
 
